@@ -1,0 +1,1 @@
+¡<?php echo $layout_contents ?>!

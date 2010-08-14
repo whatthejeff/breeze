@@ -1,0 +1,31 @@
+* { margin:0; padding:0; }
+body, div, span, p, a, img, ul, ol, li, table, th, tr, td, form, fieldset, legend, dl, dt, dd, blockquote, applet, object { border:0; }
+body { padding: 0; background: #fff url('/img/bg.jpg') repeat-x; font: 0.8em/1.5 "arial",sans-serif; color: #303030; text-align: center; }
+
+a, a:link, a:hover {color:#b41818;}
+a:hover {text-decoration: none;}
+
+h1, h2, h3, h4, h5, h6 { margin:15px 0 7px 0; }
+h1 { font-family: 'Trebuchet MS', 'Geneva CE', lucida, sans-serif; font-size:230%; padding:20px 0; }
+h1 a { text-decoration: none; color: #fff; font-weight: normal; }
+h1 a:hover { color: #fff; }
+h2 { font-size:200%; font-weight: normal;}
+
+p { margin:15px 0; line-height: 24px; font-size: 95%; }
+table { margin:15px 0; border: 1px solid #cdcdcd; border-collapse:collapse; border-spacing:0; font-size:100%; width: 100%; }
+th { text-align:left; font-weight:bold; border: 1px solid #cdcdcd; background: #e5e5e5; }
+th, td { padding:4px 6px; border: 1px solid #cdcdcd; }
+label {display:block; font-weight:bold; }
+pre { background-color: #eee; padding: 10px; font-size: 11px;}
+
+div.flash { font-weight: bold; padding: 5px; margin-bottom: 5px; }
+div.error { background-color: #faa; border: solid 2px red; }
+div.warning { background-color: #ffa; border: solid 2px yellow; }
+div.notice { font-weight: bold; padding: 5px; margin-bottom: 5px; background-color: #afa; border: solid 2px green; }
+div.flash ul { padding:10px 0 10px 30px; }
+
+p.error label { color:red; }
+p.error input, p.error textarea { border:1px solid red; }
+
+#wrapper { width:780px; margin:0 auto; text-align:left; }
+#header { margin-bottom: 30px; }

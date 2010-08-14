@@ -1,0 +1,10 @@
+<phpunit bootstrap="./bootstrap.php" colors="true">
+    <testsuite name="Breeze Framework">
+        <directory>./</directory>
+    </testsuite>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../library</directory>
+        </whitelist>
+    </filter>
+</phpunit>

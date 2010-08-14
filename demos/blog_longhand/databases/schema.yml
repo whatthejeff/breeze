@@ -1,0 +1,15 @@
+Post:
+  actAs: [Timestampable]
+  columns:
+    title:
+      type: text()
+      notnull: true
+      primary: false
+      autoincrement: false
+      notblank: true
+    contents:
+      type: text()
+      notnull: true
+      primary: false
+      autoincrement: false
+      notblank: true

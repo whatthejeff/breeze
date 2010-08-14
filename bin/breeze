@@ -1,0 +1,112 @@
+#!/bin/bash
+#
+# Breeze Framework - New Application Script
+#
+# This file contains a bash script that will create the skeleton for a new Breeze
+# application.
+#
+# Usage: breeze [options] application_name
+#
+# LICENSE
+#
+# This file is part of the Breeze Framework package and is subject to the new
+# BSD license.  For full copyright and license information, please see the
+# LICENSE file that is distributed with this package.
+#
+# @author     Jeff Welch <whatthejeff@gmail.com>
+# @category   Breeze
+# @package    Bin
+# @copyright  Copyright (c) 2010, Breeze Framework
+# @license    New BSD License
+# @version    $Id$
+#
+    shopt -s -o nounset
+    shopt -s -o noclobber
+
+    # The name of the current script
+    declare -rx SCRIPT_NAME=$(basename "$0")
+
+    # The path to the current script
+    declare -rx SCRIPT_PATH=$(dirname "$0")
+
+    # The script usage message
+    declare -rx USAGE="usage: $SCRIPT_NAME [options] application_name"
+
+    # The type of application to create
+    declare -x APPLICATION_TYPE="simple"
+
+    # The standard usage error message
+    function usage
+    {
+        printf "$USAGE\n" >&2
+        printf "Try \`$SCRIPT_NAME --help\` for more information.\n" >&2
+        exit 192
+    }
+    readonly -f usage
+    declare -t usage
+
+    # The standard help message
+    function help
+    {
+        printf "$USAGE\n"
+        printf "  -?, --help                   Display this help and exit.\n"
+        printf "  -t, --type                   The type of application to create. {simple|complex}\n"
+    }
+    readonly -f help
+    declare -t help
+
+    # The standard error message
+    function error
+    {
+        printf "$SCRIPT_NAME: $1\n" >&2
+        exit 192
+    }
+    readonly -f error
+    declare -t error
+
+    # Process the command-line options
+    while [ "${1:0:1}" = '-' ]
+    do
+        case $1 in
+            -\? | --help )  help
+                            exit 0
+                            ;;
+
+            -t | --type )   shift
+                            APPLICATION_TYPE="${1:-$APPLICATION_TYPE}"
+                            ;;
+
+            * )             error "unknown option '$1'"
+                            usage
+        esac
+        shift
+    done
+
+    # This script requires 1 argument
+    if [ $# -ne 1 ]
+    then
+        usage
+    fi
+
+    # The path to the template directory to use for creating the project directory
+    declare -rx TEMPLATE_PATH="$SCRIPT_PATH/application_templates/$APPLICATION_TYPE"
+
+    # Make sure the template directory is valid
+    if [ ! -d "$TEMPLATE_PATH" ]
+    then
+        error "$APPLICATION_TYPE is not a valid application type"
+    fi
+
+    # Make sure the destination doesn't already exist
+    if [ -e "$1" ]
+    then
+        error "$1 already exists"
+    fi
+
+    # Create the project
+    if cp -R "$TEMPLATE_PATH" "$1" 2>/dev/null
+    then
+        printf "Your project was successfully created!\n"
+    else
+        error "unable to create $1"
+    fi

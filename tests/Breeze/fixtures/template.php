@@ -1,0 +1,1 @@
+Hello <?php echo isset($name) ? $name : 'World'; ?>
