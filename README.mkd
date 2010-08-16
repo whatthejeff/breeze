@@ -10,8 +10,6 @@ Breeze is a simple and intuitive micro-framework for PHP 5.3+.  The most basic e
 
     run();
 
--------------------------------------------------------------------------------
-
 Getting Started
 ---------------
 
@@ -30,8 +28,6 @@ All the instructions in this tutorial will assume that you already have a basic 
     run();
 
 The `require_once` statement is needed to include the framework libraries and `run()` is needed to start the routing process.  Without these elements, most examples will not run.
-
--------------------------------------------------------------------------------
 
 Routes
 ------
@@ -122,8 +118,6 @@ The solution described above works, but it's certainly not the most graceful or 
         echo 'This will be echoed when the form is submitted.';
     });
 
--------------------------------------------------------------------------------
-
 Pass
 ----
 
@@ -159,7 +153,7 @@ If you've been paying attention, you probably noticed every method that starts w
 
 Now all methods that start with `/post/$id` will match this route and load a post.  The `pass()` function tells the framework to exit out of the current action and continue routing.  This shortcut saves us a lot of keystrokes and removes duplication and complexity from our code which is always helpful.
 
-### `redirect()`
+### redirect()
 
 Don't use the `pass()` function when you really want to send somebody to another URL.  To do this, you can use the `redirect()` function.
 
@@ -174,8 +168,6 @@ You can also specify a different response code for redirects.
         // sends a 301 response code
         redirect('http://www.mysite.com/some_other_page', 301);
     });
-
--------------------------------------------------------------------------------
 
 Filters
 -------
@@ -214,8 +206,6 @@ Filters are always executed in the order they are defined but you can define the
     before(function(){
         echo "Hello";
     });
-
--------------------------------------------------------------------------------
 
 Conditions
 ----------
@@ -269,8 +259,6 @@ Another predefined condition is called `host_name_is`.  You may use it in the fo
     get('/', function(){
         // everyone else will see this
     });
-
--------------------------------------------------------------------------------
 
 Templates
 ---------
@@ -376,7 +364,7 @@ Having to call the `layout()` function in every action isn't very concise.  A po
         pass();
     });
 
-### `fetch()` and `partial()`
+### fetch() and partial()
 
 Sometimes you don't want to display a template immediately.  To render the contents of a template without displaying it, you can use one of the following functions.
 
@@ -477,8 +465,6 @@ To address this problem, we've created a custom plugin for the Smarty engine cal
 
 For more information on how the `$breeze` variable works, be sure to read the plugins section.
 
--------------------------------------------------------------------------------
-
 Configurations
 --------------
 
@@ -505,8 +491,6 @@ The default configuration values are:
     'template_layout'       => 'layout',   /* The default path to the layout file */
     'application_variable'  => 'breeze',   /* The template variable that holds the current application object */
     'errors_backtrace'      => true        /* If error templates should include backtraces */
-
--------------------------------------------------------------------------------
 
 Errors
 ------
@@ -591,12 +575,10 @@ Just like the routing system, handlers receive and instance of the current app a
         error(404, 'Page Not Found');
     });
 
--------------------------------------------------------------------------------
-
 Plugins
 -------
 
-Sometimes you'll find yourself repeating the same routes, configurations, conditions, templates, error handlers, etc. in most of your applications.  Breeze has a very logical solution for this.  Any code that you write using the Breeze framework can be ported to a plugin that can be used by other applications.  Additionally, Breeze offers the possibility of creating your own Breeze functions meaning you can extend the framework's core functionality until your hearts content.
+Sometimes you'll find yourself repeating the same routes, configurations, conditions, templates, error handlers, etc. in most of your applications.  Breeze has a very logical solution for this.  Any code that you write using the Breeze framework can be ported to a plugin that can be used by other applications.  Additionally, Breeze offers the possibility of creating your own Breeze functions meaning you can extend the framework's core functionality until your heart's content.
 
 The best way to learn the plugin system is through example.  For starters, you might want to take a look at the plugins that are included with the Breeze Framework.  When in doubt, use one of these plugins as a skeleton for the plugin you are trying to write.
 
@@ -664,23 +646,6 @@ If you haven't used namespaces in PHP yet, you might be confused by the backslas
 
 The Breeze standard for plugin namespaces is template engines should use the `Breeze\View\Driver` namespace and all other plugins should use `Breeze\Plugins\YourPluginNameHere` namespace.
 
-    // breeze.helloworld.php
-    namespace Breeze\Plugins\HelloWorld {
-        use Breeze\Application;
-        require_once 'Breeze/Application.php';
-
-        Application::register('HelloWorld', function($app){
-            // This is the same as calling get() after your application has started
-            $app->get('/', function(){
-                echo 'Hello World';
-            });
-        });
-    }
-
-    // Controller.php
-    require_once 'Breeze/plugins/breeze.helloworld.php';
-    require_once 'Breeze.php';
-
 ### Templates
 
 As we mentioned earlier, it's possible to create plugins that include templates.  When doing so, you must keep a couple of things in mind.  First, you should always use the default PHP template engine.  Never rely on a user to have a certain template engine available.  Second, you should always use the `$breeze` application variable discussed in the templates section when calling Breeze functions.  This assures that your application works even when developers using your plugin have the Breeze shortcuts disabled.
@@ -731,22 +696,24 @@ These two examples may look similar, but there's actually a very subtle differen
         auth($_SESSION['user'], '/login');
     });
 
--------------------------------------------------------------------------------
-
 The global scope
 ----------------
 
 Let's be honest, if you're using PHP, your global scope is already a bit compromised.  With the introduction of namespaces though, PHP has finally given us some tools to help combat this problem.  And while having functions like `get()` and `display()` in your global scope may save you some keystrokes, it isn't exactly the ideal situation, especially for larger applications.  Fortunately, Breeze allows you to turn off these shortcut functions and use a slightly more verbose syntax to protect your scope.
 
     // Controller.php
-    require_once 'Breeze/Application.php';
+    namespace Breeze\Demos\Scope {
+        use Breeze\Application;
 
-    $app = new Breeze\Application();
-    $app->get('/', function($app){
-        $app->display('index');
-    });
+        require_once 'Breeze/Application.php';
 
-    $app->run();
+        $app = new Application();
+        $app->get('/', function($app){
+            $app->display('index');
+        });
+
+        $app->run();
+    }
 
 ### Templates
 
@@ -759,8 +726,6 @@ Once you've disabled the Breeze shortcuts, you will need to use the `$breeze` ap
 ### Demo
 
 Be sure to checkout the `blog_longhand` demo for a more complete treatment on protecting the global scope.
-
--------------------------------------------------------------------------------
 
 That's all folks
 ----------------
