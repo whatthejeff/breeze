@@ -9,8 +9,6 @@ Instructions on how to change PHP configuration directives can be found here:
 
 <http://www.php.net/manual/en/configuration.changes.php>
 
--------------------------------------------------------------------------------
-
 BINARIES
 --------
 
@@ -46,8 +44,6 @@ You can also use the `breeze` binary to generate a more complex project structur
 
 These project structures are only suggestions.  You should feel free to structure and configure your projects as you deem fit.
 
--------------------------------------------------------------------------------
-
 SERVER CONFIGURATIONS
 ---------------------
 
@@ -77,14 +73,10 @@ Unless you intend to run your entire application from a single file (which, by t
         "" => "/index.php"
     )
 
--------------------------------------------------------------------------------
-
 SYSTEM REQUIREMENTS
 -------------------
 
 The Breeze Framework requires PHP 5.3 or later.
-
--------------------------------------------------------------------------------
 
 GETTING STARTED
 ---------------
