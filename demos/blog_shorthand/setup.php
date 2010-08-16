@@ -27,7 +27,7 @@
     const POST_DELETED_MESSAGE = 'Your post was successfully deleted.';
 
     // Uncomment to use an alternate template engine
-     require_once 'Breeze/plugins/breeze.dwoo.php';
+    // require_once 'Breeze/plugins/breeze.dwoo.php';
     // require_once 'Breeze/plugins/breeze.smarty.php';
 
     // Setup the breeze framework components
