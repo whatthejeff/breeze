@@ -654,13 +654,13 @@ namespace Breeze\Errors {
      * define closures that are associated with HTTP errors and exceptions that
      * might be thrown during the Breeze Framework lifecycle.
      *
-     * <code>
-     * $handler = new Breeze\Errors\Errors($app);
-     * $handler->add('404', function(){
-     *    echo "Page not found!";
-     * });
-     * $handler->dispatchError(new Breeze\Dispatcher\NotFoundException()); // Echos "Page not found!"
-     * </code>
+     * @code
+     *     $handler = new Breeze\Errors\Errors($app);
+     *     $handler->add('404', function(){
+     *        echo "Page not found!";
+     *     });
+     *     $handler->dispatchError(new Breeze\Dispatcher\NotFoundException()); // Echos "Page not found!"
+     * @endcode
      *
      * @category    Breeze
      * @package     Errors
@@ -786,14 +786,14 @@ namespace Breeze\Errors {
         /**
          * Adds a handler for the errors specified by the $names argument.
          *
-         * <code>
-         * // Examples
-         * $handler->add('403', function(){});
-         * $handler->add('Exception', function(){});
-         * $handler->add(array('404','405'), function(){});
-         * $handler->add(range(400,417), function(){});
-         * $handler->add(function(){}); // Catchall
-         * </code>
+         * @code
+         *     // Examples
+         *     $handler->add('403', function(){});
+         *     $handler->add('Exception', function(){});
+         *     $handler->add(array('404','405'), function(){});
+         *     $handler->add(range(400,417), function(){});
+         *     $handler->add(function(){}); // Catchall
+         * @endcode
          *
          * @access public
          * @param  mixed $names      The codes/exceptions to add errors for.
@@ -867,15 +867,15 @@ namespace Breeze\Dispatcher {
      * The "Pass" exception which is used to skip to the next
      * matching route.
      *
-     * <code>
-     * $app->get('/hello', function(){
-     *    throw new PassException();
-     * });
+     * @code
+     *     $app->get('/hello', function(){
+     *        throw new PassException();
+     *     });
      *
-     * $app->get(';.+;', function(){
-     *    echo "Made it to this route because you used the PassException"
-     * })
-     * </code>
+     *     $app->get(';.+;', function(){
+     *        echo "Made it to this route because you used the PassException"
+     *     })
+     * @endcode
      *
      * @category    Breeze
      * @package     Dispatcher
@@ -972,13 +972,13 @@ namespace Breeze\Dispatcher {
      * The base URL dispatcher for the Breeze Framework.  This class is used to
      * define closures that are associated with HTTP requests.
      *
-     * <code>
-     * $handler = new Breeze\Dispatcher\Dispatcher($app);
-     * $handler->get('/', function(){
-     *    echo "Hello World!";
-     * });
-     * $handler->dispatch('GET', '/') // echos hello world
-     * </code>
+     * @code
+     *     $handler = new Breeze\Dispatcher\Dispatcher($app);
+     *     $handler->get('/', function(){
+     *        echo "Hello World!";
+     *     });
+     *     $handler->dispatch('GET', '/') // echos hello world
+     * @endcode
      *
      * @category    Breeze
      * @package     Dispatcher
@@ -1436,11 +1436,11 @@ namespace Breeze {
         /**
          * Sets a configuration value(s).
          *
-         * <code>
-         * $config = new Breeze\Configurations();
-         * $config->set('jeff', 'is cool');
-         * $config->set(array('jeff'=>'is cool'));
-         * </code>
+         * @code
+         *     $config = new Breeze\Configurations();
+         *     $config->set('jeff', 'is cool');
+         *     $config->set(array('jeff'=>'is cool'));
+         * @endcode
          *
          * @access public
          * @param  string|array $name  The name of the configuration value to set or an array of values to set.
@@ -1639,16 +1639,16 @@ namespace Breeze {
          * context of request handlers, it passes control to the next matching
          * request.
          *
-         * <code>
-         * $app = new Breeze\Application();
-         * $app->get('/hello', function($app){
-         *    $app->pass();
-         * });
+         * @code
+         *     $app = new Breeze\Application();
+         *     $app->get('/hello', function($app){
+         *        $app->pass();
+         *     });
          *
-         * $app->get(';.+;', function(){
-         *    echo "Made it to this route because you used Breeze\Application::pass()"
-         * })
-         * </code>
+         *     $app->get(';.+;', function(){
+         *        echo "Made it to this route because you used Breeze\Application::pass()"
+         *     })
+         * @endcode
          *
          * @access public
          * @return void
@@ -1680,11 +1680,11 @@ namespace Breeze {
         /**
          * Shortcut for getting and setting configuration values.
          *
-         * <code>
-         * $app = new Breeze\Application();
-         * $app->config('jeff', 'is cool');
-         * echo $app->config('jeff'); // Prints "is cool"
-         * </code>
+         * @code
+         *     $app = new Breeze\Application();
+         *     $app->config('jeff', 'is cool');
+         *     echo $app->config('jeff'); // Prints "is cool"
+         * @endcode
          *
          * @access public
          * @param  string $name  The name of the config value to set/get
@@ -1703,11 +1703,11 @@ namespace Breeze {
         /**
          * Shortcut for setting and dispatching conditions.
          *
-         * <code>
-         * $app = new Breeze\Application();
-         * $app->condition('is cool', function($name) { return $name == 'jeff' });
-         * $app->condition('is cool', 'someone else'); // Throws Breeze\Dispatcher\PassException
-         * </code>
+         * @code
+         *     $app = new Breeze\Application();
+         *     $app->condition('is cool', function($name) { return $name == 'jeff' });
+         *     $app->condition('is cool', 'someone else'); // Throws Breeze\Dispatcher\PassException
+         * @endcode
          *
          * @access public
          * @param  string $name    The name of the condition to set/dispatch
@@ -1727,11 +1727,11 @@ namespace Breeze {
         /**
          * Shortcut for getting and setting template values.
          *
-         * <code>
-         * $app = new Breeze\Application();
-         * $app->template('jeff', 'is cool');
-         * echo $app->template('jeff'); // Prints "is cool"
-         * </code>
+         * @code
+         *     $app = new Breeze\Application();
+         *     $app->template('jeff', 'is cool');
+         *     echo $app->template('jeff'); // Prints "is cool"
+         * @endcode
          *
          * @access public
          * @param  string $name  The name of the template value to set/get
@@ -1752,19 +1752,19 @@ namespace Breeze {
         /**
          * Shortcut for adding or dispatching an error.
          *
-         * <code>
-         * $app = new Breeze\Application();
+         * @code
+         *     $app = new Breeze\Application();
          *
-         * // Defining error handlers
-         * $app->error(function(){ echo "default handler"; });
-         * $app->error(403, function(){ echo 'permission denied'; });
-         * $app->error('JeffsException', function(){ echo "Jeff's Exception"; });
+         *     // Defining error handlers
+         *     $app->error(function(){ echo "default handler"; });
+         *     $app->error(403, function(){ echo 'permission denied'; });
+         *     $app->error('JeffsException', function(){ echo "Jeff's Exception"; });
          *
-         * // Dispatching errors
-         * $app->error(403)
-         * $app->error(403, "Permission Denied");
-         * $app->error("Permission Denied");
-         * </code>
+         *     // Dispatching errors
+         *     $app->error(403)
+         *     $app->error(403, "Permission Denied");
+         *     $app->error("Permission Denied");
+         * @endcode
          *
          * @access public
          * @param  mixed $var1  A numeric code, a message, or a closure

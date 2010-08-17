@@ -143,7 +143,7 @@ namespace Breeze\Plugins\Flashhash {
         $app->flash = new Base();
 
         /**
-         *  <code>
+         *  @code
          *      get('/', function(){
          *          flash('name', 'This is a value');
          *          redirect('/getflash');
@@ -156,7 +156,7 @@ namespace Breeze\Plugins\Flashhash {
          *
          *      // getflash.php
          *      <p id="flash"><?php echo $flash['name']; ?></p>
-         *  </code>
+         *  @endcode
          */
         $app->helper('flash', function($name, $value = null) use ($app) {
             $num_args = func_num_args();
@@ -169,7 +169,7 @@ namespace Breeze\Plugins\Flashhash {
         });
 
         /**
-         *  <code>
+         *  @code
          *      get('/', function(){
          *          flashnow('name', 'This is a value');
          *          echo flash('name'); // This is a value
@@ -178,7 +178,7 @@ namespace Breeze\Plugins\Flashhash {
          *
          *      // getflash.php
          *      <p id="flash"><?php echo $flash['name']; ?></p>
-         *  </code>
+         *  @endcode
          */
         $app->helper('flashnow', function($name, $value = null) use ($app) {
             $app->flash[$name] = $value;

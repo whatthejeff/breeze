@@ -5,9 +5,9 @@
  * This file contains a script for generating the database for the blog demo.
  * Running this script from command line as follows will generate a new database:
  *
- * <code>
- * php generate.php
- * </code>
+ * @code
+ *     php generate.php
+ * @endcode
  *
  * LICENSE
  *
