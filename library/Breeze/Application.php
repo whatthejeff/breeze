@@ -48,7 +48,7 @@ namespace Breeze\View\Driver {
          * @param  array $options                    Extra options for setting up custom template engines
          * @return void
          */
-        public function __construct(Application $application, $path = null, array $options = null);
+        public function __construct(Application $application, $path = null, array $options = array());
 
         /**
          * Sets the path for the base templates directory.
@@ -123,7 +123,7 @@ namespace Breeze\View\Driver {
          * @param  array $variables  An associative array of variables to use in the template.
          * @return string  The rendered template.
          */
-        public function fetch($template, array $variables = null);
+        public function fetch($template, array $variables = array());
     }
 
     /**
@@ -191,7 +191,7 @@ namespace Breeze\View\Driver {
          * @param  array $options                    Extra options for setting up custom template engines
          * @return void
          */
-        public function __construct(Application $application, $path = null, array $options = null)
+        public function __construct(Application $application, $path = null, array $options = array())
         {
             $this->_application = $application;
 
@@ -295,7 +295,7 @@ namespace Breeze\View\Driver {
          * @return string  The rendered template.
          * @throws InvalidArgumentException
          */
-        public function fetch($template, array $variables = null)
+        public function fetch($template, array $variables = array())
         {
             if (!$this->templateExists($template)) {
                 throw new \InvalidArgumentException(sprintf(self::INVALID_TEMPLATE_ERROR, $template));
@@ -336,7 +336,7 @@ namespace Breeze\View\Driver {
          * @param  array $variables  An associative array of variables to use in the template.
          * @return string  The rendered template
          */
-        abstract protected function _fetch($template, array $variables = null);
+        abstract protected function _fetch($template, array $variables = array());
     }
 
     /**
@@ -366,9 +366,9 @@ namespace Breeze\View\Driver {
          * @param  array $variables  An associative array of variables to use in the template.
          * @return string  The rendered template.
          */
-        protected function _fetch($template, array $variables = null)
+        protected function _fetch($template, array $variables = array())
         {
-            extract((array)$variables);
+            extract($variables);
             ob_start();
             require $this->getTemplatePath($template);
             return ob_get_clean();
@@ -504,7 +504,7 @@ namespace Breeze\View {
          * @param  array $variables  The variables to add to the template.
          * @return string  The rendered template contents.
          */
-        public function fetch($template, array $variables = null)
+        public function fetch($template, array $variables = array())
         {
             if (!empty($variables)) {
                 $this->addVariables($variables);
@@ -551,7 +551,7 @@ namespace Breeze\View {
          * @param  array $variables  The variables to add to the template.
          * @return void
          */
-        public function display($template, array $variables = null)
+        public function display($template, array $variables = array())
         {
             echo $this->fetch($template, $variables);
         }
@@ -569,7 +569,7 @@ namespace Breeze\View {
          * @param  array $variables  The variables to add to the template.
          * @return string  The rendered template.
          */
-        public function partial($template, array $variables = null)
+        public function partial($template, array $variables = array())
         {
             $old_layout = $this->_application->config('template_layout');
             $this->_application->config('template_layout', false);
@@ -1428,9 +1428,9 @@ namespace Breeze {
          * @param  array $options  The default options to set
          * @return void
          */
-        public function __construct(array $options = null)
+        public function __construct(array $options = array())
         {
-            $this->_configurations = array_merge($this->_configurations, (array)$options);
+            $this->_configurations = array_merge($this->_configurations, $options);
         }
 
         /**
@@ -1903,6 +1903,19 @@ namespace Breeze {
             if (isset(self::$_plugins[$name])) {
                 unset(self::$_plugins[$name]);
             }
+        }
+
+        /**
+         * Clears all plugins except the ones specified by the $whitelist
+         * parameter.
+         *
+         * @access public
+         * @param  array $whitelist  The plugins that should not be cleared
+         * @return void
+         */
+        public static function clearPlugins(array $whitelist = array())
+        {
+            self::$_plugins = array_intersect_key(self::$_plugins, array_fill_keys($whitelist, null));
         }
 
         /**

@@ -78,7 +78,7 @@ namespace Breeze\View\Driver {
          * @param  array $options                   Extra options for setting up custom template engines
          * @return void
          */
-        public function __construct(Application $application, $path = null, array $options = null)
+        public function __construct(Application $application, $path = null, array $options = array())
         {
             $this->_smarty = new \Smarty();
             parent::__construct($application, $path, $options);
@@ -112,7 +112,7 @@ namespace Breeze\View\Driver {
          * @param  array $variables  An associative array of variables to use in the template.
          * @return string
          */
-        protected function _fetch($template, array $variables = null)
+        protected function _fetch($template, array $variables = array())
         {
             $this->_smarty->assign($variables);
             return $this->_smarty->fetch($template);
@@ -126,10 +126,10 @@ namespace Breeze\View\Driver {
          * @param  Smarty $smarty  An instance of the Smarty object.
          * @return string
          */
-        public function partial($params, $smarty)
+        public function partial($params, \Smarty $smarty)
         {
-            if (!array_key_exists('file',$params)) {
-               $smarty->trigger_error("[partial] missing parameter 'file'", E_USER_ERROR);
+            if (!array_key_exists('file', $params)) {
+               $this->_smarty->trigger_error("[partial] missing parameter 'file'", E_USER_ERROR);
             }
 
             $file = $params['file'];

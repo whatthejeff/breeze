@@ -33,31 +33,8 @@ namespace Breeze\Tests {
      * @package    Application
      * @subpackage Tests
      */
-    class ApplicationTest extends \PHPUnit_Extensions_OutputTestCase
+    class ApplicationTest extends ApplicationTestCase
     {
-        /**
-         * The application object for testing.
-         *
-         * @access protected
-         * @param  Breeze\Application
-         */
-        protected $_application;
-        /**
-         * The application configurations for {@link Breeze\Tests\ApplicationTest::$_application}
-         * that will hold the mocked dependencies.
-         *
-         * @access protected
-         * @param  Breeze\Configurations
-         */
-        protected $_configurations;
-        /**
-         * The mocked dependencies for {@link Breeze\Tests\ApplicationTest::$_application}.
-         *
-         * @access public
-         * @param  array
-         */
-        protected $_mocks = array();
-
         /**
          * Sets up the test case for {@link Breeze\Application}.
          *
@@ -66,6 +43,8 @@ namespace Breeze\Tests {
          */
         public function setUp()
         {
+            Application::clearPlugins();
+
             $this->_setupMockedDependencies();
             $this->_mockApplication();
         }
@@ -653,7 +632,6 @@ namespace Breeze\Tests {
         /**
          * Tests {@link Breeze\Application::register()} with an invalid closure as a plugin
          * throws an {@link UnexpectedValueException}.
-         *
          */
         public function testRegisterInvalidPlugin()
         {
@@ -664,7 +642,6 @@ namespace Breeze\Tests {
         /**
          * Tests {@link Breeze\Application::register()} with an invalid plugin name throws
          * an {@link UnexpectedValueException}.
-         *
          */
         public function testRegisterPluginWithInvalidName()
         {
@@ -674,7 +651,6 @@ namespace Breeze\Tests {
 
         /**
          * Tests {@link Breeze\Application::register()} to register a plugin.
-         *
          */
         public function testRegisterPlugin()
         {
@@ -687,7 +663,6 @@ namespace Breeze\Tests {
 
         /**
          * Tests {@link Breeze\Application::register()} to register a plugin which registers a helper.
-         *
          */
         public function testRegisterPluginWithHelper()
         {
@@ -701,42 +676,6 @@ namespace Breeze\Tests {
             $this->_mockApplication();
 
             Application::unregister('test_plugin');
-        }
-
-        /**
-         * Sets up mocks for testing Breeze\Application.
-         *
-         * @access protected
-         * @return void
-         */
-        protected function _setupMockedDependencies()
-        {
-            $this->_mocks['view_object'] = $this->getMock('Breeze\\View\\View', array(), array(), '', FALSE);
-            $this->_mocks['errors_object'] = $this->getMock('Breeze\\Errors\\Errors', array(), array(), '', FALSE);
-            $this->_mocks['dispatcher_object'] = $this->getMock('Breeze\\Dispatcher\\Dispatcher', array(), array(), '', FALSE);
-            $this->_mocks['conditions_object'] = $this->getMock('Breeze\\Dispatcher\\Conditions', array(), array(), '', FALSE);
-            $this->_mocks['helpers_object'] = $this->getMock('Breeze\\ClosuresCollection', array(), array(), '', FALSE);
-            $this->_mocks['before_filters_object'] = $this->getMock('Breeze\\ClosuresCollection', array(), array(), '', FALSE);
-            $this->_mocks['after_filters_object'] = $this->getMock('Breeze\\ClosuresCollection', array(), array(), '', FALSE);
-
-            $this->_configurations = $this->getMock('Breeze\\Configurations', array(), array(), '', FALSE);
-        }
-
-        /**
-         * Get an instance of Breeze\Application with mocked dependencies injected.
-         *
-         * @access protected
-         * @return void
-         */
-        protected function _mockApplication()
-        {
-            $i = 0;
-            foreach ($this->_mocks as $mock) {
-                $this->_configurations->expects($this->at($i++))
-                                      ->method('get')
-                                      ->will($this->returnValue($mock));
-            }
-            $this->_application = new Application($this->_configurations);
         }
     }
 

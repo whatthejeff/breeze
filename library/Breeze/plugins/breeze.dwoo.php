@@ -74,7 +74,7 @@ namespace Breeze\View\Driver {
          * @param  array $options                   Extra options for setting up custom template engines
          * @return void
          */
-        public function __construct(Application $application, $path = null, array $options = null)
+        public function __construct(Application $application, $path = null, array $options = array())
         {
             $this->_dwoo = new \Dwoo();
             parent::__construct($application, $path, $options);
@@ -103,7 +103,7 @@ namespace Breeze\View\Driver {
          * @param  array $variables  An associative array of variables to use in the template.
          * @return string  The rendered template.
          */
-        protected function _fetch($template, array $variables = null)
+        protected function _fetch($template, array $variables = array())
         {
             return $this->_dwoo->get($this->getTemplatePath($template), $variables);
         }

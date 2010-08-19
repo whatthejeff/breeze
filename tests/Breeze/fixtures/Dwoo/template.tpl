@@ -1,0 +1,1 @@
+Hello {if isset($name)}{$name}{else}World{/if}

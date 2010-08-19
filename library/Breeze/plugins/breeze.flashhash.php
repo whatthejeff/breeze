@@ -40,7 +40,7 @@ namespace Breeze\Plugins\Flashhash {
      * @package     Plugins
      * @subpackage  Flashhash
      */
-    class Base implements \ArrayAccess
+    class Flashhash implements \ArrayAccess
     {
         /**
          * Variables currently in the flashhash.
@@ -54,8 +54,7 @@ namespace Breeze\Plugins\Flashhash {
          * Starts a new flashhash instance using the $key parameter as the index
          * where the flashhash data will be stored in the current session.
          *
-         * NOTE: This method will call session_start() if no session has been
-         * started yet.
+         * NOTE: This method will call session_start().
          *
          * @access public
          * @param string $key  The key where the flashhash is stored in the session.
@@ -63,9 +62,7 @@ namespace Breeze\Plugins\Flashhash {
          */
         public function __construct($key = 'flashhash')
         {
-            if (!isset($_SESSION)) {
-                session_start();
-            }
+            @session_start();
 
             if (isset($_SESSION[$key])) {
                 $this->_variables = $_SESSION[$key];
@@ -138,9 +135,9 @@ namespace Breeze\Plugins\Flashhash {
         }
     }
 
-    Application::register('flashhash', function($app){
+    Application::register('Flashhash', function($app){
         // Make the flashhash available to templates
-        $app->flash = new Base();
+        $app->flash = new Flashhash();
 
         /**
          *  @code

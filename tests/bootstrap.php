@@ -31,7 +31,22 @@ namespace Breeze\Tests {
      */
     define('Breeze\\Tests\\FIXTURES_PATH', TESTS_PATH . '/Breeze/fixtures');
 
-    require_once 'PHPUnit/Extensions/OutputTestCase.php';
+    /**
+     * @see Breeze\Application
+     */
     require_once 'Breeze/Application.php';
+
+    /**
+     * @see PHPUnit_Extensions_OutputTestCase
+     */
+    require_once 'PHPUnit/Extensions/OutputTestCase.php';
+    /**
+     * @see Breeze\Tests\ApplicationTestCase
+     */
+    require_once TESTS_PATH . '/Breeze/ApplicationTestCase.php';
+    /**
+     * @see  Breeze\Plugins\Tests\PluginTestCase
+     */
+    require_once TESTS_PATH . '/Breeze/plugins/PluginTestCase.php';
 
 }

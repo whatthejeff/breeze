@@ -76,7 +76,7 @@ namespace Breeze\View\Driver\Tests {
          */
         public function testFetchWithNoVariables()
         {
-            $this->assertSame('Hello World', $this->_driver->fetch('/template.php'));
+            $this->assertSame('Hello World', $this->_driver->fetch('template.php'));
         }
 
         /**
@@ -84,7 +84,7 @@ namespace Breeze\View\Driver\Tests {
          */
         public function testFetchWithVariables()
         {
-            $this->assertSame('Hello Jeff', $this->_driver->fetch('/template.php', array('name'=>'Jeff')));
+            $this->assertSame('Hello Jeff', $this->_driver->fetch('template.php', array('name'=>'Jeff')));
         }
     }
 }
