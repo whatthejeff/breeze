@@ -32,9 +32,9 @@ namespace Breeze\View\Driver\Tests {
     use Breeze\View\Driver\Smarty;
 
     /**
-     * @see Breeze\Tests\ApplicationTestCase
+     * @see Breeze\Plugins\Tests\PluginTestCase
      */
-    use Breeze\Tests\ApplicationTestCase;
+    use Breeze\Plugins\Tests\PluginTestCase;
 
     /**
      * The test case for the {@link Breeze\View\Driver\Smarty} class.
@@ -43,8 +43,23 @@ namespace Breeze\View\Driver\Tests {
      * @package     View
      * @subpackage  Tests
      */
-    class SmartyTest extends ApplicationTestCase
+    class SmartyTest extends PluginTestCase
     {
+        /**
+         * The path to the plugin file.
+         *
+         * @access protected
+         * @param  string
+         */
+        static protected $_plugin_path = 'Breeze/plugins/breeze.smarty.php';
+        /**
+         * The name of the plugin
+         *
+         * @access protected
+         * @param  string
+         */
+        static protected $_plugin_name = 'Smarty';
+
         /**
          * The driver object for testing.
          *
@@ -61,12 +76,6 @@ namespace Breeze\View\Driver\Tests {
          */
         public function setUp()
         {
-            /**
-             * @see Breeze\View\Driver\Smarty
-             */
-            require_once 'Breeze/plugins/breeze.smarty.php';
-            Application::clearPlugins(array('Smarty'));
-
             $this->_application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
             $this->_driver = new Smarty($this->_application, \Breeze\Tests\FIXTURES_PATH . '/Smarty');
         }

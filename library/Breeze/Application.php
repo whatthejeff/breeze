@@ -1906,19 +1906,6 @@ namespace Breeze {
         }
 
         /**
-         * Clears all plugins except the ones specified by the $whitelist
-         * parameter.
-         *
-         * @access public
-         * @param  array $whitelist  The plugins that should not be cleared
-         * @return void
-         */
-        public static function clearPlugins(array $whitelist = array())
-        {
-            self::$_plugins = array_intersect_key(self::$_plugins, array_fill_keys($whitelist, null));
-        }
-
-        /**
          * Adds a user-defined helper.
          *
          * @access public

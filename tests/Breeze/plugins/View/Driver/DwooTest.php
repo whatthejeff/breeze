@@ -32,9 +32,9 @@ namespace Breeze\View\Driver\Tests {
     use Breeze\View\Driver\Dwoo;
 
     /**
-     * @see Breeze\Tests\ApplicationTestCase
+     * @see Breeze\Plugins\Tests\PluginTestCase
      */
-    use Breeze\Tests\ApplicationTestCase;
+    use Breeze\Plugins\Tests\PluginTestCase;
 
     /**
      * The test case for the {@link Breeze\View\Driver\Dwoo} class.
@@ -43,8 +43,23 @@ namespace Breeze\View\Driver\Tests {
      * @package     View
      * @subpackage  Tests
      */
-    class DwooTest extends ApplicationTestCase
+    class DwooTest extends PluginTestCase
     {
+        /**
+         * The path to the plugin file.
+         *
+         * @access protected
+         * @param  string
+         */
+        static protected $_plugin_path = 'Breeze/plugins/breeze.dwoo.php';
+        /**
+         * The name of the plugin
+         *
+         * @access protected
+         * @param  string
+         */
+        static protected $_plugin_name = 'Dwoo';
+
         /**
          * The driver object for testing.
          *
@@ -61,12 +76,6 @@ namespace Breeze\View\Driver\Tests {
          */
         public function setUp()
         {
-            /**
-             * @see Breeze\View\Driver\Dwoo
-             */
-            require_once 'Breeze/plugins/breeze.dwoo.php';
-            Application::clearPlugins(array('Dwoo'));
-
             $this->_application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
             $this->_driver = new Dwoo($this->_application, \Breeze\Tests\FIXTURES_PATH . '/Dwoo');
         }

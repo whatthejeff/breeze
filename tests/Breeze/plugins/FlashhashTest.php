@@ -46,10 +46,25 @@ namespace Breeze\Plugins\Flashhash\Tests {
     class FlashHashTest extends PluginTestCase
     {
         /**
+         * The path to the plugin file.
+         *
+         * @access protected
+         * @param  string
+         */
+        static protected $_plugin_path = 'Breeze/plugins/breeze.flashhash.php';
+        /**
+         * The name of the plugin
+         *
+         * @access protected
+         * @param  string
+         */
+        static protected $_plugin_name = 'Flashhash';
+
+        /**
          * The flashhash object for testing.
          *
          * @access protected
-         * @param  Breeze\View\Driver\Dwoo
+         * @param  Breeze\Plugins\Flashhash
          */
         protected $_flashhash;
 
@@ -61,12 +76,6 @@ namespace Breeze\Plugins\Flashhash\Tests {
          */
         public function setUp()
         {
-            /**
-             * @see Breeze\Plugins\Flashhash
-             */
-            require_once 'Breeze/plugins/breeze.flashhash.php';
-            Application::clearPlugins(array('Flashhash'));
-
             $this->_flashhash = new FlashHash();
         }
 

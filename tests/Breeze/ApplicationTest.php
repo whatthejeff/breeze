@@ -43,8 +43,6 @@ namespace Breeze\Tests {
          */
         public function setUp()
         {
-            Application::clearPlugins();
-
             $this->_setupMockedDependencies();
             $this->_mockApplication();
         }

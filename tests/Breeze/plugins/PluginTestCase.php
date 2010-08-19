@@ -41,6 +41,43 @@ namespace Breeze\Plugins\Tests {
     class PluginTestCase extends ApplicationTestCase
     {
         /**
+         * The path to the plugin file.
+         *
+         * @access protected
+         * @param  string
+         */
+        static protected $_plugin_path = '';
+        /**
+         * The name of the plugin
+         *
+         * @access protected
+         * @param  string
+         */
+        static protected $_plugin_name = '';
+
+        /**
+         * Includes the plugin for testing.
+         *
+         * @access public
+         * @return void
+         */
+        public static function setUpBeforeClass()
+        {
+            require_once static::$_plugin_path;
+        }
+
+        /**
+         * Removes the plugin so it doesn't mess with other tests.
+         *
+         * @access public
+         * @return void
+         */
+        public static function tearDownAfterClass()
+        {
+            Application::unregister(static::$_plugin_name);
+        }
+
+        /**
          * Sets it up so that calling a plugin will work.
          *
          * @access protected
