@@ -725,7 +725,7 @@ Once you've disabled the Breeze shortcuts, you will need to use the `$breeze` ap
 
 ### Demo
 
-Be sure to checkout the `blog_longhand` demo for a more complete treatment on protecting the global scope.
+Be sure to checkout the `namespaces` demos for a more complete treatment on protecting the global scope.
 
 That's all folks
 ----------------
