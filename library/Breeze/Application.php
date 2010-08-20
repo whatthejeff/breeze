@@ -603,19 +603,49 @@ namespace Breeze\View {
          */
         public function getEngine()
         {
-            $engine_class = __NAMESPACE__ . '\\Driver\\' . $this->_application->config('template_engine');
+            $engine = $this->_application->config('template_engine');
 
-            if (strtolower(get_class((object)$this->_engine)) != strtolower($engine_class)) {
-                if (class_exists($engine_class) && in_array(__NAMESPACE__ . '\\Driver\\DriverInterface', class_implements($engine_class))) {
-                    $this->_engine = new $engine_class($this->_application, $this->_application->config('template_directory'), $this->_application->config('template_options'));
-                } else {
-                    throw new \UnexpectedValueException(sprintf(self::INVALID_TEMPLATE_ENGINE_ERROR, $engine_class));
-                }
+            if (is_object($engine)) {
+                $this->_setEngineWithObject($engine);
             } else {
-                $this->_engine->config();
+                $engine_class = __NAMESPACE__ . '\\Driver\\' . $engine;
+                if (strtolower(get_class((object)$this->_engine)) != strtolower($engine_class)) {
+                    $this->_getEngineWithString($engine_class);
+                } else {
+                    $this->_engine->config();
+                }
             }
 
             return $this->_engine;
+        }
+
+        /**
+         * Sets the current template engine with an engine object.
+         *
+         * @access protected
+         * @param  Breeze\View\Driver\DriverInterface  The template engine to set.
+         * @return void
+         */
+        protected function _setEngineWithObject(Driver\DriverInterface $engine)
+        {
+            $this->_engine = $engine;
+        }
+
+        /**
+         * Sets the current template engine with a engine class name.
+         *
+         * @access protected
+         * @param  Breeze\View\Driver\DriverInterface  The template engine to set.
+         * @return void
+         * @throws UnexpectedValueException
+         */
+        protected function _getEngineWithString($engine_class)
+        {
+            if (!class_exists($engine_class) || !in_array(__NAMESPACE__ . '\\Driver\\DriverInterface', class_implements($engine_class))) {
+                throw new \UnexpectedValueException(sprintf(self::INVALID_TEMPLATE_ENGINE_ERROR, $engine_class));
+            }
+
+            $this->_engine = new $engine_class($this->_application, $this->_application->config('template_directory'), $this->_application->config('template_options'));
         }
     }
 }

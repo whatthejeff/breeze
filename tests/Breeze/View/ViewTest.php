@@ -57,7 +57,7 @@ namespace Breeze\View\Tests {
          * @param  array
          */
         protected $_config = array(
-            'template_engine'       => 'PHP',
+            'template_engine'       => '',
             'template_options'      => array(),
             'template_directory'    => \Breeze\Tests\FIXTURES_PATH,
             'template_extension'    => '.php',
@@ -78,6 +78,8 @@ namespace Breeze\View\Tests {
             $this->_application->expects($this->any())
                                ->method('config')
                                ->will($this->returnCallback(array($this, 'getConfig')));
+
+            $this->_config['template_engine'] = $this->getMock('Breeze\\View\\Driver\\PHP', array(), array($this->_application), '', FALSE);
             $this->_view = new View($this->_application);
         }
 
@@ -162,13 +164,22 @@ namespace Breeze\View\Tests {
         }
 
         /**
+         * Tests {@link Breeze\View\View::getEngine()} with a string-based engine.
+         */
+        public function testGetEngineWithString()
+        {
+            $this->_config['template_engine'] = 'Tests\\Stub';
+            $this->assertType('Breeze\\View\\Driver\\Tests\\Stub', $this->_view->getEngine());
+        }
+
+        /**
          * Tests {@link Breeze\View\View::getEngine()} caches the engine if
          * no options have changed.
          */
-        public function testGetEngineCaches()
+        public function testGetEngineWithStringCaches()
         {
-            $engine = $this->_view->getEngine();
-            $this->assertSame($engine, $this->_view->getEngine());
+            $this->_config['template_engine'] = 'Tests\\Stub';
+            $this->assertSame($this->_view->getEngine(), $this->_view->getEngine());
         }
 
         /**
@@ -194,6 +205,11 @@ namespace Breeze\View\Tests {
          */
         public function testLayoutExistsWithValidPath()
         {
+            $this->_config['template_engine']->expects($this->once())
+                                             ->method('templateExists')
+                                             ->with($this->equalTo('layout.php'))
+                                             ->will($this->returnValue(true));
+
             $this->assertTrue($this->_view->layoutExists());
         }
 
@@ -215,6 +231,11 @@ namespace Breeze\View\Tests {
          */
         public function testFetchLayout()
         {
+            $this->_config['template_engine']->expects($this->once())
+                                             ->method('fetch')
+                                             ->with($this->equalTo('layout.php'), array('layout_contents'=>'My Contents'))
+                                             ->will($this->returnValue('¡My Contents!'));
+
             $this->assertSame('¡My Contents!', $this->_view->fetchLayout('My Contents'));
         }
 
@@ -224,6 +245,8 @@ namespace Breeze\View\Tests {
         public function testFetchWithoutLayout()
         {
             $this->_config['template_layout'] = '';
+            $this->_mockTemplate();
+
             $this->assertSame('Hello Jeff', $this->_view->fetch('template', array('name'=>'Jeff')));
         }
 
@@ -232,6 +255,9 @@ namespace Breeze\View\Tests {
          */
         public function testFetchWithLayout()
         {
+            $this->_mockTemplate();
+            $this->_mockLayout();
+
             $this->assertSame('¡Hello Jeff!', $this->_view->fetch('template', array('name'=>'Jeff')));
         }
 
@@ -241,8 +267,9 @@ namespace Breeze\View\Tests {
         public function testDisplayWithoutLayout()
         {
             $this->expectOutputString('Hello Jeff');
-
             $this->_config['template_layout'] = '';
+
+            $this->_mockTemplate();
             $this->_view->display('template', array('name'=>'Jeff'));
         }
 
@@ -252,6 +279,10 @@ namespace Breeze\View\Tests {
         public function testDisplayWithLayout()
         {
             $this->expectOutputString('¡Hello Jeff!');
+
+            $this->_mockTemplate();
+            $this->_mockLayout();
+
             $this->_view->display('template', array('name'=>'Jeff'));
         }
 
@@ -260,6 +291,7 @@ namespace Breeze\View\Tests {
          */
         public function testPartialDoesntUseLayout()
         {
+            $this->_mockTemplate();
             $this->assertSame('Hello Jeff', $this->_view->partial('template', array('name'=>'Jeff')));
         }
 
@@ -289,5 +321,105 @@ namespace Breeze\View\Tests {
                 return isset($this->_config[$key]) ? $this->_config[$key] : null;
             }
         }
+
+        /**
+         * Mocks an expected {@link Breeze\View\Driver\Driver::fetch()} call
+         * to simulate fetching a template with some standard contents.
+         *
+         * @access protected
+         * @return void
+         */
+        protected function _mockTemplate()
+        {
+            $this->_config['template_engine']->expects($this->at(0))
+                                             ->method('fetch')
+                                             ->with($this->equalTo('template.php'), $this->equalTo(array('name'=>'Jeff', 'breeze'=>$this->_application)))
+                                             ->will($this->returnValue('Hello Jeff'));
+        }
+
+        /**
+         * Mocks an expected {@link Breeze\View\Driver\Driver::templateExists()}
+         * and subsequent {@link Breeze\View\Driver\Driver::fetch()} to simulate
+         * fetching a layout with some standard contents.
+         *
+         * @access protected
+         * @return void
+         */
+        protected function _mockLayout()
+        {
+            $this->_config['template_engine']->expects($this->at(1))
+                                             ->method('templateExists')
+                                             ->with($this->equalTo('layout.php'))
+                                             ->will($this->returnValue(true));
+            $this->_config['template_engine']->expects($this->at(2))
+                                             ->method('fetch')
+                                             ->with($this->equalTo('layout.php'), $this->equalTo(array('name'=>'Jeff', 'breeze'=>$this->_application, 'layout_contents'=>'Hello Jeff')))
+                                             ->will($this->returnValue('¡Hello Jeff!'));
+        }
+    }
+}
+
+namespace Breeze\View\Driver\Tests {
+
+    /**
+     * @see Breeze\View\Driver\Driver
+     */
+    use Breeze\View\Driver\Driver;
+
+    /**
+     * @see Breeze\Application
+     */
+    use Breeze\Application;
+
+    /**
+     * A stub for testing a string-based engine config.
+     *
+     * @category    Breeze
+     * @package     View
+     * @subpackage  Driver
+     */
+    class Stub extends Driver {
+
+        /**
+         * Sets up the templates directory path and the extra options for a
+         * database engine.  The extra options are to be defined by the
+         * specific engines.
+         *
+         * @access public
+         * @param  Breeze\Application $application   An instance of the base Breeze Framework class
+         * @param  string $path                      The path to the templates directory
+         * @param  array $options                    Extra options for setting up custom template engines
+         * @return void
+         */
+        public function __construct(Application $application, $path = null, array $options = array()) {}
+
+        /**
+         * Sets up the internal template engine structures.  This is intended
+         * to be where engine specific options are set up.
+         *
+         * @access public
+         * @return void
+         */
+        public function config() {}
+
+        /**
+         * Sets up the internal template engine structures.  This is intended
+         * to be where engine specific options are set up.
+         *
+         * @access protected
+         * @return void
+         */
+        protected function _config(){}
+
+        /**
+         * Renders a template using the $variables parameter and returns
+         * the contents.
+         *
+         * @access protected
+         * @param  string $template  The path to the template, excluding the base templates directory.
+         * @param  array $variables  An associative array of variables to use in the template.
+         * @return string  The rendered template.
+         */
+        protected function _fetch($template, array $variables = array()){}
     }
 }
