@@ -24,9 +24,14 @@
  */
 
     define('BREEZE_APPLICATION', realpath(dirname(__FILE__) . '/..'));
-    require_once BREEZE_APPLICATION . '/models/Doctrine.php';
+
+    require_once('Doctrine/lib/Doctrine.php');
+    spl_autoload_register(array('Doctrine', 'autoload'));
+    spl_autoload_register(array('Doctrine_Core', 'modelsAutoload'));
+
+    $manager = Doctrine_Manager::getInstance();
+    Doctrine_Manager::connection('sqlite:///' . BREEZE_APPLICATION . '/databases/blog.db?mode=0666', 'blog');
 
     Doctrine_Core::dropDatabases();
     Doctrine_Core::createDatabases();
-    Doctrine_Core::generateModelsFromYaml(BREEZE_APPLICATION . '/databases/schema.yml', BREEZE_APPLICATION . '/models');
     Doctrine_Core::createTablesFromModels(BREEZE_APPLICATION . '/models');
