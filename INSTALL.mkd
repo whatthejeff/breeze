@@ -1,7 +1,7 @@
 INSTALLATION
 ============
 
-To install the Breeze Framework, simply add the `/library` directory to your PHP `include_path`.  You can find information about the PHP `include_path` configuration directive here:
+To install the Breeze Framework, simply add the breeze directory to your PHP `include_path`.  You can find information about the PHP `include_path` configuration directive here:
 
 <http://www.php.net/manual/en/ini.core.php#ini.include-path>
 

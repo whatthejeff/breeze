@@ -51,7 +51,7 @@ namespace Breeze\View\Driver\Tests {
          * @access protected
          * @param  string
          */
-        static protected $_plugin_path = 'Breeze/plugins/breeze.dwoo.php';
+        static protected $_plugin_path = 'Breeze/plugins/Dwoo.php';
         /**
          * The name of the plugin
          *

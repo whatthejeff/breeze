@@ -51,7 +51,7 @@ namespace Breeze\Plugins\Flashhash\Tests {
          * @access protected
          * @param  string
          */
-        static protected $_plugin_path = 'Breeze/plugins/breeze.flashhash.php';
+        static protected $_plugin_path = 'Breeze/plugins/Flashhash.php';
         /**
          * The name of the plugin
          *

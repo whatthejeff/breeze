@@ -403,7 +403,7 @@ With Breeze, you are free to use any template engine you choose.  The default di
 To use an alternate template engine, simply require the plugin file before requiring the `Breeze.php` file.
 
     // controller.php
-    require_once 'Breeze/plugins/breeze.smarty.php';
+    require_once 'Breeze/plugins/Smarty.php';
     require_once 'Breeze.php';
 
     get('/', function(){
@@ -584,7 +584,7 @@ The best way to learn the plugin system is through example.  For starters, you m
 
 The most basic example of a plugin would be:
 
-    // breeze.helloworld.php
+    // Helloworld.php
     namespace Breeze\Plugins\HelloWorld {
         use Breeze\Application;
         require_once 'Breeze/Application.php';
@@ -614,7 +614,7 @@ The second argument is a function that will be called when a new instance of `Br
 
 **NOTE**: You must use the `$app->method()` syntax instead of the `method()` shortcuts when defining plugins.
 
-    // breeze.helloworld.php
+    // Helloworld.php
     namespace Breeze\Plugins\HelloWorld {
         use Breeze\Application;
         require_once 'Breeze/Application.php';
@@ -637,7 +637,7 @@ The second argument is a function that will be called when a new instance of `Br
     }
 
     // Controller.php
-    require_once 'Breeze/plugins/breeze.helloworld.php'; // This sets up the plugin
+    require_once 'Breeze/plugins/Helloworld.php'; // This sets up the plugin
     require_once 'Breeze.php'; // This creates an instance of Breeze\Application, and runs your plugin code
 
 ### Namespaces
@@ -674,7 +674,7 @@ Okay, this isn't exactly useful.  You could've have just created a normal functi
 
 These two examples may look similar, but there's actually a very subtle difference.  The first example creates a function that is actually attached to the `Breeze\Application` class we described earlier.  We are just using the same trick to make it seem like a normal function.  This means that this function doesn't pollute the global scope if a user turns off shortcuts.  And since this method protects the global scope, it's safe to use when defining plugins.
 
-    // breeze.auth.php
+    // Auth.php
     namespace Breeze\Plugins\Auth {
         use Breeze\Application;
         require_once 'Breeze/Application.php';
@@ -689,7 +689,7 @@ These two examples may look similar, but there's actually a very subtle differen
     }
 
     // Controller.php
-    require_once 'Breeze/plugins/breeze.auth.php';
+    require_once 'Breeze/plugins/Auth.php';
     require_once 'Breeze.php';
 
     get('/', function(){

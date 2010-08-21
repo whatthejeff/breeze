@@ -33,11 +33,11 @@ namespace Breeze\Demos\Blog {
     const POST_DELETED_MESSAGE = 'Your post was successfully deleted.';
 
     // Uncomment to use an alternate template engine
-    // require_once 'Breeze/plugins/breeze.dwoo.php';
-    // require_once 'Breeze/plugins/breeze.smarty.php';
+    // require_once 'Breeze/plugins/Dwoo.php';
+    // require_once 'Breeze/plugins/Smarty.php';
 
     // Setup the breeze framework components
-    require_once 'Breeze/plugins/breeze.flashhash.php';
+    require_once 'Breeze/plugins/Flashhash.php';
     require_once 'Breeze/Application.php';
     $breeze = new Application();
     require_once 'helpers.php';

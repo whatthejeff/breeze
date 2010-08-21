@@ -89,7 +89,7 @@
     fi
 
     # The path to the template directory to use for creating the project directory
-    declare -rx TEMPLATE_PATH="$SCRIPT_PATH/application_templates/$APPLICATION_TYPE"
+    declare -rx TEMPLATE_PATH="$SCRIPT_PATH/breeze_templates/$APPLICATION_TYPE"
 
     # Make sure the template directory is valid
     if [ ! -d "$TEMPLATE_PATH" ]
