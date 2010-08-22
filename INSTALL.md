@@ -1,7 +1,16 @@
 INSTALLATION
 ============
 
-To install the Breeze Framework, simply add the breeze directory to your PHP `include_path`.  You can find information about the PHP `include_path` configuration directive here:
+The easiest way to install the Breeze Framework is with PEAR.
+
+   pear channel-discover pear.breezephp.com
+   pear install breeze/Breeze-beta
+
+If you get a permissions error, you will need to use `su`, `sudo`, or contact your server administrator for help.
+
+### Manual installation
+
+To install the Breeze Framework without PEAR, simply add the Breeze directory to your PHP `include_path`.  You can find information about the PHP `include_path` configuration directive here:
 
 <http://www.php.net/manual/en/ini.core.php#ini.include-path>
 
@@ -12,7 +21,7 @@ Instructions on how to change PHP configuration directives can be found here:
 BINARIES
 --------
 
-The Breeze Framework comes with a binary called `breeze` which can be used to generate a working project skeleton.  To use the `breeze` binary, you need to add the `bin` directory to your `PATH` environmental variable and ensure that you have executable privileges.  After that, you can do the following:
+The Breeze Framework comes with a binary called `breeze` which can be used to generate a working project skeleton.  If you used the manual installation option, you will need to add the `bin` directory to your `PATH` environmental variable and ensure that you have executable privileges.  Afterwards, you can do the following:
 
     $ breeze myapp
     Your project was successfully created!
