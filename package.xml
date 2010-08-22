@@ -22,7 +22,7 @@
         <release>beta</release>
         <api>beta</api>
     </stability>
-    <license uri="http://github.com/whatthejeff/breeze/raw/master/LICENSE">New BSD License</license>
+    <license uri="http://github.com/whatthejeff/breeze/raw/master/LICENSE.md">New BSD License</license>
     <notes>http://github.com/whatthejeff/breeze/raw/master/CHANGES.md</notes>
     <contents>
         <dir name="/">
