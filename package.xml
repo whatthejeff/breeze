@@ -13,7 +13,7 @@
         <email>whatthejeff@gmail.com</email>
         <active>yes</active>
     </lead>
-    <date>2010-08-21</date>
+    <date>2010-08-22</date>
     <version>
         <release>0.1.0</release>
         <api>0.1.0</api>
@@ -22,8 +22,8 @@
         <release>beta</release>
         <api>beta</api>
     </stability>
-    <license uri="http://github.com/whatthejeff/breeze/blob/master/LICENSE">New BSD License</license>
-    <notes>http://github.com/whatthejeff/breeze/blob/master/README.mkd</notes>
+    <license uri="http://github.com/whatthejeff/breeze/raw/master/LICENSE">New BSD License</license>
+    <notes>http://github.com/whatthejeff/breeze/raw/master/CHANGES.md</notes>
     <contents>
         <dir name="/">
             <file name="AUTHORS.md" role="doc" />
