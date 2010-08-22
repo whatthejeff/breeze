@@ -29,6 +29,9 @@
     # The path to the current script
     declare -rx SCRIPT_PATH=$(dirname "$0")
 
+    # Path to the PEAR data directory, if running from PEAR
+    declare -rx PEAR_DATA='@data_dir@'
+
     # The script usage message
     declare -rx USAGE="usage: $SCRIPT_NAME [options] application_name"
 
@@ -88,11 +91,19 @@
         usage
     fi
 
-    # The path to the template directory to use for creating the project directory
-    declare -rx TEMPLATE_PATH="$SCRIPT_PATH/breeze_templates/$APPLICATION_TYPE"
+    # Adjust the path for the PEAR folk
+    if [ "${PEAR_DATA:0:1}" != '@' ]
+    then
+        declare -rx TEMPLATE_PATH="$PEAR_DATA"/Breeze
+    else
+        declare -rx TEMPLATE_PATH=$(dirname "$SCRIPT_PATH")
+    fi
+
+    # Path to the choosen skeleton
+    declare -rx TEMPLATE_TYPE_PATH="$TEMPLATE_PATH/skeletons/$APPLICATION_TYPE"
 
     # Make sure the template directory is valid
-    if [ ! -d "$TEMPLATE_PATH" ]
+    if [ ! -d "$TEMPLATE_TYPE_PATH" ]
     then
         error "$APPLICATION_TYPE is not a valid application type"
     fi
@@ -104,7 +115,7 @@
     fi
 
     # Create the project
-    if cp -R "$TEMPLATE_PATH" "$1" 2>/dev/null
+    if cp -R "$TEMPLATE_TYPE_PATH" "$1" 2>/dev/null
     then
         printf "Your project was successfully created!\n"
     else

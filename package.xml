@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.8.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+    http://pear.php.net/dtd/tasks-1.0.xsd
+    http://pear.php.net/dtd/package-2.0
+    http://pear.php.net/dtd/package-2.0.xsd">
+    <name>Breeze</name>
+    <channel>pear.breezephp.com</channel>
+    <summary>A micro-framework for PHP.</summary>
+    <description>Breeze is a simple and intuitive micro-framework for PHP 5.3+.</description>
+    <lead>
+        <name>Jeff Welch</name>
+        <user>whatthejeff</user>
+        <email>whatthejeff@gmail.com</email>
+        <active>yes</active>
+    </lead>
+    <date>2010-08-21</date>
+    <version>
+        <release>0.1.0</release>
+        <api>0.1.0</api>
+    </version>
+    <stability>
+        <release>beta</release>
+        <api>beta</api>
+    </stability>
+    <license uri="http://github.com/whatthejeff/breeze/blob/master/LICENSE">New BSD License</license>
+    <notes>http://github.com/whatthejeff/breeze/blob/master/README.mkd</notes>
+    <contents>
+        <dir name="/">
+            <file name="AUTHORS.md" role="doc" />
+            <dir name="bin">
+                <file name="breeze" role="script">
+                    <tasks:replace from="$Id$" to="version" type="package-info" />
+                    <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+                </file>
+            </dir>
+            <dir name="Breeze">
+                <file name="Application.php" role="php">
+                    <tasks:replace from="$Id$" to="version" type="package-info" />
+                </file>
+                <dir name="plugins">
+                    <file name="Dwoo.php" role="php">
+                        <tasks:replace from="$Id$" to="version" type="package-info" />
+                    </file>
+                    <file name="Flashhash.php" role="php">
+                        <tasks:replace from="$Id$" to="version" type="package-info" />
+                    </file>
+                    <file name="Smarty.php" role="php">
+                        <tasks:replace from="$Id$" to="version" type="package-info" />
+                    </file>
+                </dir>
+            </dir>
+            <file name="Breeze.php" role="php">
+                <tasks:replace from="$Id$" to="version" type="package-info" />
+            </file>
+            <file name="CHANGES.md" role="doc" />
+            <file name="INSTALL.md" role="doc" />
+            <file name="LICENSE.md" role="doc" />
+            <file name="README.md" role="doc" />
+            <dir name="skeletons">
+                <dir name="complex">
+                    <file name="bootstrap.php" role="data" />
+                    <dir name="controllers">
+                        <file name="index.php" role="data" />
+                    </dir>
+                    <dir name="public">
+                        <file name="index.php" role="data" />
+                    </dir>
+                    <dir name="views">
+                        <file name="index.php" role="data" />
+                        <file name="layout.php" role="data" />
+                    </dir>
+                </dir>
+                <dir name="simple">
+                    <file name="controller.php" role="data" />
+                    <dir name="public">
+                        <file name="index.php" role="data" />
+                    </dir>
+                    <dir name="views">
+                        <file name="index.php" role="data" />
+                        <file name="layout.php" role="data" />
+                    </dir>
+                </dir>
+            </dir>
+        </dir>
+    </contents>
+    <dependencies>
+        <required>
+            <php>
+                <min>5.3</min>
+            </php>
+            <pearinstaller>
+                <min>1.6.1</min>
+            </pearinstaller>
+        </required>
+    </dependencies>
+    <phprelease>
+        <filelist>
+            <install as="breeze" name="bin/breeze" />
+        </filelist>
+    </phprelease>
+</package>
