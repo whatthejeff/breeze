@@ -99,7 +99,7 @@
         declare -rx TEMPLATE_PATH=$(dirname "$SCRIPT_PATH")
     fi
 
-    # Path to the choosen skeleton
+    # Path to the chosen skeleton
     declare -rx TEMPLATE_TYPE_PATH="$TEMPLATE_PATH/skeletons/$APPLICATION_TYPE"
 
     # Make sure the template directory is valid
