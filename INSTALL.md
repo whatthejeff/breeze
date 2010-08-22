@@ -3,8 +3,8 @@ INSTALLATION
 
 The easiest way to install the Breeze Framework is with PEAR.
 
-   pear channel-discover pear.breezephp.com
-   pear install breeze/Breeze-beta
+    pear channel-discover pear.breezephp.com
+    pear install breeze/Breeze-beta
 
 If you get a permissions error, you will need to use `su`, `sudo`, or contact your server administrator for help.
 
