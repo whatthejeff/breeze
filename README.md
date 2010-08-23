@@ -468,19 +468,19 @@ For more information on how the `$breeze` variable works, be sure to read the pl
 Configurations
 --------------
 
-The Breeze template API works well out of the box, but you may find yourself wanting to change the default template location or the default template extension.  To do this, you will need to use the `configure()` function.
+The Breeze template API works well out of the box, but you may find yourself wanting to change the default template location or the default template extension.  To do this, you will need to use the `config()` function.
 
-    configure('template_directory', '/path/to/my/views');
-    configure('template_extension', '.tpl');
-    echo configure('template_extension'); // echoes '.tpl'
+    config('template_directory', '/path/to/my/views');
+    config('template_extension', '.tpl');
+    echo config('template_extension'); // echoes '.tpl'
 
 It is also possible to assign multiple configurations in a single statement.
 
-    configure(array(
+    config(array(
         'template_directory' => '/path/to/my/views',
         'template_extension' => '.tpl'
     ));
-    echo configure('template_extension'); // echoes '.tpl'
+    echo config('template_extension'); // echoes '.tpl'
 
 The default configuration values are:
 
@@ -600,7 +600,7 @@ Now what's going on here?  It's actually rather simple, but it requires a little
 
 ### Under the hood
 
-A bit of magic is happening behind the scenes when you call `require_once 'Breeze.php';`.  The truth is, while all of this code has seemed pretty procedural up to this point, it's really just a trick.  Every function call you are making is actually delegating the work to a system of objects that are working in the background.  `get()`, `post()`, `template()`, `configure()`, et al. are all just shortcuts for a more verbose object-oriented interface.  In fact, it's possible to turn off these shortcuts so that we don't pollute the global scope, but we won't dig into that until the next section.
+A bit of magic is happening behind the scenes when you call `require_once 'Breeze.php';`.  The truth is, while all of this code has seemed pretty procedural up to this point, it's really just a trick.  Every function call you are making is actually delegating the work to a system of objects that are working in the background.  `get()`, `post()`, `template()`, `config()`, et al. are all just shortcuts for a more verbose object-oriented interface.  In fact, it's possible to turn off these shortcuts so that we don't pollute the global scope, but we won't dig into that until the next section.
 
 ### Breaking it down
 
