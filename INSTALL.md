@@ -90,4 +90,4 @@ The Breeze Framework requires PHP 5.3 or later.
 GETTING STARTED
 ---------------
 
-See `README.mkd`
+See `README.md`

@@ -1,7 +1,7 @@
 Demos
 =====
 
-Some demos have been included to help you get started with the Breeze Framwork.  For help installing and configuring these demos, see the `INSTALL.mkd` file.  For more information regarding how these demos work, see the `README.mkd` file in the root of the Breeze project.
+Some demos have been included to help you get started with the Breeze Framwork.  For help installing and configuring these demos, see the `INSTALL.md` file.  For more information regarding how these demos work, see the `README.md` file in the root of the Breeze project.
 
 blog
 ----
@@ -26,4 +26,4 @@ The hello world demo is one of the most basic examples of a Breeze application. 
 namespaces
 ----------
 
-The namespaces directory contains versions of the two previous demos that have been altered to use techniques for protecting the global scope.  You can find more information about these techniques in the `README.mkd` file located in the root of the Breeze project.
+The namespaces directory contains versions of the two previous demos that have been altered to use techniques for protecting the global scope.  You can find more information about these techniques in the `README.md` file located in the root of the Breeze project.

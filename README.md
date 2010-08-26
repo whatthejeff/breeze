@@ -13,7 +13,7 @@ Breeze is a simple and intuitive micro-framework for PHP 5.3+.  The most basic e
 Getting Started
 ---------------
 
-For help installing and configuring the Breeze framework, see the INSTALL.mkd file.
+For help installing and configuring the Breeze framework, see the INSTALL.md file.
 
 ### Basic layout
 
@@ -32,7 +32,7 @@ The `require_once` statement is needed to include the framework libraries and `r
 Routes
 ------
 
-The routing API involves associating HTTP requests with PHP functions.  For example, the following code would print `hello world` if a GET request was made for `/`.
+The routing API involves associating HTTP requests with PHP functions.  For example, the following code would print `hello world` if a GET request were made for `/`.
 
     get('/', function(){
         echo 'Hello World!';
