@@ -22,7 +22,7 @@
         <release>beta</release>
         <api>beta</api>
     </stability>
-    <license uri="http://github.com/whatthejeff/breeze/raw/master/LICENSE.md">New BSD License</license>
+    <license uri="http://github.com/whatthejeff/breeze/raw/master/LICENSE">New BSD License</license>
     <notes>http://github.com/whatthejeff/breeze/raw/master/CHANGES.md</notes>
     <contents>
         <dir name="/">
@@ -54,7 +54,7 @@
             </file>
             <file name="CHANGES.md" role="doc" />
             <file name="INSTALL.md" role="doc" />
-            <file name="LICENSE.md" role="doc" />
+            <file name="LICENSE" role="doc" />
             <file name="README.md" role="doc" />
             <dir name="skeletons">
                 <dir name="complex">
