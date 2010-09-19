@@ -1698,7 +1698,7 @@ namespace Breeze {
          * @param  boolean $exit  If the program should exit after header is sent.
          * @return void
          */
-        public function redirect($url, $code = 302, $exit = false)
+        public function redirect($url, $code = 302, $exit = true)
         {
             header("Location: $url", true, $code);
 
