@@ -13,7 +13,7 @@
  * @author     Jeff Welch <whatthejeff@gmail.com>
  * @category   Blog
  * @package    Helpers
- * @copyright  Copyright (c) 2010, Breeze Framework
+ * @copyright  Copyright (c) 2010-2011, Breeze Framework
  * @license    New BSD License
  * @version    $Id$
  */

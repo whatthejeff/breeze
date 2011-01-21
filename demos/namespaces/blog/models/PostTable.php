@@ -14,7 +14,7 @@
  * @category   Blog
  * @package    Models
  * @subpackage Post
- * @copyright  Copyright (c) 2010, Breeze Framework
+ * @copyright  Copyright (c) 2010-2011, Breeze Framework
  * @license    New BSD License
  * @version    $Id$
  */
