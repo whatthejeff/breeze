@@ -160,7 +160,7 @@ namespace Breeze\View\Tests {
          */
         public function testGetEngineWithGoodEngine()
         {
-            $this->assertType('Breeze\\View\\Driver\\DriverInterface', $this->_view->getEngine());
+            $this->assertInstanceOf('Breeze\\View\\Driver\\DriverInterface', $this->_view->getEngine());
         }
 
         /**
@@ -169,7 +169,7 @@ namespace Breeze\View\Tests {
         public function testGetEngineWithString()
         {
             $this->_config['template_engine'] = 'Tests\\Stub';
-            $this->assertType('Breeze\\View\\Driver\\Tests\\Stub', $this->_view->getEngine());
+            $this->assertInstanceOf('Breeze\\View\\Driver\\Tests\\Stub', $this->_view->getEngine());
         }
 
         /**
