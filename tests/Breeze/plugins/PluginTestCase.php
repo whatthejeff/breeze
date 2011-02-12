@@ -63,7 +63,10 @@ namespace Breeze\Plugins\Tests {
          */
         public static function setUpBeforeClass()
         {
-            require_once static::$_plugin_path;
+            $constant = '\\Breeze\\Tests\\TEST_' . strtoupper(static::$_plugin_name);
+            if (!defined($constant) || constant($constant)) {
+                require_once static::$_plugin_path;
+            }
         }
 
         /**
@@ -116,3 +119,4 @@ namespace Breeze\Plugins\Tests {
     }
 
 }
+

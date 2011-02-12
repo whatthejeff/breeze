@@ -32,6 +32,15 @@ namespace Breeze\Tests {
     define('Breeze\\Tests\\FIXTURES_PATH', TESTS_PATH . '/Breeze/fixtures');
 
     /**
+     * Only test the Dwoo plugin if it's in the include path
+     */
+    define('Breeze\\Tests\\TEST_DWOO', @include_once('Dwoo/dwooAutoload.php'));
+    /**
+     * Only test the Smarty plugin if it's in the include path
+     */
+    define('Breeze\\Tests\\TEST_SMARTY', @include_once('Smarty.class.php'));
+
+    /**
      * @see Breeze\Application
      */
     require_once 'Breeze/Application.php';
@@ -50,3 +59,4 @@ namespace Breeze\Tests {
     require_once TESTS_PATH . '/Breeze/plugins/PluginTestCase.php';
 
 }
+

@@ -34,7 +34,7 @@ namespace Breeze\View\Driver {
     /**
      * @see Smarty
      */
-    require_once 'Smarty.class.php';
+    @include_once 'Smarty.class.php';
 
     /**
      * The Smarty-based template engine for the Breeze Framework.
@@ -83,7 +83,7 @@ namespace Breeze\View\Driver {
             $this->_smarty = new \Smarty();
             parent::__construct($application, $path, $options);
 
-            $this->_smarty->register_function('partial', array($this, 'partial'));
+            $this->_smarty->registerPlugin('function', 'partial', array($this, 'partial'));
         }
 
         /**
@@ -129,7 +129,7 @@ namespace Breeze\View\Driver {
         public function partial($params, \Smarty $smarty)
         {
             if (!array_key_exists('file', $params)) {
-               $this->_smarty->trigger_error("[partial] missing parameter 'file'", E_USER_ERROR);
+               trigger_error("Smarty error: [partial] missing parameter 'file'", E_USER_ERROR);
             }
 
             $file = $params['file'];
@@ -153,3 +153,4 @@ namespace Breeze\View\Driver {
 
     });
 }
+

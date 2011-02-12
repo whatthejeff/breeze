@@ -76,6 +76,10 @@ namespace Breeze\View\Driver\Tests {
          */
         public function setUp()
         {
+            if (!\Breeze\Tests\TEST_DWOO) {
+                $this->markTestSkipped('Dwoo is not available for testing');
+            }
+
             $this->_application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
             $this->_driver = new Dwoo($this->_application, \Breeze\Tests\FIXTURES_PATH . '/Dwoo');
         }
@@ -126,3 +130,4 @@ namespace Breeze\View\Driver\Tests {
         }
     }
 }
+

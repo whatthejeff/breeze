@@ -34,7 +34,7 @@ namespace Breeze\View\Driver {
     /**
      * @see Dwoo
      */
-    require_once 'Dwoo/dwooAutoload.php';
+    @include_once 'Dwoo/dwooAutoload.php';
 
     /**
      * The Dwoo-based template engine for the Breeze Framework.
@@ -122,3 +122,4 @@ namespace Breeze\View\Driver {
 
     });
 }
+
