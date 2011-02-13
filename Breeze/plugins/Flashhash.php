@@ -47,8 +47,7 @@ namespace Breeze\Plugins\Flashhash {
         /**
          * Variables currently in the flashhash.
          *
-         * @access  protected
-         * @var     array
+         * @var array
          */
         protected $_variables = array();
 

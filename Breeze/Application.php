@@ -154,32 +154,28 @@ namespace Breeze\View\Driver {
         /**
          * The base templates directory.
          *
-         * @access  protected
-         * @var     string
+         * @var string
          */
         protected $_path;
 
         /**
          * The real path to the base templates directory.
          *
-         * @access  protected
-         * @var     string
+         * @var string
          */
         protected $_real_path;
 
         /**
          * The extra options for the template engine.
          *
-         * @access  protected
-         * @var     array
+         * @var array
          */
         protected $_options = array();
 
         /**
          * An instance of the base Breeze Framework class.
          *
-         * @access  protected
-         * @var     Breeze\Application
+         * @var Breeze\Application
          */
         protected $_application;
 
@@ -254,8 +250,6 @@ namespace Breeze\View\Driver {
 
         /**
          * Gets the full path to the templates directory.
-         *
-         * @access public
          *
          * @return string The full path to the templates directory.
          */
@@ -410,22 +404,19 @@ namespace Breeze\View {
         /**
          * An instance of the base Breeze Framework class.
          *
-         * @access  protected
-         * @var     Breeze\Application
+         * @var Breeze\Application
          */
         protected $_application;
         /**
          * Variables to use in the templates.
          *
-         * @access  protected
-         * @var     array
+         * @var array
          */
         protected $_template_variables = array();
         /**
          * The current template engine.
          *
-         * @access  protected
-         * @var     Breeze\View\Driver\DriverInterface
+         * @var Breeze\View\Driver\DriverInterface
          */
         protected $_engine = null;
 
@@ -748,22 +739,19 @@ namespace Breeze\Errors {
         /**
          * The default closure to use for all errors with no defined handler.
          *
-         * @access  protected
-         * @var     Closure
+         * @var Closure
          */
         protected $_default_error;
         /**
          * An instance of the base Breeze Framework class for passing into closures.
          *
-         * @access  protected
-         * @var     Breeze\Application
+         * @var Breeze\Application
          */
         protected $_application;
         /**
          * If dispatching an error should cause the application to exit.
          *
-         * @access  protected
-         * @var     boolean
+         * @var boolean
          */
         protected $_exit = true;
 
@@ -1056,38 +1044,32 @@ namespace Breeze\Dispatcher {
         /**
          * The supported HTTP methods.
          *
-         * @access  protected
-         * @var     array
-         * @static
+         * @var array
          */
         protected static $_supported_methods = array('GET','POST','PUT','DELETE');
 
         /**
          * An instance of the base Breeze Framework class for querying configurations.
          *
-         * @access  protected
-         * @var     Breeze\Application
+         * @var Breeze\Application
          */
         protected $_application;
         /**
          * The URI to use for routing.
          *
-         * @access  protected
-         * @var     string
+         * @var string
          */
         protected $_request_uri;
         /**
          * The HTTP method to use for routing.
          *
-         * @access  protected
-         * @var     string
+         * @var string
          */
         protected $_request_method = 'GET';
         /**
          * A collection of user-defined request handlers.
          *
-         * @access  protected
-         * @var     array
+         * @var array
          */
         protected $_routes;
 
@@ -1370,15 +1352,13 @@ namespace Breeze {
         /**
          * Collection of named closures.
          *
-         * @access  protected
-         * @var     array
+         * @var array
          */
         protected $_named_closures = array();
         /**
          * Collection of unnamed closures.
          *
-         * @access  protected
-         * @var     array
+         * @var array
          */
         protected $_closures = array();
 
@@ -1471,8 +1451,7 @@ namespace Breeze {
         /**
          * The application configurations.
          *
-         * @access  protected
-         * @var     array
+         * @var array
          */
         protected $_configurations = array(
             'template_engine'       => 'PHP',      /* The template engine */
@@ -1580,17 +1559,13 @@ namespace Breeze {
          * Collection of plugins that are attached to the Base application
          * class at runtime.
          *
-         * @access  protected
-         * @var     array
-         * @static
+         * @var array
          */
         protected static $_plugins = array();
         /**
          * Collection of pre-defined helpers.
          *
-         * @access  protected
-         * @var     array
-         * @static
+         * @var array
          */
         protected static $_core_helpers = array(
             'get','delete','put','post','any','before','after',
@@ -1601,54 +1576,47 @@ namespace Breeze {
         /**
          * Collection of user configurations.
          *
-         * @access  protected
-         * @var     Breeze\Configurations
+         * @var Breeze\Configurations
          */
         protected $_configurations;
         /**
          * Core view class for delegating to different template engines.
          *
-         * @access  protected
-         * @var     Breeze\View\View
+         * @var Breeze\View\View
          */
         protected $_view;
         /**
          * Core dispatcher for routing end-user requests to pre-defined
          * actions.
          *
-         * @access  protected
-         * @var     Breeze\Dispatcher\Dispatcher
+         * @var Breeze\Dispatcher\Dispatcher
          */
         protected $_dispatcher;
         /**
          * Core conditions manager for forwarding requests that don't
          * meet certain conditions.
          *
-         * @access  protected
-         * @var     Breeze\Dispatcher\Conditions
+         * @var Breeze\Dispatcher\Conditions
          */
         protected $_conditions;
         /**
          * Core error handler for managing errors which are invoked during
          * routing.
          *
-         * @access  protected
-         * @var     Breeze\Errors\Errors
+         * @var Breeze\Errors\Errors
          */
         protected $_error_handler;
 
         /**
          * User-defined helpers.
          *
-         * @access  protected
-         * @var     Breeze\ClosuresCollection
+         * @var Breeze\ClosuresCollection
          */
         protected $_user_helpers;
         /**
          * User-defined filters.
          *
-         * @access  protected
-         * @var     Breeze\ClosuresCollection
+         * @var Breeze\ClosuresCollection
          */
         protected $_filters = array();
 

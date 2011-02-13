@@ -44,31 +44,27 @@ namespace Breeze\Dispatcher\Tests {
         /**
          * The application stub for testing {@link Breeze\Dispatcher\Dispatcher}.
          *
-         * @access protected
-         * @param  Breeze\Application
+         * @param Breeze\Application
          */
         protected $_application;
         /**
          * The dispatcher object for testing.
          *
-         * @access protected
-         * @param  Breeze\Dispatcher\Dispatcher
+         * @param Breeze\Dispatcher\Dispatcher
          */
         protected $_dispatcher;
 
         /**
          * The valid request methods.
          *
-         * @access protected
-         * @param  array
+         * @param array
          */
         protected static $_supported_methods = array('GET','POST','PUT','DELETE');
         /**
          * A mapping of original URIs and the expected final result after the
          * dispatcher normalizes them.
          *
-         * @access protected
-         * @param  array
+         * @param array
          */
         protected static $_uris = array(
 

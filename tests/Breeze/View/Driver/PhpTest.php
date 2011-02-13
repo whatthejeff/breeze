@@ -40,15 +40,13 @@ namespace Breeze\View\Driver\Tests {
         /**
          * The application stub for testing {@link Breeze\View\Driver\Php}.
          *
-         * @access protected
-         * @param  Breeze\Application
+         * @param Breeze\Application
          */
         protected $_application;
         /**
          * The driver object for testing.
          *
-         * @access protected
-         * @param  Breeze\View\Driver\Php
+         * @param Breeze\View\Driver\Php
          */
         protected $_driver;
 

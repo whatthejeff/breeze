@@ -40,7 +40,6 @@ namespace Breeze\Tests {
         /**
          * Sets up the test case for {@link Breeze\Application}.
          *
-         * @access public
          * @return void
          */
         public function setUp()

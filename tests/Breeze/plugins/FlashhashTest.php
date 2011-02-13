@@ -56,16 +56,14 @@ namespace Breeze\Plugins\Flashhash\Tests {
         /**
          * The name of the plugin
          *
-         * @access protected
-         * @param  string
+         * @param string
          */
         static protected $_plugin_name = 'Flashhash';
 
         /**
          * The flashhash object for testing.
          *
-         * @access protected
-         * @param  Breeze\Plugins\Flashhash
+         * @param Breeze\Plugins\Flashhash
          */
         protected $_flashhash;
 

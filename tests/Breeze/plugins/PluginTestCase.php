@@ -45,15 +45,13 @@ namespace Breeze\Plugins\Tests {
         /**
          * The path to the plugin file.
          *
-         * @access protected
-         * @param  string
+         * @param string
          */
         static protected $_plugin_path = '';
         /**
          * The name of the plugin
          *
-         * @access protected
-         * @param  string
+         * @param string
          */
         static protected $_plugin_name = '';
 

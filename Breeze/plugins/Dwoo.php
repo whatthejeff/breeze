@@ -50,9 +50,8 @@ namespace Breeze\View\Driver {
         /**
          * An instance of Dwoo
          *
-         * @access  protected
-         * @var     Dwoo
-         * @see     http://dwoo.org/
+         * @var Dwoo
+         * @see http://dwoo.org/
          */
         protected $_dwoo;
 

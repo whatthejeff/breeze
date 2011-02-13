@@ -50,23 +50,20 @@ namespace Breeze\View\Driver\Tests {
         /**
          * The path to the plugin file.
          *
-         * @access protected
-         * @param  string
+         * @param string
          */
         static protected $_plugin_path = 'Breeze/plugins/Dwoo.php';
         /**
          * The name of the plugin
          *
-         * @access protected
-         * @param  string
+         * @param string
          */
         static protected $_plugin_name = 'Dwoo';
 
         /**
          * The driver object for testing.
          *
-         * @access protected
-         * @param  Breeze\View\Driver\Dwoo
+         * @param Breeze\View\Driver\Dwoo
          */
         protected $_driver;
 

@@ -40,23 +40,20 @@ namespace Breeze\Tests {
         /**
          * The application object for testing.
          *
-         * @access protected
-         * @param  Breeze\Application
+         * @param Breeze\Application
          */
         protected $_application;
         /**
          * The application configurations for {@link Breeze\Tests\ApplicationTest::$_application}
          * that will hold the mocked dependencies.
          *
-         * @access protected
-         * @param  Breeze\Configurations
+         * @param Breeze\Configurations
          */
         protected $_configurations;
         /**
          * The mocked dependencies for {@link Breeze\Tests\ApplicationTest::$_application}.
          *
-         * @access public
-         * @param  array
+         * @param array
          */
         protected $_mocks = array();
 

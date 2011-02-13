@@ -50,23 +50,20 @@ namespace Breeze\View\Driver\Tests {
         /**
          * The path to the plugin file.
          *
-         * @access protected
-         * @param  string
+         * @param string
          */
         static protected $_plugin_path = 'Breeze/plugins/Smarty.php';
         /**
          * The name of the plugin
          *
-         * @access protected
-         * @param  string
+         * @param string
          */
         static protected $_plugin_name = 'Smarty';
 
         /**
          * The driver object for testing.
          *
-         * @access protected
-         * @param  Breeze\View\Driver\Smarty
+         * @param Breeze\View\Driver\Smarty
          */
         protected $_driver;
 

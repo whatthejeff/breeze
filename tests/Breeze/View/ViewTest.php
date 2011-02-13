@@ -40,23 +40,20 @@ namespace Breeze\View\Tests {
         /**
          * The application stub for testing {@link Breeze\Application}.
          *
-         * @access protected
-         * @param  Breeze\Application
+         * @param Breeze\Application
          */
         protected $_application;
         /**
          * The view object for testing.
          *
-         * @access protected
-         * @param  Breeze\View\View
+         * @param Breeze\View\View
          */
         protected $_view;
 
         /**
          * Configuration values for testsing {@link Breeze\View\View}.
          *
-         * @access protected
-         * @param  array
+         * @param array
          */
         protected $_config = array(
             'template_engine'       => '',

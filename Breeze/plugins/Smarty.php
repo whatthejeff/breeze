@@ -50,9 +50,8 @@ namespace Breeze\View\Driver {
         /**
          * An instance of Smarty
          *
-         * @access  protected
-         * @var     Smarty
-         * @see     http://www.smarty.net/
+         * @var Smarty
+         * @see http://www.smarty.net/
          */
         protected $_smarty;
 

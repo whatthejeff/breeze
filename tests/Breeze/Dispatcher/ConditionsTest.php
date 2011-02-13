@@ -44,8 +44,7 @@ namespace Breeze\Dispatcher\Tests {
         /**
          * The conditions object for testing.
          *
-         * @access protected
-         * @param  Breeze\Dispatcher\Conditions
+         * @param Breeze\Dispatcher\Conditions
          */
         protected $_conditions;
 

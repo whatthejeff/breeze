@@ -40,24 +40,20 @@ namespace Breeze\View\Driver\Tests {
         /**
          * The driver object for testing.
          *
-         * @access protected
-         * @param  Breeze\View\Driver\Driver
+         * @param Breeze\View\Driver\Driver
          */
         protected $_driver;
         /**
          * The application stub for testing {@link Breeze\View\Driver\Driver}.
          *
-         * @access protected
-         * @param  Breeze\Application
+         * @param Breeze\Application
          */
         protected $_application;
         /**
          * Options to use for testing the setting of options with
          * {@link Breeze\View\Driver\Driver}.
          *
-         * @access protected
-         * @param  Breeze\Application
-         * @static
+         * @param Breeze\Application
          */
         protected static $_options = array('option1'=>'value1', 'option2'=>'value2');
 

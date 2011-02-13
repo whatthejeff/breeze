@@ -68,30 +68,26 @@ namespace Breeze\Errors\Tests {
         /**
          * The errors object for testing.
          *
-         * @access protected
-         * @param  Breeze\Errors\Errors
+         * @param Breeze\Errors\Errors
          */
         protected $_errors;
         /**
          * The application stub for testing {@link Breeze\Errors\Errors}.
          *
-         * @access protected
-         * @param  Breeze\Application
+         * @param Breeze\Application
          */
         protected $_application;
         /**
          * An exception for testing {@link Breeze\Errors\Errors}.
          *
-         * @access protected
-         * @param  Exception
+         * @param Exception
          */
         protected $_exception;
 
         /**
          * A sample closure to add to tests.
          *
-         * @access protected
-         * @param  Closure
+         * @param Closure
          */
         protected $_closure;
 

@@ -40,16 +40,14 @@ namespace Breeze\Tests {
         /**
          * The configurations object for testing.
          *
-         * @access protected
-         * @param  Breeze\Configurations
+         * @param Breeze\Configurations
          */
         protected $_configurations;
 
         /**
          * The list default configuration settings.
          *
-         * @access protected
-         * @param  array
+         * @param array
          */
         protected $_defaults = array(
             'template_engine'       => 'PHP',

@@ -40,16 +40,14 @@ namespace Breeze\Tests {
         /**
          * The collection object for testing.
          *
-         * @access protected
-         * @param  Breeze\ClosuresCollection
+         * @param Breeze\ClosuresCollection
          */
         protected $_collection;
 
         /**
          * A sample closure to add to tests.
          *
-         * @access protected
-         * @param  Closure
+         * @param Closure
          */
         protected $_closure;
 
@@ -57,8 +55,7 @@ namespace Breeze\Tests {
          * The list of valid labels for adding to collections with the
          * {@link Breeze\ClosuresCollection::VALIDATE_LABEL} flag set.
          *
-         * @access protected
-         * @param  array
+         * @param array
          */
         protected $_valid_labels = array(
             'thisnameisvalid',
@@ -70,8 +67,7 @@ namespace Breeze\Tests {
          * The list of invalid labels that will fail when adding to collections
          * with the {@link Breeze\ClosuresCollection::VALIDATE_LABEL} flag set.
          *
-         * @access protected
-         * @param  string
+         * @param string
          */
         protected $_invalid_labels = array(
             'has a space',
@@ -83,8 +79,7 @@ namespace Breeze\Tests {
          * The list of valid names for adding to collections with the
          * {@link Breeze\ClosuresCollection::VALIDATE_NAME} flag set.
          *
-         * @access protected
-         * @param  array
+         * @param array
          */
         protected $_valid_names = array(
             'thisisvalid',
