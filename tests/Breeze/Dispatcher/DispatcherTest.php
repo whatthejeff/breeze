@@ -32,9 +32,12 @@ namespace Breeze\Dispatcher\Tests {
     /**
      * The test case for the {@link Breeze\Dispatcher\Dispatcher} class.
      *
-     * @category    Breeze
-     * @package     Dispatcher
-     * @subpackage  Tests
+     * @package    Breeze
+     * @subpackage Tests
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class DispatcherTest extends \PHPUnit_Framework_TestCase
     {

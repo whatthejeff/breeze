@@ -33,9 +33,12 @@ namespace Breeze\Plugins\Tests {
     /**
      * The generic plugin test case.
      *
-     * @category   Breeze
-     * @package    Plugins
+     * @package    Breeze
      * @subpackage Tests
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class PluginTestCase extends ApplicationTestCase
     {

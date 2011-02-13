@@ -30,9 +30,12 @@ namespace Breeze\View\Driver {
      * Framework.  New template engine extensions are required to implement
      * this interface.
      *
-     * @category    Breeze
-     * @package     View
-     * @subpackage  Driver
+     * @package    Breeze
+     * @subpackage View
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     interface DriverInterface
     {
@@ -130,9 +133,12 @@ namespace Breeze\View\Driver {
      * interface.  You should extend this if you're developing a template engine
      * extension as this class does most of the work for you.
      *
-     * @category    Breeze
-     * @package     View
-     * @subpackage  Driver
+     * @package    Breeze
+     * @subpackage View
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     abstract class Driver implements DriverInterface
     {
@@ -341,9 +347,12 @@ namespace Breeze\View\Driver {
     /**
      * The PHP-based template engine for the Breeze Framework.
      *
-     * @category    Breeze
-     * @package     View
-     * @subpackage  Driver
+     * @package    Breeze
+     * @subpackage View
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class Php extends Driver
     {
@@ -387,8 +396,12 @@ namespace Breeze\View {
      * to provide unified access to common template routines regardless of the underlining
      * engine implementation.
      *
-     * @category    Breeze
-     * @package     View
+     * @package    Breeze
+     * @subpackage View
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class View
     {
@@ -673,8 +686,12 @@ namespace Breeze\Errors {
     /**
      * The base exception class for all other Breeze Framework exceptions to extend.
      *
-     * @category    Breeze
-     * @package     Errors
+     * @package    Breeze
+     * @subpackage Errors
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class Exception extends \Exception {}
 
@@ -691,8 +708,12 @@ namespace Breeze\Errors {
      *     $handler->dispatchError(new Breeze\Dispatcher\NotFoundException()); // Echos "Page not found!"
      * @endcode
      *
-     * @category    Breeze
-     * @package     Errors
+     * @package    Breeze
+     * @subpackage Errors
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class Errors extends ClosuresCollection
     {
@@ -906,16 +927,24 @@ namespace Breeze\Dispatcher {
      *     })
      * @endcode
      *
-     * @category    Breeze
-     * @package     Dispatcher
+     * @package    Breeze
+     * @subpackage Dispatcher
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class PassException extends Exception {}
 
     /**
      * The "Not Found" exception used to indicate a HTTP 404 error.
      *
-     * @category    Breeze
-     * @package     Dispatcher
+     * @package    Breeze
+     * @subpackage Dispatcher
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class NotFoundException extends Exception
     {
@@ -936,8 +965,12 @@ namespace Breeze\Dispatcher {
      * The base conditions manager for forwarding requests that don't
      * meet certain conditions.
      *
-     * @category    Breeze
-     * @package     Dispatcher
+     * @package    Breeze
+     * @subpackage Dispatcher
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class Conditions extends ClosuresCollection
     {
@@ -1009,8 +1042,12 @@ namespace Breeze\Dispatcher {
      *     $handler->dispatch('GET', '/') // echos hello world
      * @endcode
      *
-     * @category    Breeze
-     * @package     Dispatcher
+     * @package    Breeze
+     * @subpackage Dispatcher
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class Dispatcher
     {
@@ -1310,8 +1347,12 @@ namespace Breeze {
     /**
      * General purpose class for aggregating closures.
      *
-     * @category   Breeze
-     * @package    Application
+     * @package    Breeze
+     * @subpackage Application
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class ClosuresCollection
     {
@@ -1429,8 +1470,12 @@ namespace Breeze {
      * The base configurations handler for the Breeze Framework.  This class is used
      * to manage global application settings.
      *
-     * @category   Breeze
-     * @package    Application
+     * @package    Breeze
+     * @subpackage Application
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class Configurations
     {
@@ -1503,8 +1548,12 @@ namespace Breeze {
      * of the framework's classes to facilitate the "micro framework" feel while
      * maintaining a more modular, extensible design.
      *
-     * @category   Breeze
-     * @package    Application
+     * @package    Breeze
+     * @subpackage Application
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class Application
     {

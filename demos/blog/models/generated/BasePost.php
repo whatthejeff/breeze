@@ -26,9 +26,12 @@
  * @property text $title
  * @property text $contents
  *
- * @category   Blog
- * @package    Models
- * @subpackage Post
+ * @package    Breeze
+ * @subpackage Demos
+ * @author     Jeff Welch <whatthejeff@gmail.com>
+ * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+ * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+ * @link       http://breezephp.com/
  */
 abstract class BasePost extends Doctrine_Record
 {

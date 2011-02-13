@@ -38,9 +38,12 @@ namespace Breeze\View\Driver {
     /**
      * The Smarty-based template engine for the Breeze Framework.
      *
-     * @category    Breeze
-     * @package     View
-     * @subpackage  Driver
+     * @package    Breeze
+     * @subpackage View
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class Smarty extends Driver
     {

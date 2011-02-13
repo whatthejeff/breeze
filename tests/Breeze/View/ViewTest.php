@@ -28,9 +28,12 @@ namespace Breeze\View\Tests {
     /**
      * The test case for the {@link Breeze\View\View} class.
      *
-     * @category    Breeze
-     * @package     View
-     * @subpackage  Tests
+     * @package    Breeze
+     * @subpackage Tests
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class ViewTest extends \PHPUnit_Extensions_OutputTestCase
     {
@@ -373,9 +376,12 @@ namespace Breeze\View\Driver\Tests {
     /**
      * A stub for testing a string-based engine config.
      *
-     * @category    Breeze
-     * @package     View
-     * @subpackage  Driver
+     * @package    Breeze
+     * @subpackage Tests
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class Stub extends Driver {
 

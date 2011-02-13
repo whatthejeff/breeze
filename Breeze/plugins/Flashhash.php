@@ -35,9 +35,12 @@ namespace Breeze\Plugins\Flashhash {
      * The base Flashhash class which can be used to pass arbitrary data between
      * actions.
      *
-     * @category    Breeze
-     * @package     Plugins
-     * @subpackage  Flashhash
+     * @package    Breeze
+     * @subpackage Plugins
+     * @author     Jeff Welch <whatthejeff@gmail.com>
+     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+     * @link       http://breezephp.com/
      */
     class Flashhash implements \ArrayAccess
     {
