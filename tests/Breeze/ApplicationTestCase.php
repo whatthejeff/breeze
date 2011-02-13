@@ -63,7 +63,6 @@ namespace Breeze\Tests {
         /**
          * Sets up mocks for testing Breeze\Application.
          *
-         * @access protected
          * @return void
          */
         protected function _setupMockedDependencies()
@@ -82,7 +81,6 @@ namespace Breeze\Tests {
         /**
          * Get an instance of Breeze\Application with mocked dependencies injected.
          *
-         * @access protected
          * @return void
          */
         protected function _mockApplication()

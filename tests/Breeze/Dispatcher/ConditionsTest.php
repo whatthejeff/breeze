@@ -52,7 +52,6 @@ namespace Breeze\Dispatcher\Tests {
         /**
          * Sets up the test case for {@link Breeze\Dispatcher\Conditions}.
          *
-         * @access public
          * @return void
          */
         public function setUp()

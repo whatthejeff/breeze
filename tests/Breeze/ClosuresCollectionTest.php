@@ -95,7 +95,6 @@ namespace Breeze\Tests {
         /**
          * Sets up the test case for {@link Breeze\ClosuresCollection}.
          *
-         * @access public
          * @return void
          */
         public function setUp()
@@ -297,9 +296,9 @@ namespace Breeze\Tests {
         /**
          * Tests that closures were added to {@link Breeze\Tests\ClosuresCollectionTest::$_collection}.
          *
-         * @access protected
-         * @param  mixed $keys      The keys that should've been added.
-         * @param  mixed $closures  The closures that should've been added.
+         * @param mixed $keys     The keys that should've been added.
+         * @param mixed $closures The closures that should've been added.
+         *
          * @return void
          */
         protected function _testClosuresAdded($keys, $closures)

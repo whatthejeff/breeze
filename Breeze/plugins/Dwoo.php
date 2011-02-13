@@ -70,10 +70,10 @@ namespace Breeze\View\Driver {
          * database engine.  The extra options are to be defined by the
          * specific engines.
          *
-         * @access public
-         * @param  Breeze\Application $application  An instance of the base Breeze Framework class.
-         * @param  string $path                     The path to the templates directory
-         * @param  array $options                   Extra options for setting up custom template engines
+         * @param Breeze\Application $application An instance of the base Breeze Framework class.
+         * @param string             $path        The path to the templates directory
+         * @param array              $options     Extra options for setting up custom template engines
+         *
          * @return void
          */
         public function __construct(Application $application, $path = null, array $options = array())
@@ -86,7 +86,6 @@ namespace Breeze\View\Driver {
          * Sets up the internal template engine structures.  This is intended
          * to be where engine specific options are set up.
          *
-         * @access protected
          * @return void
          */
         protected function _config()
@@ -100,10 +99,10 @@ namespace Breeze\View\Driver {
          * Renders a template using the $variables parameter and returns
          * the contents.
          *
-         * @access protected
-         * @param  string $template  The path to the template, excluding the base templates directory.
-         * @param  array $variables  An associative array of variables to use in the template.
-         * @return string  The rendered template.
+         * @param string $template  The path to the template, excluding the base templates directory.
+         * @param array  $variables An associative array of variables to use in the template.
+         *
+         * @return string The rendered template.
          */
         protected function _fetch($template, array $variables = array())
         {

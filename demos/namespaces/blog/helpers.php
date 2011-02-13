@@ -23,8 +23,9 @@ namespace Breeze\Demos\Blog {
      * template.  If the post can't be loaded, this function throws throws a
      * {@link Breeze\Error\Exception} exception.
      *
-     * @param  Breeze\Application $breeze  An instance of the Breeze application
-     * @param  integer $id                 The id of the post to load.
+     * @param Breeze\Application $breeze An instance of the Breeze application
+     * @param integer            $id     The id of the post to load.
+     *
      * @return void
      * @throws Breeze\Error\Exception
      */
@@ -38,7 +39,8 @@ namespace Breeze\Demos\Blog {
      * Attempts to save an instance of the {@link Post} model.  If validation
      * errors occur, flash vars post, errors, and error are set accordingly.
      *
-     * @param  Post $post  The post to save.
+     * @param Post $post The post to save.
+     *
      * @return mixed
      */
     $breeze->helper('save', function(\Post $post) use ($breeze) {
@@ -56,7 +58,8 @@ namespace Breeze\Demos\Blog {
     /**
      * Echos an html escaped version of a string.
      *
-     * @param  string $string  The string to echo.
+     * @param string $string The string to echo.
+     *
      * @return void
      */
     $breeze->helper('h', function($string) {
@@ -66,7 +69,8 @@ namespace Breeze\Demos\Blog {
     /**
      * Generates the admin link to a post.
      *
-     * @param  integer $id  The id of the post to return the link for
+     * @param integer $id  The id of the post to return the link for
+     *
      * @return string
      */
     $breeze->helper('p', function($id) {

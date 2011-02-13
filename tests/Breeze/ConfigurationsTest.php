@@ -64,7 +64,6 @@ namespace Breeze\Tests {
         /**
          * Sets up the test case for {@link Breeze\Configurations}.
          *
-         * @access public
          * @return void
          */
         public function setUp()

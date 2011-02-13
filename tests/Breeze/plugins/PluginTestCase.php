@@ -60,7 +60,6 @@ namespace Breeze\Plugins\Tests {
         /**
          * Includes the plugin for testing.
          *
-         * @access public
          * @return void
          */
         public static function setUpBeforeClass()
@@ -74,7 +73,6 @@ namespace Breeze\Plugins\Tests {
         /**
          * Removes the plugin so it doesn't mess with other tests.
          *
-         * @access public
          * @return void
          */
         public static function tearDownAfterClass()
@@ -85,7 +83,6 @@ namespace Breeze\Plugins\Tests {
         /**
          * Sets it up so that calling a plugin will work.
          *
-         * @access protected
          * @return void
          */
         protected function _mockPluginSystem()

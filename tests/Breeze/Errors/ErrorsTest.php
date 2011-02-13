@@ -98,7 +98,6 @@ namespace Breeze\Errors\Tests {
         /**
          * Sets up the test case for {@link Breeze\Errors\Errors}.
          *
-         * @access public
          * @return void
          */
         public function setUp()
@@ -302,9 +301,7 @@ namespace Breeze\Errors\Tests {
         /**
          * Gets an array of the defined HTTP error constants.
          *
-         * @access protected
          * @return array
-         * @static
          */
         protected static function _getCodes() {
             $codes = array();
@@ -323,7 +320,6 @@ namespace Breeze\Errors\Tests {
          * Tests that the output from {@link Breeze\Errors\Errors::dispatchError()}
          * matches an expected string.
          *
-         * @access protected
          * @return array
          */
         protected function _testErrorOutput($expected = 'Error Test')

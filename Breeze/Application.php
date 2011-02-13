@@ -44,10 +44,10 @@ namespace Breeze\View\Driver {
          * database engine.  The extra options are to be defined by the
          * specific engines.
          *
-         * @access public
-         * @param  Breeze\Application $application   An instance of the base Breeze Framework class
-         * @param  string $path                      The path to the templates directory
-         * @param  array $options                    Extra options for setting up custom template engines
+         * @param Breeze\Application $application An instance of the base Breeze Framework class
+         * @param string             $path        The path to the templates directory
+         * @param array              $options     Extra options for setting up custom template engines
+         *
          * @return void
          */
         public function __construct(Application $application, $path = null, array $options = array());
@@ -55,8 +55,8 @@ namespace Breeze\View\Driver {
         /**
          * Sets the path for the base templates directory.
          *
-         * @access public
-         * @param  string $path  The path to the templates directory
+         * @param string $path The path to the templates directory
+         *
          * @return void
          */
         public function setPath($path);
@@ -64,8 +64,8 @@ namespace Breeze\View\Driver {
         /**
          * Sets the extra options for the template engine.
          *
-         * @access public
-         * @param  array $options  Extra options for setting up custom template engines
+         * @param array $options Extra options for setting up custom template engines
+         *
          * @return void
          */
         public function setOptions(array $options);
@@ -73,9 +73,9 @@ namespace Breeze\View\Driver {
         /**
          * Gets a template engine option.
          *
-         * @access public
-         * @param  string $option  The name of the option to get
-         * @param  mixed $default  A fallback value if the option hasn't been specified.
+         * @param string $option  The name of the option to get
+         * @param mixed  $default A fallback value if the option hasn't been specified.
+         *
          * @return mixed
          */
         public function getOption($option, $default = null);
@@ -84,7 +84,6 @@ namespace Breeze\View\Driver {
          * Sets up the internal template engine structures.  This is intended
          * to be where engine specific options are set up.
          *
-         * @access public
          * @return void
          */
         public function config();
@@ -92,17 +91,16 @@ namespace Breeze\View\Driver {
         /**
          * Gets the full path to the templates directory.
          *
-         * @access public
-         * @return string  The full path to the templates directory.
+         * @return string The full path to the templates directory.
          */
         public function getPath();
 
         /**
          * Checks if a template exists.
          *
-         * @access public
-         * @param  string $template  The path to the template, excluding the base templates directory.
-         * @return boolean  If the template exists.
+         * @param string $template The path to the template, excluding the base templates directory.
+         *
+         * @return boolean If the template exists.
          */
         public function templateExists($template);
 
@@ -110,9 +108,9 @@ namespace Breeze\View\Driver {
          * Gets the full path to a template, including the base templates
          * directory.
          *
-         * @access public
-         * @param  string $template  The path to the template, excluding the base templates directory.
-         * @return string  The full path to a template.
+         * @param string $template The path to the template, excluding the base templates directory.
+         *
+         * @return string The full path to a template.
          */
         public function getTemplatePath($template);
 
@@ -120,10 +118,10 @@ namespace Breeze\View\Driver {
          * Renders a template using the $variables parameter and returns
          * the contents.
          *
-         * @access public
-         * @param  string $template  The path to the template, excluding the base templates directory.
-         * @param  array $variables  An associative array of variables to use in the template.
-         * @return string  The rendered template.
+         * @param string $template  The path to the template, excluding the base templates directory.
+         * @param array  $variables An associative array of variables to use in the template.
+         *
+         * @return string The rendered template.
          */
         public function fetch($template, array $variables = array());
     }
@@ -190,10 +188,10 @@ namespace Breeze\View\Driver {
          * database engine.  The extra options are to be defined by the
          * specific engines.
          *
-         * @access public
-         * @param  Breeze\Application $application   An instance of the base Breeze Framework class.
-         * @param  string $path                      The path to the templates directory
-         * @param  array $options                    Extra options for setting up custom template engines
+         * @param Breeze\Application $application An instance of the base Breeze Framework class.
+         * @param string             $path        The path to the templates directory
+         * @param array              $options     Extra options for setting up custom template engines
+         *
          * @return void
          */
         public function __construct(Application $application, $path = null, array $options = array())
@@ -214,8 +212,8 @@ namespace Breeze\View\Driver {
         /**
          * Sets the path for the base templates directory.
          *
-         * @access public
-         * @param  string $path  The path to the templates directory
+         * @param string $path The path to the templates directory
+         *
          * @return void
          * @throws InvalidArgumentException
          */
@@ -232,8 +230,8 @@ namespace Breeze\View\Driver {
         /**
          * Sets the extra options for the template engine.
          *
-         * @access public
-         * @param  array $options  Extra options for setting up custom template engines
+         * @param array $options Extra options for setting up custom template engines
+         *
          * @return void
          */
         public function setOptions(array $options)
@@ -244,9 +242,9 @@ namespace Breeze\View\Driver {
         /**
          * Gets a template engine option.
          *
-         * @access public
-         * @param  string $option  The name of the option to get
-         * @param  mixed $default  A fallback value if the option hasn't been specified.
+         * @param string $option  The name of the option to get
+         * @param mixed  $default A fallback value if the option hasn't been specified.
+         *
          * @return mixed
          */
         public function getOption($option, $default = null)
@@ -258,7 +256,8 @@ namespace Breeze\View\Driver {
          * Gets the full path to the templates directory.
          *
          * @access public
-         * @return string  The full path to the templates directory.
+         *
+         * @return string The full path to the templates directory.
          */
         public function getPath()
         {
@@ -268,9 +267,9 @@ namespace Breeze\View\Driver {
         /**
          * Checks if a template exists.
          *
-         * @access public
-         * @param  string $template  The path to the template, excluding the base templates directory.
-         * @return boolean  If a template exists.
+         * @param string $template The path to the template, excluding the base templates directory.
+         *
+         * @return boolean If a template exists.
          */
         public function templateExists($template)
         {
@@ -281,9 +280,9 @@ namespace Breeze\View\Driver {
          * Gets the full path to a template, including the base templates
          * directory.
          *
-         * @access public
-         * @param  string $template  The path to the template, excluding the base templates directory.
-         * @return string  The full path to a template.
+         * @param string $template The path to the template, excluding the base templates directory.
+         *
+         * @return string The full path to a template.
          */
         public function getTemplatePath($template)
         {
@@ -294,10 +293,10 @@ namespace Breeze\View\Driver {
          * Renders a template using the $variables parameter and returns
          * the contents.
          *
-         * @access public
-         * @param  string $template  The path to the template, excluding the base templates directory.
-         * @param  array $variables  An associative array of variables to use in the template.
-         * @return string  The rendered template.
+         * @param string $template  The path to the template, excluding the base templates directory.
+         * @param array  $variables An associative array of variables to use in the template.
+         *
+         * @return string The rendered template.
          * @throws InvalidArgumentException
          */
         public function fetch($template, array $variables = array())
@@ -313,7 +312,6 @@ namespace Breeze\View\Driver {
          * Sets up the internal template engine structures.  This is intended
          * to be where engine specific options are set up.
          *
-         * @access public
          * @return void
          */
         public function config()
@@ -327,7 +325,6 @@ namespace Breeze\View\Driver {
          * Sets up the internal template engine structures.  This is intended
          * to be where engine specific options are set up.
          *
-         * @access protected
          * @return void
          */
         abstract protected function _config();
@@ -336,10 +333,10 @@ namespace Breeze\View\Driver {
          * Renders a template using the $variables parameter and returns
          * the contents.  This is sole function engines must implement.
          *
-         * @access protected
-         * @param  string $template  The path to the template, excluding the base templates directory.
-         * @param  array $variables  An associative array of variables to use in the template.
-         * @return string  The rendered template
+         * @param string $template  The path to the template, excluding the base templates directory.
+         * @param array  $variables An associative array of variables to use in the template.
+         *
+         * @return string The rendered template
          */
         abstract protected function _fetch($template, array $variables = array());
     }
@@ -360,7 +357,6 @@ namespace Breeze\View\Driver {
          * Sets up the internal template engine structures.  This is intended
          * to be where engine specific options are set up.
          *
-         * @access protected
          * @return void
          */
         protected function _config(){}
@@ -369,10 +365,10 @@ namespace Breeze\View\Driver {
          * Renders a template using the $variables parameter and returns
          * the contents.
          *
-         * @access protected
-         * @param  string $template  The path to the template, excluding the base templates directory.
-         * @param  array $variables  An associative array of variables to use in the template.
-         * @return string  The rendered template.
+         * @param string $template  The path to the template, excluding the base templates directory.
+         * @param array  $variables An associative array of variables to use in the template.
+         *
+         * @return string The rendered template.
          */
         protected function _fetch($template, array $variables = array())
         {
@@ -436,8 +432,8 @@ namespace Breeze\View {
         /**
          * Creates a new View.
          *
-         * @access public
-         * @param  Breeze\Application $application  an instance of the base Breeze Framework class.
+         * @param Breeze\Application $application an instance of the base Breeze Framework class.
+         *
          * @return void
          */
         public function __construct(Application $application)
@@ -448,9 +444,9 @@ namespace Breeze\View {
         /**
          * Sets a template variable value.
          *
-         * @access public
-         * @param  string $name  The name of the template variable.
-         * @param  mixed $value  The value of the template variable.
+         * @param string $name  The name of the template variable.
+         * @param mixed  $value The value of the template variable.
+         *
          * @return void
          */
         public function __set($name, $value)
@@ -461,9 +457,9 @@ namespace Breeze\View {
         /**
          * Gets a template variable value.
          *
-         * @access public
-         * @param  string $name  The name of the template variable.
-         * @return mixed  The template variable value.
+         * @param string $name The name of the template variable.
+         *
+         * @return mixed The template variable value.
          */
         public function __get($name)
         {
@@ -473,9 +469,9 @@ namespace Breeze\View {
         /**
          * Checks if a template variable is set.
          *
-         * @access public
-         * @param  string $name  The name of the template variable.
-         * @return boolean  If a template variable is set.
+         * @param string $name The name of the template variable.
+         *
+         * @return boolean If a template variable is set.
          */
         public function __isset($name)
         {
@@ -485,8 +481,8 @@ namespace Breeze\View {
         /**
          * Unsets a template variable.
          *
-         * @access public
-         * @param  string $name  The name of the template variable.
+         * @param string $name The name of the template variable.
+         *
          * @return void
          */
         public function __unset($name)
@@ -497,8 +493,8 @@ namespace Breeze\View {
         /**
          * Adds template variables using an array.
          *
-         * @access public
-         * @param  array $variables  The variables to add to the template.
+         * @param array $variables The variables to add to the template.
+         *
          * @return void
          */
         public function addVariables(array $variables)
@@ -511,10 +507,10 @@ namespace Breeze\View {
          * variables specified in the {@link Breeze\View\View::$_template_variables} instance
          * variable.
          *
-         * @access public
-         * @param  string $template  The path to the template, excluding the base templates directory and extension.
-         * @param  array $variables  The variables to add to the template.
-         * @return string  The rendered template contents.
+         * @param string $template  The path to the template, excluding the base templates directory and extension.
+         * @param array  $variables The variables to add to the template.
+         *
+         * @return string The rendered template contents.
          */
         public function fetch($template, array $variables = array())
         {
@@ -532,9 +528,9 @@ namespace Breeze\View {
          * Returns the $contents parameter wrapped with the the current layout
          * file.
          *
-         * @access public
-         * @param  string $contents  The contents to wrap with a layout
-         * @return string  The rendered layout with the provided contents.
+         * @param string $contents The contents to wrap with a layout
+         *
+         * @return string The rendered layout with the provided contents.
          */
         public function fetchLayout($contents)
         {
@@ -544,8 +540,7 @@ namespace Breeze\View {
         /**
          * Checks to see if a layout is defined and the layout file exists.
          *
-         * @access public
-         * @return boolean  If a layout is defined and exists.
+         * @return boolean If a layout is defined and exists.
          */
         public function layoutExists()
         {
@@ -558,9 +553,9 @@ namespace Breeze\View {
          * variables specified in the {@link Breeze\View\View::$_template_variables} instance
          * variable.
          *
-         * @access public
-         * @param  string $template  The path to the template, excluding the base templates directory and extension.
-         * @param  array $variables  The variables to add to the template.
+         * @param string $template  The path to the template, excluding the base templates directory and extension.
+         * @param array  $variables The variables to add to the template.
+         *
          * @return void
          */
         public function display($template, array $variables = array())
@@ -576,10 +571,10 @@ namespace Breeze\View {
          * NOTE: This works just like {@link Breeze\View\View::fetch()} but it ignores the
          * layout preferences.
          *
-         * @access public
-         * @param  string $template  The path to the template, excluding the base templates directory and extension.
-         * @param  array $variables  The variables to add to the template.
-         * @return string  The rendered template.
+         * @param string $template  The path to the template, excluding the base templates directory and extension.
+         * @param array  $variables The variables to add to the template.
+         *
+         * @return string The rendered template.
          */
         public function partial($template, array $variables = array())
         {
@@ -596,8 +591,8 @@ namespace Breeze\View {
          * Specifies the path to the layouts directory.  Pass the boolean 'FALSE' constant to bypass
          * layouts completely.
          *
-         * @access public
-         * @param  string $layout  The path to the layout, excluding the base templates directory.
+         * @param string $layout The path to the layout, excluding the base templates directory.
+         *
          * @return void
          */
         public function layout($layout)
@@ -609,8 +604,7 @@ namespace Breeze\View {
          * Using the current application configurations, retrieves an instance of the specified
          * template engine.
          *
-         * @access public
-         * @return Breeze\View\Driver\DriverInterface  The template engine.
+         * @return Breeze\View\Driver\DriverInterface The template engine.
          * @throws UnexpectedValueException
          */
         public function getEngine()
@@ -634,8 +628,8 @@ namespace Breeze\View {
         /**
          * Sets the current template engine with an engine object.
          *
-         * @access protected
-         * @param  Breeze\View\Driver\DriverInterface  The template engine to set.
+         * @param Breeze\View\Driver\DriverInterface The template engine to set.
+         *
          * @return void
          */
         protected function _setEngineWithObject(Driver\DriverInterface $engine)
@@ -646,8 +640,8 @@ namespace Breeze\View {
         /**
          * Sets the current template engine with a engine class name.
          *
-         * @access protected
-         * @param  Breeze\View\Driver\DriverInterface  The template engine to set.
+         * @param Breeze\View\Driver\DriverInterface The template engine to set.
+         *
          * @return void
          * @throws UnexpectedValueException
          */
@@ -777,8 +771,8 @@ namespace Breeze\Errors {
          * Sets up the {@link Breeze\Errors\Errors::$_default_error} instance variable
          * for handling errors with no defined handler.
          *
-         * @access public
-         * @param  Breeze\Application $application  an instance of the base Breeze Framework class for passing into closures.
+         * @param Breeze\Application $application an instance of the base Breeze Framework class for passing into closures.
+         *
          * @return void
          */
         public function __construct(Application $application)
@@ -801,8 +795,7 @@ namespace Breeze\Errors {
         /**
          * Sets if dispatching errors should cause the application to exit.
          *
-         * @access public
-         * @return boolean  If dispatching errors should cause the application to exit.
+         * @return boolean If dispatching errors should cause the application to exit.
          */
         public function getExit()
         {
@@ -812,8 +805,8 @@ namespace Breeze\Errors {
         /**
          * Sets if dispatching errors should cause the application to exit.
          *
-         * @access public
-         * @param  boolean  If dispatching errors should cause the application to exit.
+         * @param boolean If dispatching errors should cause the application to exit.
+         *
          * @return void
          */
         public function setExit($exit)
@@ -824,9 +817,9 @@ namespace Breeze\Errors {
         /**
          * Gets the HTTP error string that corresponds to an HTTP status code.
          *
-         * @access public
-         * @param  integer $code  The code to get the error for
-         * @return string  The error code.
+         * @param integer $code The code to get the error for
+         *
+         * @return string The error code.
          */
         public function getErrorForCode($code)
         {
@@ -845,9 +838,9 @@ namespace Breeze\Errors {
          *     $handler->add(function(){}); // Catchall
          * @endcode
          *
-         * @access public
-         * @param  mixed $names      The codes/exceptions to add errors for.
-         * @param  Closure $handler  The handler for the error.
+         * @param mixed   $names   The codes/exceptions to add errors for.
+         * @param Closure $handler The handler for the error.
+         *
          * @return void
          * @throws InvalidArgumentException
          */
@@ -865,9 +858,9 @@ namespace Breeze\Errors {
          * back to the {@link Breeze\Errors\Errors::$_default_error} instance variable
          * if no closure can been found.
          *
-         * @access public
-         * @param  mixed $exception  The exception to dispatch an error for.
-         * @param  mixed $code       The error code for the exception if $exception is a message.
+         * @param mixed $exception The exception to dispatch an error for.
+         * @param mixed $code      The error code for the exception if $exception is a message.
+         *
          * @return void
          */
         public function dispatchError($exception, $code = null)
@@ -951,8 +944,8 @@ namespace Breeze\Dispatcher {
         /**
          * Constructor.
          *
-         * @access public
-         * @param  string $message  The exception message.
+         * @param string $message The exception message.
+         *
          * @return void
          */
         public function __construct($message = null)
@@ -983,7 +976,6 @@ namespace Breeze\Dispatcher {
         /**
          * Sets up some default conditions.
          *
-         * @access public
          * @return void
          */
         public function __construct() {
@@ -999,9 +991,9 @@ namespace Breeze\Dispatcher {
         /**
          * Adds a new condition.
          *
-         * @access public
-         * @param  string|array $names  A list of names to associate with the provided closure
-         * @param  Closure $condition   The condition to add.
+         * @param string|array $names     A list of names to associate with the provided closure
+         * @param Closure      $condition The condition to add.
+         *
          * @return void
          * @throws InvalidArgumentException
          */
@@ -1014,8 +1006,8 @@ namespace Breeze\Dispatcher {
          * Checks a condition, throwing a Breeze\Dispatcher\PassException if the condition
          * is not met.
          *
-         * @access public
-         * @param  string $name  The condition to dispatch
+         * @param string $name The condition to dispatch
+         *
          * @return void
          * @throws InvalidArgumentException
          * @throws PassException
@@ -1102,8 +1094,8 @@ namespace Breeze\Dispatcher {
         /**
          * Creates a new dispatcher for routing end-user requests.
          *
-         * @access public
-         * @param  Breeze\Application $application  An instance of the base Breeze Framework class for passing into closures.
+         * @param Breeze\Application $application An instance of the base Breeze Framework class for passing into closures.
+         *
          * @return void
          */
         public function __construct(Application $application)
@@ -1120,9 +1112,9 @@ namespace Breeze\Dispatcher {
          * essentially just aliases of the {@link Breeze\Dispatcher\Dispatcher::route()}
          * method.
          *
-         * @access public
-         * @param  string $name      The name of the method
-         * @param  array $arguments  The method arguments
+         * @param string $name      The name of the method
+         * @param array  $arguments The method arguments
+         *
          * @return mixed
          */
         public function __call($name, $arguments)
@@ -1146,10 +1138,10 @@ namespace Breeze\Dispatcher {
          * Adds a route that will be checked when routing requests using the
          * {@link Breeze\Dispatcher\Dispatcher::dispatch()} method.
          *
-         * @access protected
-         * @param  string|array $methods  The HTTP method that must match
-         * @param  string $pattern        The pattern the requested URI must match
-         * @param  Closure $handler       The handler for the matching request
+         * @param string|array $methods The HTTP method that must match
+         * @param string       $pattern The pattern the requested URI must match
+         * @param Closure      $handler The handler for the matching request
+         *
          * @return void
          * @throws InvalidArgumentException
          */
@@ -1171,9 +1163,9 @@ namespace Breeze\Dispatcher {
          * and calls the corresponding handler if a matching request is found.
          * Otherwise a {@link Breeze\Dispatcher\NotFoundException} exception is thrown.
          *
-         * @access public
-         * @param  string $request_method  An optional request method to spoof the incoming request method.
-         * @param  string $request_uri     An optional URI to spoof the incoming request URI.
+         * @param string $request_method An optional request method to spoof the incoming request method.
+         * @param string $request_uri    An optional URI to spoof the incoming request URI.
+         *
          * @return void
          * @throws Breeze\Dispatcher\NotFoundException
          */
@@ -1205,9 +1197,9 @@ namespace Breeze\Dispatcher {
          * matches the $pattern.  Otherwise a {@link Breeze\Dispatcher\PassException}
          * exception is thrown.
          *
-         * @access protected
-         * @param  string $pattern   The pattern the requested URI must match
-         * @param  Closure $handler  The handler for the matching request
+         * @param string  $pattern The pattern the requested URI must match
+         * @param Closure $handler The handler for the matching request
+         *
          * @return void
          * @throws Breeze\Dispatcher\PassException
          */
@@ -1225,9 +1217,9 @@ namespace Breeze\Dispatcher {
          * matches the regexp $pattern.  Otherwise a {@link Breeze\Dispatcher\PassException}
          * exception is thrown.
          *
-         * @access protected
-         * @param  string $pattern   The pattern the requested URI must match
-         * @param  Closure $handler  The handler for the matching request
+         * @param string  $pattern The pattern the requested URI must match
+         * @param Closure $handler The handler for the matching request
+         *
          * @return void
          * @throws Breeze\Dispatcher\PassException
          */
@@ -1244,8 +1236,8 @@ namespace Breeze\Dispatcher {
          * Sets (and normalizes) the request URI.  $_SERVER['REQUEST_URI'] is used
          * by default if $request_uri is not provided.
          *
-         * @access public
-         * @param  string $request_uri  The request URI to use.
+         * @param string $request_uri The request URI to use.
+         *
          * @return void
          */
         public function setRequestUri($request_uri = null)
@@ -1277,7 +1269,6 @@ namespace Breeze\Dispatcher {
         /**
          * Gets the currently set request URI.
          *
-         * @access public
          * @return string
          */
         public function getRequestUri()
@@ -1289,8 +1280,8 @@ namespace Breeze\Dispatcher {
          * Sets (and normalizes) the request method.  $_SERVER['REQUEST_METHOD'] is
          * used by default if $request_method is not provided.
          *
-         * @access public
-         * @param  string $request_method  The request method to use.
+         * @param string $request_method The request method to use.
+         *
          * @return void
          */
         public function setRequestMethod($request_method = null)
@@ -1316,7 +1307,6 @@ namespace Breeze\Dispatcher {
         /**
          * Gets the currently set request method.
          *
-         * @access public
          * @return string
          */
         public function getRequestMethod()
@@ -1395,10 +1385,10 @@ namespace Breeze {
         /**
          * Associates a closure with a single name or a group of names.
          *
-         * @access public
-         * @param  string|array $names  A list of names to associate with the provided closure
-         * @param  Closure $closure     The closure to add
-         * @param  string $validate     A flag to indicate what type of validation to do on closure names.
+         * @param string|array $names    A list of names to associate with the provided closure
+         * @param Closure      $closure  The closure to add
+         * @param string       $validate A flag to indicate what type of validation to do on closure names.
+         *
          * @return void
          * @throws InvalidArgumentException
          */
@@ -1433,9 +1423,9 @@ namespace Breeze {
         /**
          * Checks if a $name has any closures associated with it.
          *
-         * @access public
-         * @param  string $name  The name to check.
-         * @return boolean  If $name has any closures associated with it.
+         * @param string $name The name to check.
+         *
+         * @return boolean If $name has any closures associated with it.
          */
         public function has($name)
         {
@@ -1445,9 +1435,9 @@ namespace Breeze {
         /**
          * Gets the closure associated with a specified $name.
          *
-         * @access public
-         * @param  string $name  The name to to get the closure for.
-         * @return mixed  The closure associated with $name.
+         * @param string $name The name to to get the closure for.
+         *
+         * @return mixed The closure associated with $name.
          */
         public function get($name)
         {
@@ -1457,8 +1447,7 @@ namespace Breeze {
         /**
          * Returns all defined closures.
          *
-         * @access public
-         * @return array  All defined closures.
+         * @return array All defined closures.
          */
         public function all()
         {
@@ -1498,8 +1487,8 @@ namespace Breeze {
         /**
          * Initializes the configurations using $options.
          *
-         * @access public
-         * @param  array $options  The default options to set
+         * @param array $options The default options to set
+         *
          * @return void
          */
         public function __construct(array $options = array())
@@ -1516,9 +1505,9 @@ namespace Breeze {
          *     $config->set(array('jeff'=>'is cool'));
          * @endcode
          *
-         * @access public
-         * @param  string|array $name  The name of the configuration value to set or an array of values to set.
-         * @param  mixed $value        The value to set.
+         * @param string|array $name  The name of the configuration value to set or an array of values to set.
+         * @param mixed        $value The value to set.
+         *
          * @return void
          */
         public function set($name, $value = null)
@@ -1533,8 +1522,8 @@ namespace Breeze {
         /**
          * Gets a configuration value.
          *
-         * @access public
-         * @param  string $name  The name of the configuration value to get.
+         * @param string $name The name of the configuration value to get.
+         *
          * @return mixed
          */
         public function get($name)
@@ -1667,8 +1656,8 @@ namespace Breeze {
          * Initializes defined plugins and allows for overriding of default
          * application configurations.
          *
-         * @access public
-         * @param  Breeze\Configurations $configurations  Override default application configurations.
+         * @param Breeze\Configurations $configurations Override default application configurations.
+         *
          * @return void
          */
         public function __construct(Configurations $configurations = null)
@@ -1694,9 +1683,9 @@ namespace Breeze {
         /**
          * Injects a dependency.  This is mostly intended to help with testing.
          *
-         * @access public
-         * @param  string $key   The configuration key where the dependency is stored.
-         * @param  string $name  The class name for the dependency.
+         * @param string $key  The configuration key where the dependency is stored.
+         * @param string $name The class name for the dependency.
+         *
          * @return void
          */
         protected function _getDependency($key, $name)
@@ -1728,7 +1717,6 @@ namespace Breeze {
          *     })
          * @endcode
          *
-         * @access public
          * @return void
          * @throws Breeze\Dispatcher\PassException
          */
@@ -1740,10 +1728,10 @@ namespace Breeze {
         /**
          * Shortcut for making a redirect.
          *
-         * @access public
-         * @param  string $url    The url to redirect to.
-         * @param  integer $code  The status code for the redirect.
-         * @param  boolean $exit  If the program should exit after header is sent.
+         * @param string  $url  The url to redirect to.
+         * @param integer $code The status code for the redirect.
+         * @param boolean $exit If the program should exit after header is sent.
+         *
          * @return void
          */
         public function redirect($url, $code = 302, $exit = true)
@@ -1764,9 +1752,9 @@ namespace Breeze {
          *     echo $app->config('jeff'); // Prints "is cool"
          * @endcode
          *
-         * @access public
-         * @param  string $name  The name of the config value to set/get
-         * @param  mixed $value  The config value to set
+         * @param string $name  The name of the config value to set/get
+         * @param mixed  $value The config value to set
+         *
          * @return void
          */
         public function config($name, $value = null)
@@ -1787,9 +1775,9 @@ namespace Breeze {
          *     $app->condition('is cool', 'someone else'); // Throws Breeze\Dispatcher\PassException
          * @endcode
          *
-         * @access public
-         * @param  string $name    The name of the condition to set/dispatch
-         * @param  mixed $handler  The condition handler
+         * @param string $name    The name of the condition to set/dispatch
+         * @param mixed  $handler The condition handler
+         *
          * @return void
          * @throws Breeze\Dispatcher\PassException
          */
@@ -1811,9 +1799,9 @@ namespace Breeze {
          *     echo $app->template('jeff'); // Prints "is cool"
          * @endcode
          *
-         * @access public
-         * @param  string $name  The name of the template value to set/get
-         * @param  mixed $value  The template value to set
+         * @param string $name  The name of the template value to set/get
+         * @param mixed  $value The template value to set
+         *
          * @return void
          */
         public function template($name, $value = null)
@@ -1844,9 +1832,9 @@ namespace Breeze {
          *     $app->error("Permission Denied");
          * @endcode
          *
-         * @access public
-         * @param  mixed $var1  A numeric code, a message, or a closure
-         * @param  mixed $var2  A message, or a closure
+         * @param mixed $var1 A numeric code, a message, or a closure
+         * @param mixed $var2 A message, or a closure
+         *
          * @return void
          */
         public function error($var1 = '', $var2 = '')
@@ -1875,9 +1863,9 @@ namespace Breeze {
          * Delegates methods to their corresponding classes and handles
          * user-defined helpers.
          *
-         * @access public
-         * @param  string $name      The name of the method
-         * @param  array $arguments  The method arguments
+         * @param string $name      The name of the method
+         * @param array  $arguments The method arguments
+         *
          * @return void
          */
         public function __call($name, $arguments)
@@ -1903,9 +1891,9 @@ namespace Breeze {
         /**
          * Shortcut for setting a template value.
          *
-         * @access public
-         * @param  string $name  The name of the template value to set
-         * @param  mixed $value  The template value to set
+         * @param string $name  The name of the template value to set
+         * @param mixed  $value The template value to set
+         *
          * @return void
          */
         public function __set($name, $value)
@@ -1916,9 +1904,9 @@ namespace Breeze {
         /**
          * Shortcut for getting a template value
          *
-         * @access public
-         * @param  string $name  The name of the template value to get
-         * @return mixed  THe template value
+         * @param string $name The name of the template value to get
+         *
+         * @return mixed The template value
          */
         public function __get($name)
         {
@@ -1928,9 +1916,9 @@ namespace Breeze {
         /**
          * Shortcut for checking if a template value is set.
          *
-         * @access public
-         * @param  string $name  The name of the template value to check.
-         * @return boolean  If the variable is set
+         * @param string $name The name of the template value to check.
+         *
+         * @return boolean If the variable is set
          */
         public function __isset($name)
         {
@@ -1940,8 +1928,8 @@ namespace Breeze {
         /**
          * Shortcut for unsetting a template value.
          *
-         * @access public
-         * @param  string $name  The name of the template value to unset.
+         * @param string $name The name of the template value to unset.
+         *
          * @return void
          */
         public function __unset($name)
@@ -1952,9 +1940,9 @@ namespace Breeze {
         /**
          * Registers a new plugin.
          *
-         * @access public
-         * @param  string $name     The name of the plugin to register.
-         * @param  Closure $plugin  The plugin to register
+         * @param string  $name   The name of the plugin to register.
+         * @param Closure $plugin The plugin to register
+         *
          * @return void
          * @throws InvalidArgumentException
          */
@@ -1972,8 +1960,8 @@ namespace Breeze {
         /**
          * Removes a registered plugin.
          *
-         * @access public
-         * @param  string $name  The name of the plugin to unregister.
+         * @param string $name The name of the plugin to unregister.
+         *
          * @return void
          */
         public static function unregister($name)
@@ -1986,9 +1974,9 @@ namespace Breeze {
         /**
          * Adds a user-defined helper.
          *
-         * @access public
-         * @param  string $name     The name of the helper to add.
-         * @param  Closure $helper  The helper to add.
+         * @param string  $name   The name of the helper to add.
+         * @param Closure $helper The helper to add.
+         *
          * @return void
          */
         public function helper($name, $helper)
@@ -1999,8 +1987,7 @@ namespace Breeze {
         /**
          * Gets a list of all defined helpers.
          *
-         * @access public
-         * @return array  All defined helpers.
+         * @return array All defined helpers.
          */
         public function getHelpers()
         {
@@ -2010,8 +1997,8 @@ namespace Breeze {
         /**
          * Adds a filter to be executed before the request is routed.
          *
-         * @access public
-         * @param  Closure $filter  The filter to add.
+         * @param Closure $filter The filter to add.
+         *
          * @return void
          */
         public function before($filter)
@@ -2022,8 +2009,8 @@ namespace Breeze {
         /**
          * Adds a filter to be executed after the request is routed.
          *
-         * @access public
-         * @param  Closure $filter  The filter to add.
+         * @param Closure $filter The filter to add.
+         *
          * @return void
          */
         public function after($filter)
@@ -2034,8 +2021,8 @@ namespace Breeze {
         /**
          * Executes the filters specified by the $type argument.
          *
-         * @access public
-         * @param  string $type  The type of filter to execute.
+         * @param string $type The type of filter to execute.
+         *
          * @return void
          * @throws InvalidArgumentException
          */
@@ -2053,9 +2040,9 @@ namespace Breeze {
         /**
          * Process the incoming request using the programmer-defined routes.
          *
-         * @access public
-         * @param  string $request_method  An optional request method to spoof the incoming request method.
-         * @param  string $request_uri     An optional URI to spoof the incoming request URI.
+         * @param string $request_method An optional request method to spoof the incoming request method.
+         * @param string $request_uri    An optional URI to spoof the incoming request URI.
+         *
          * @return void
          */
         public function run($request_method = null, $request_uri = null)

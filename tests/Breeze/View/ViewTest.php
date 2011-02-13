@@ -71,7 +71,6 @@ namespace Breeze\View\Tests {
         /**
          * Sets up the test case for {@link Breeze\View\View}.
          *
-         * @access public
          * @return void
          */
         public function setUp()
@@ -310,9 +309,9 @@ namespace Breeze\View\Tests {
         /**
          * Configurations callback to mock {@link Breeze\Configurations}.
          *
-         * @access public
-         * @param  string $key   The name of the configuration value to get/set.
-         * @param  mixed $value  The config value to set
+         * @param string $key   The name of the configuration value to get/set.
+         * @param mixed  $value The config value to set
+         *
          * @return mixed
          */
         public function getConfig($key, $value = null)
@@ -328,7 +327,6 @@ namespace Breeze\View\Tests {
          * Mocks an expected {@link Breeze\View\Driver\Driver::fetch()} call
          * to simulate fetching a template with some standard contents.
          *
-         * @access protected
          * @return void
          */
         protected function _mockTemplate()
@@ -344,7 +342,6 @@ namespace Breeze\View\Tests {
          * and subsequent {@link Breeze\View\Driver\Driver::fetch()} to simulate
          * fetching a layout with some standard contents.
          *
-         * @access protected
          * @return void
          */
         protected function _mockLayout()
@@ -390,10 +387,10 @@ namespace Breeze\View\Driver\Tests {
          * database engine.  The extra options are to be defined by the
          * specific engines.
          *
-         * @access public
-         * @param  Breeze\Application $application   An instance of the base Breeze Framework class
-         * @param  string $path                      The path to the templates directory
-         * @param  array $options                    Extra options for setting up custom template engines
+         * @param Breeze\Application $application An instance of the base Breeze Framework class
+         * @param string             $path        The path to the templates directory
+         * @param array              $options     Extra options for setting up custom template engines
+         *
          * @return void
          */
         public function __construct(Application $application, $path = null, array $options = array()) {}
@@ -402,7 +399,6 @@ namespace Breeze\View\Driver\Tests {
          * Sets up the internal template engine structures.  This is intended
          * to be where engine specific options are set up.
          *
-         * @access public
          * @return void
          */
         public function config() {}
@@ -411,7 +407,6 @@ namespace Breeze\View\Driver\Tests {
          * Sets up the internal template engine structures.  This is intended
          * to be where engine specific options are set up.
          *
-         * @access protected
          * @return void
          */
         protected function _config(){}
@@ -420,10 +415,10 @@ namespace Breeze\View\Driver\Tests {
          * Renders a template using the $variables parameter and returns
          * the contents.
          *
-         * @access protected
-         * @param  string $template  The path to the template, excluding the base templates directory.
-         * @param  array $variables  An associative array of variables to use in the template.
-         * @return string  The rendered template.
+         * @param string $template  The path to the template, excluding the base templates directory.
+         * @param array  $variables An associative array of variables to use in the template.
+         *
+         * @return string The rendered template.
          */
         protected function _fetch($template, array $variables = array()){}
     }

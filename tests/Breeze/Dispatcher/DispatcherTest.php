@@ -130,7 +130,6 @@ namespace Breeze\Dispatcher\Tests {
         /**
          * Sets up the test case for {@link Breeze\Dispatcher\Dispatcher}.
          *
-         * @access public
          * @return void
          */
         public function setUp()
@@ -376,9 +375,9 @@ namespace Breeze\Dispatcher\Tests {
         /**
          * Tests setting the request method works as expected.
          *
-         * @access protected
-         * @param  Closure $callback     A callback for setting the request method
-         * @param  boolean $call_setter  If {@link Breeze\Dispatcher\Dispatcher::setRequestMethod()} should be called.
+         * @param Closure $callback    A callback for setting the request method
+         * @param boolean $call_setter If {@link Breeze\Dispatcher\Dispatcher::setRequestMethod()} should be called.
+         *
          * @return void
          */
         protected function _testSetRequestMethod($callback, $call_setter = true)
@@ -397,9 +396,9 @@ namespace Breeze\Dispatcher\Tests {
         /**
          * Tests setting the request URI works as expected.
          *
-         * @access protected
-         * @param  Closure $callback     A callback for setting the request URI
-         * @param  boolean $call_setter  If {@link Breeze\Dispatcher\Dispatcher::setRequestUri()} should be called.
+         * @param Closure $callback    A callback for setting the request URI
+         * @param boolean $call_setter If {@link Breeze\Dispatcher\Dispatcher::setRequestUri()} should be called.
+         *
          * @return void
          */
         protected function _testSetRequestUri($callback, $call_setter = true)
@@ -419,9 +418,9 @@ namespace Breeze\Dispatcher\Tests {
          * Tests hitting all uris in {@link Breeze\Dispatcher\Tests\DispatcherTest::$_uris} on
          * all methods defined in {@link Breeze\Dispatcher\Tests\DispatcherTest::$method}.
          *
-         * @access protected
-         * @param  Closure $callback     A callback for setting the request URI
-         * @param  boolean $call_setter  If {@link Breeze\Dispatcher\Dispatcher::setRequestUri()} should be called.
+         * @param Closure $callback    A callback for setting the request URI
+         * @param boolean $call_setter If {@link Breeze\Dispatcher\Dispatcher::setRequestUri()} should be called.
+         *
          * @return void
          */
         protected function _testAllUrisWithAllMethods()
@@ -438,8 +437,8 @@ namespace Breeze\Dispatcher\Tests {
         /**
          * Add routes for the uris in {@link Breeze\Dispatcher\Tests\DispatcherTest::$_uris}.
          *
-         * @access protected
-         * @param  string|array $methods  Request methods to add the uris for.
+         * @param string|array $methods Request methods to add the uris for.
+         *
          * @return void
          */
         protected function _addUris($methods = 'GET')

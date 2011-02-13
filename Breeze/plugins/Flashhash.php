@@ -58,8 +58,8 @@ namespace Breeze\Plugins\Flashhash {
          *
          * NOTE: This method will call session_start().
          *
-         * @access public
-         * @param string $key  The key where the flashhash is stored in the session.
+         * @param string $key The key where the flashhash is stored in the session.
+         *
          * @return void
          */
         public function __construct($key = 'flashhash')
@@ -75,9 +75,9 @@ namespace Breeze\Plugins\Flashhash {
         /**
          * Sets a new value in the flashhash.
          *
-         * @access public
-         * @param string $offset  The offset where the value should be set.
-         * @param mixed $value    The value to set.
+         * @param string $offset The offset where the value should be set.
+         * @param mixed  $value  The value to set.
+         *
          * @return void
          */
         public function offsetSet($offset, $value)
@@ -88,9 +88,9 @@ namespace Breeze\Plugins\Flashhash {
         /**
          * Checks if a value exists in the flashhash
          *
-         * @access public
-         * @param string $offset  The offset where the value should be set.
-         * @return boolean  If the value exists.
+         * @param string $offset The offset where the value should be set.
+         *
+         * @return boolean If the value exists.
          */
         public function offsetExists($offset)
         {
@@ -100,8 +100,8 @@ namespace Breeze\Plugins\Flashhash {
         /**
          * Removes a value from the flashhash.
          *
-         * @access public
-         * @param string $offset  The offset of the value that should be removed.
+         * @param string $offset The offset of the value that should be removed.
+         *
          * @return void
          */
         public function offsetUnset($offset)
@@ -112,9 +112,9 @@ namespace Breeze\Plugins\Flashhash {
         /**
          * Gets a value from the flashhash.
          *
-         * @access public
-         * @param string $offset  The offset where the value should be set.
-         * @return mixed  The value from the flashhash.
+         * @param string $offset The offset where the value should be set.
+         *
+         * @return mixed The value from the flashhash.
          */
         public function offsetGet($offset)
         {
@@ -128,7 +128,6 @@ namespace Breeze\Plugins\Flashhash {
          * support the \ArrayAccess interface for some of the more important
          * constructs (like foreach).
          *
-         * @access public
          * @return array
          */
         public function asArray()

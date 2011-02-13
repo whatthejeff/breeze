@@ -73,7 +73,6 @@ namespace Breeze\View\Driver\Tests {
         /**
          * Sets up the test case for {@link Breeze\View\Driver\Dwoo}.
          *
-         * @access public
          * @return void
          */
         public function setUp()
