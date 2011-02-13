@@ -87,4 +87,3 @@
 
  <target name="build" depends="clean,parallelTasks,phpunit,phpcb"/>
 </project>
-

@@ -10,12 +10,12 @@
  * BSD license.  For full copyright and license information, please see the
  * LICENSE file that is distributed with this package.
  *
+ * @package    Breeze
+ * @subpackage Demos
  * @author     Jeff Welch <whatthejeff@gmail.com>
- * @category   Blog
- * @package    Core
- * @copyright  Copyright (c) 2010-2011, Breeze Framework
- * @license    New BSD License
- * @version    $Id$
+ * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+ * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+ * @link       http://breezephp.com/
  */
 
     /**

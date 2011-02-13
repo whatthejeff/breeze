@@ -10,13 +10,12 @@
  * BSD license.  For full copyright and license information, please see the
  * LICENSE file that is distributed with this package.
  *
- * @author     Jeff Welch <whatthejeff@gmail.com>
- * @category   Breeze
- * @package    View
+ * @package    Breeze
  * @subpackage Tests
- * @copyright  Copyright (c) 2010-2011, Breeze Framework
- * @license    New BSD License
- * @version    $Id$
+ * @author     Jeff Welch <whatthejeff@gmail.com>
+ * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+ * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+ * @link       http://breezephp.com/
  */
 
 namespace Breeze\View\Driver\Tests {
