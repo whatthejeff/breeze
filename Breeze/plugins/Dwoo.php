@@ -53,7 +53,7 @@ namespace Breeze\View\Driver {
          * @var Dwoo
          * @see http://dwoo.org/
          */
-        protected $_dwoo;
+        protected $dwoo;
 
         /**
          * The default directory for compiled templates.
@@ -77,7 +77,7 @@ namespace Breeze\View\Driver {
          */
         public function __construct(Application $application, $path = null, array $options = array())
         {
-            $this->_dwoo = new \Dwoo();
+            $this->dwoo = new \Dwoo();
             parent::__construct($application, $path, $options);
         }
 
@@ -90,8 +90,8 @@ namespace Breeze\View\Driver {
         protected function _config()
         {
             $path = $this->getPath();
-            $this->_dwoo->setCompileDir($path . '/' . $this->getOption('compile_dir', self::DEFAULT_COMPILE_DIR));
-            $this->_dwoo->setCacheDir($path . '/' . $this->getOption('cache_dir', self::DEFAULT_CACHE_DIR));
+            $this->dwoo->setCompileDir($path . '/' . $this->getOption('compile_dir', self::DEFAULT_COMPILE_DIR));
+            $this->dwoo->setCacheDir($path . '/' . $this->getOption('cache_dir', self::DEFAULT_CACHE_DIR));
         }
 
         /**
@@ -105,7 +105,7 @@ namespace Breeze\View\Driver {
          */
         protected function _fetch($template, array $variables = array())
         {
-            return $this->_dwoo->get($this->getTemplatePath($template), $variables);
+            return $this->dwoo->get($this->getTemplatePath($template), $variables);
         }
     }
 

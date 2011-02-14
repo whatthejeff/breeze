@@ -46,7 +46,7 @@ namespace Breeze\Dispatcher\Tests {
          *
          * @param Breeze\Dispatcher\Conditions
          */
-        protected $_conditions;
+        protected $conditions;
 
         /**
          * Sets up the test case for {@link Breeze\Dispatcher\Conditions}.
@@ -55,7 +55,7 @@ namespace Breeze\Dispatcher\Tests {
          */
         public function setUp()
         {
-            $this->_conditions = new Conditions();
+            $this->conditions = new Conditions();
         }
 
         /**
@@ -65,7 +65,7 @@ namespace Breeze\Dispatcher\Tests {
         public function testDispatchWithInvalidName()
         {
             $this->setExpectedException('\\InvalidArgumentException', 'is not a valid condition.');
-            $this->_conditions->dispatchCondition('invalid');
+            $this->conditions->dispatchCondition('invalid');
         }
 
         /**
@@ -75,7 +75,7 @@ namespace Breeze\Dispatcher\Tests {
         public function testAddWithEmptyName()
         {
             $this->setExpectedException('\\InvalidArgumentException', 'You must provide a name.');
-            $this->_conditions->add('', function(){});
+            $this->conditions->add('', function(){});
         }
 
         /**
@@ -85,8 +85,8 @@ namespace Breeze\Dispatcher\Tests {
         public function testConditionThrowsPassExceptionIfReturnsFalse()
         {
             $this->setExpectedException('Breeze\\Dispatcher\\PassException');
-            $this->_conditions->add('returns_false', function(){ return false; });
-            $this->_conditions->dispatchCondition('returns_false');
+            $this->conditions->add('returns_false', function(){ return false; });
+            $this->conditions->dispatchCondition('returns_false');
         }
 
         /**
@@ -95,8 +95,8 @@ namespace Breeze\Dispatcher\Tests {
          */
         public function testConditionDoesntThrowPassExceptionIfReturnsTrue()
         {
-            $this->_conditions->add('returns_true', function(){ return true; });
-            $this->_conditions->dispatchCondition('returns_true');
+            $this->conditions->add('returns_true', function(){ return true; });
+            $this->conditions->dispatchCondition('returns_true');
         }
 
         /**
@@ -106,7 +106,7 @@ namespace Breeze\Dispatcher\Tests {
          */
         public function testDefaultConditions()
         {
-            $this->assertSame(array('user_agent_matches','host_name_is'), array_keys($this->_conditions->all()));
+            $this->assertSame(array('user_agent_matches','host_name_is'), array_keys($this->conditions->all()));
         }
 
         /**
@@ -118,7 +118,7 @@ namespace Breeze\Dispatcher\Tests {
             $this->setExpectedException('Breeze\\Dispatcher\\PassException');
 
             $_SERVER['HTTP_USER_AGENT'] = 'test/agent 1.0';
-            $this->_conditions->dispatchCondition('user_agent_matches', '/thsiwontmatch/');
+            $this->conditions->dispatchCondition('user_agent_matches', '/thsiwontmatch/');
             $this->fail("Expected exception PassException");
         }
 
@@ -129,7 +129,7 @@ namespace Breeze\Dispatcher\Tests {
         public function testUserAgentMatchesWithGoodAgent()
         {
             $_SERVER['HTTP_USER_AGENT'] = 'test/agent 1.0';
-            $this->_conditions->dispatchCondition('user_agent_matches', '/test\/agent 1\.0/');
+            $this->conditions->dispatchCondition('user_agent_matches', '/test\/agent 1\.0/');
         }
 
         /**
@@ -140,7 +140,7 @@ namespace Breeze\Dispatcher\Tests {
         {
             $this->setExpectedException('Breeze\\Dispatcher\\PassException');
             $_SERVER['HTTP_HOST'] = 'www.test.com';
-            $this->_conditions->dispatchCondition('host_name_is', 'www.wontmatch.com');
+            $this->conditions->dispatchCondition('host_name_is', 'www.wontmatch.com');
         }
 
         /**
@@ -150,7 +150,7 @@ namespace Breeze\Dispatcher\Tests {
         public function testHostNameIsWithGoodHostName()
         {
             $_SERVER['HTTP_HOST'] = 'www.test.com';
-            $this->_conditions->dispatchCondition('host_name_is', 'www.test.com');
+            $this->conditions->dispatchCondition('host_name_is', 'www.test.com');
         }
     }
 }

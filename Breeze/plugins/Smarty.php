@@ -53,7 +53,7 @@ namespace Breeze\View\Driver {
          * @var Smarty
          * @see http://www.smarty.net/
          */
-        protected $_smarty;
+        protected $smarty;
 
         /**
          * The default directory for compiled templates.
@@ -81,10 +81,10 @@ namespace Breeze\View\Driver {
          */
         public function __construct(Application $application, $path = null, array $options = array())
         {
-            $this->_smarty = new \Smarty();
+            $this->smarty = new \Smarty();
             parent::__construct($application, $path, $options);
 
-            $this->_smarty->registerPlugin('function', 'partial', array($this, 'partial'));
+            $this->smarty->registerPlugin('function', 'partial', array($this, 'partial'));
         }
 
         /**
@@ -97,10 +97,10 @@ namespace Breeze\View\Driver {
         {
             $path = $this->getPath();
 
-            $this->_smarty->template_dir = $path;
-            $this->_smarty->compile_dir  = $path . '/' . $this->getOption('compile_dir', self::DEFAULT_COMPILE_DIR);
-            $this->_smarty->cache_dir    = $path . '/' . $this->getOption('cache_dir', self::DEFAULT_CACHE_DIR);
-            $this->_smarty->config_dir   = $path . '/' . $this->getOption('config_dir', self::DEFAULT_CONFIG_DIR);
+            $this->smarty->template_dir = $path;
+            $this->smarty->compile_dir  = $path . '/' . $this->getOption('compile_dir', self::DEFAULT_COMPILE_DIR);
+            $this->smarty->cache_dir    = $path . '/' . $this->getOption('cache_dir', self::DEFAULT_CACHE_DIR);
+            $this->smarty->config_dir   = $path . '/' . $this->getOption('config_dir', self::DEFAULT_CONFIG_DIR);
         }
 
         /**
@@ -114,8 +114,8 @@ namespace Breeze\View\Driver {
          */
         protected function _fetch($template, array $variables = array())
         {
-            $this->_smarty->assign($variables);
-            return $this->_smarty->fetch($template);
+            $this->smarty->assign($variables);
+            return $this->smarty->fetch($template);
         }
 
         /**
@@ -135,7 +135,7 @@ namespace Breeze\View\Driver {
             $file = $params['file'];
             unset($params['file']);
 
-            return $this->_application->partial($file, $params);
+            return $this->application->partial($file, $params);
         }
     }
 

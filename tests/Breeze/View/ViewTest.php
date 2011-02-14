@@ -42,20 +42,20 @@ namespace Breeze\View\Tests {
          *
          * @param Breeze\Application
          */
-        protected $_application;
+        protected $application;
         /**
          * The view object for testing.
          *
          * @param Breeze\View\View
          */
-        protected $_view;
+        protected $view;
 
         /**
          * Configuration values for testsing {@link Breeze\View\View}.
          *
          * @param array
          */
-        protected $_config = array(
+        protected $config = array(
             'template_engine'       => '',
             'template_options'      => array(),
             'template_directory'    => \Breeze\Tests\FIXTURES_PATH,
@@ -72,13 +72,13 @@ namespace Breeze\View\Tests {
          */
         public function setUp()
         {
-            $this->_application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
-            $this->_application->expects($this->any())
-                               ->method('config')
-                               ->will($this->returnCallback(array($this, 'getConfig')));
+            $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
+            $this->application->expects($this->any())
+                              ->method('config')
+                              ->will($this->returnCallback(array($this, 'getConfig')));
 
-            $this->_config['template_engine'] = $this->getMock('Breeze\\View\\Driver\\PHP', array(), array($this->_application), '', FALSE);
-            $this->_view = new View($this->_application);
+            $this->config['template_engine'] = $this->getMock('Breeze\\View\\Driver\\PHP', array(), array($this->application), '', FALSE);
+            $this->view = new View($this->application);
         }
 
         /**
@@ -87,7 +87,7 @@ namespace Breeze\View\Tests {
          */
         public function testGetWithUnsetVariable()
         {
-            $this->assertNull($this->_view->does_not_exist);
+            $this->assertNull($this->view->does_not_exist);
         }
 
         /**
@@ -96,8 +96,8 @@ namespace Breeze\View\Tests {
          */
         public function testGetWithSetVariable()
         {
-            $this->_view->addVariables(array('this_is_a' => 'test'));
-            $this->assertSame('test', $this->_view->this_is_a);
+            $this->view->addVariables(array('this_is_a' => 'test'));
+            $this->assertSame('test', $this->view->this_is_a);
         }
 
         /**
@@ -106,8 +106,8 @@ namespace Breeze\View\Tests {
          */
         public function testIssetWithSetVariable()
         {
-            $this->_view->addVariables(array('this_is_a' => 'test'));
-            $this->assertTrue(isset($this->_view->this_is_a));
+            $this->view->addVariables(array('this_is_a' => 'test'));
+            $this->assertTrue(isset($this->view->this_is_a));
         }
 
         /**
@@ -116,7 +116,7 @@ namespace Breeze\View\Tests {
          */
         public function testIssetWithUnsetVariable()
         {
-            $this->assertFalse(isset($this->_view->does_not_exist));
+            $this->assertFalse(isset($this->view->does_not_exist));
         }
 
         /**
@@ -125,11 +125,11 @@ namespace Breeze\View\Tests {
          */
         public function testUnsetVariable()
         {
-            $this->_view->addVariables(array('this_is_a' => 'test'));
-            $this->assertTrue(isset($this->_view->this_is_a));
+            $this->view->addVariables(array('this_is_a' => 'test'));
+            $this->assertTrue(isset($this->view->this_is_a));
 
-            unset($this->_view->this_is_a);
-            $this->assertFalse(isset($this->_view->this_is_a));
+            unset($this->view->this_is_a);
+            $this->assertFalse(isset($this->view->this_is_a));
         }
 
         /**
@@ -137,8 +137,8 @@ namespace Breeze\View\Tests {
          */
         public function testSet()
         {
-            $this->_view->this_is_a = 'test';
-            $this->assertSame('test', $this->_view->this_is_a);
+            $this->view->this_is_a = 'test';
+            $this->assertSame('test', $this->view->this_is_a);
         }
 
         /**
@@ -148,8 +148,8 @@ namespace Breeze\View\Tests {
         public function testGetEngineWithBadEngine()
         {
             $this->setExpectedException('\\UnexpectedValueException', 'is not a valid template engine.');
-            $this->_config['template_engine'] = 'INVALID';
-            $this->_view->getEngine();
+            $this->config['template_engine'] = 'INVALID';
+            $this->view->getEngine();
         }
 
         /**
@@ -158,7 +158,7 @@ namespace Breeze\View\Tests {
          */
         public function testGetEngineWithGoodEngine()
         {
-            $this->assertInstanceOf('Breeze\\View\\Driver\\DriverInterface', $this->_view->getEngine());
+            $this->assertInstanceOf('Breeze\\View\\Driver\\DriverInterface', $this->view->getEngine());
         }
 
         /**
@@ -166,8 +166,8 @@ namespace Breeze\View\Tests {
          */
         public function testGetEngineWithString()
         {
-            $this->_config['template_engine'] = 'Tests\\Stub';
-            $this->assertInstanceOf('Breeze\\View\\Driver\\Tests\\Stub', $this->_view->getEngine());
+            $this->config['template_engine'] = 'Tests\\Stub';
+            $this->assertInstanceOf('Breeze\\View\\Driver\\Tests\\Stub', $this->view->getEngine());
         }
 
         /**
@@ -176,8 +176,8 @@ namespace Breeze\View\Tests {
          */
         public function testGetEngineWithStringCaches()
         {
-            $this->_config['template_engine'] = 'Tests\\Stub';
-            $this->assertSame($this->_view->getEngine(), $this->_view->getEngine());
+            $this->config['template_engine'] = 'Tests\\Stub';
+            $this->assertSame($this->view->getEngine(), $this->view->getEngine());
         }
 
         /**
@@ -185,8 +185,8 @@ namespace Breeze\View\Tests {
          */
         public function testLayoutExistsWithNoLayoutSet()
         {
-            $this->_config['template_layout'] = '';
-            $this->assertFalse($this->_view->layoutExists());
+            $this->config['template_layout'] = '';
+            $this->assertFalse($this->view->layoutExists());
         }
 
         /**
@@ -194,8 +194,8 @@ namespace Breeze\View\Tests {
          */
         public function testLayoutExistsWithInvalidPath()
         {
-            $this->_config['template_layout'] = 'DOES NOT EXIST';
-            $this->assertFalse($this->_view->layoutExists());
+            $this->config['template_layout'] = 'DOES NOT EXIST';
+            $this->assertFalse($this->view->layoutExists());
         }
 
         /**
@@ -203,12 +203,12 @@ namespace Breeze\View\Tests {
          */
         public function testLayoutExistsWithValidPath()
         {
-            $this->_config['template_engine']->expects($this->once())
+            $this->config['template_engine']->expects($this->once())
                                              ->method('templateExists')
                                              ->with($this->equalTo('layout.php'))
                                              ->will($this->returnValue(true));
 
-            $this->assertTrue($this->_view->layoutExists());
+            $this->assertTrue($this->view->layoutExists());
         }
 
         /**
@@ -217,10 +217,10 @@ namespace Breeze\View\Tests {
          */
         public function testLayout()
         {
-            $this->_application->expects($this->at(0))
+            $this->application->expects($this->at(0))
                                ->method('config')
                                ->with($this->equalTo('template_layout'), $this->equalTo('layout'));
-            $this->_view->layout('layout');
+            $this->view->layout('layout');
         }
 
         /**
@@ -229,12 +229,12 @@ namespace Breeze\View\Tests {
          */
         public function testFetchLayout()
         {
-            $this->_config['template_engine']->expects($this->once())
-                                             ->method('fetch')
-                                             ->with($this->equalTo('layout.php'), array('layout_contents'=>'My Contents'))
-                                             ->will($this->returnValue('¡My Contents!'));
+            $this->config['template_engine']->expects($this->once())
+                                            ->method('fetch')
+                                            ->with($this->equalTo('layout.php'), array('layout_contents'=>'My Contents'))
+                                            ->will($this->returnValue('¡My Contents!'));
 
-            $this->assertSame('¡My Contents!', $this->_view->fetchLayout('My Contents'));
+            $this->assertSame('¡My Contents!', $this->view->fetchLayout('My Contents'));
         }
 
         /**
@@ -242,10 +242,10 @@ namespace Breeze\View\Tests {
          */
         public function testFetchWithoutLayout()
         {
-            $this->_config['template_layout'] = '';
+            $this->config['template_layout'] = '';
             $this->_mockTemplate();
 
-            $this->assertSame('Hello Jeff', $this->_view->fetch('template', array('name'=>'Jeff')));
+            $this->assertSame('Hello Jeff', $this->view->fetch('template', array('name'=>'Jeff')));
         }
 
         /**
@@ -256,7 +256,7 @@ namespace Breeze\View\Tests {
             $this->_mockTemplate();
             $this->_mockLayout();
 
-            $this->assertSame('¡Hello Jeff!', $this->_view->fetch('template', array('name'=>'Jeff')));
+            $this->assertSame('¡Hello Jeff!', $this->view->fetch('template', array('name'=>'Jeff')));
         }
 
         /**
@@ -265,10 +265,10 @@ namespace Breeze\View\Tests {
         public function testDisplayWithoutLayout()
         {
             $this->expectOutputString('Hello Jeff');
-            $this->_config['template_layout'] = '';
+            $this->config['template_layout'] = '';
 
             $this->_mockTemplate();
-            $this->_view->display('template', array('name'=>'Jeff'));
+            $this->view->display('template', array('name'=>'Jeff'));
         }
 
         /**
@@ -281,7 +281,7 @@ namespace Breeze\View\Tests {
             $this->_mockTemplate();
             $this->_mockLayout();
 
-            $this->_view->display('template', array('name'=>'Jeff'));
+            $this->view->display('template', array('name'=>'Jeff'));
         }
 
         /**
@@ -290,7 +290,7 @@ namespace Breeze\View\Tests {
         public function testPartialDoesntUseLayout()
         {
             $this->_mockTemplate();
-            $this->assertSame('Hello Jeff', $this->_view->partial('template', array('name'=>'Jeff')));
+            $this->assertSame('Hello Jeff', $this->view->partial('template', array('name'=>'Jeff')));
         }
 
         /**
@@ -299,8 +299,8 @@ namespace Breeze\View\Tests {
          */
         public function testPartialDoesntDestoryLayoutPreferences()
         {
-            $this->_view->partial('template', array('name'=>'Jeff'));
-            $this->assertSame('layout', $this->_application->config('template_layout'));
+            $this->view->partial('template', array('name'=>'Jeff'));
+            $this->assertSame('layout', $this->application->config('template_layout'));
         }
 
         /**
@@ -314,9 +314,9 @@ namespace Breeze\View\Tests {
         public function getConfig($key, $value = null)
         {
             if(isset($value)) {
-                $this->_config[$key] = $value;
+                $this->config[$key] = $value;
             } else {
-                return isset($this->_config[$key]) ? $this->_config[$key] : null;
+                return isset($this->config[$key]) ? $this->config[$key] : null;
             }
         }
 
@@ -328,10 +328,10 @@ namespace Breeze\View\Tests {
          */
         protected function _mockTemplate()
         {
-            $this->_config['template_engine']->expects($this->at(0))
-                                             ->method('fetch')
-                                             ->with($this->equalTo('template.php'), $this->equalTo(array('name'=>'Jeff', 'breeze'=>$this->_application)))
-                                             ->will($this->returnValue('Hello Jeff'));
+            $this->config['template_engine']->expects($this->at(0))
+                                            ->method('fetch')
+                                            ->with($this->equalTo('template.php'), $this->equalTo(array('name'=>'Jeff', 'breeze'=>$this->application)))
+                                            ->will($this->returnValue('Hello Jeff'));
         }
 
         /**
@@ -343,14 +343,14 @@ namespace Breeze\View\Tests {
          */
         protected function _mockLayout()
         {
-            $this->_config['template_engine']->expects($this->at(1))
-                                             ->method('templateExists')
-                                             ->with($this->equalTo('layout.php'))
-                                             ->will($this->returnValue(true));
-            $this->_config['template_engine']->expects($this->at(2))
-                                             ->method('fetch')
-                                             ->with($this->equalTo('layout.php'), $this->equalTo(array('name'=>'Jeff', 'breeze'=>$this->_application, 'layout_contents'=>'Hello Jeff')))
-                                             ->will($this->returnValue('¡Hello Jeff!'));
+            $this->config['template_engine']->expects($this->at(1))
+                                            ->method('templateExists')
+                                            ->with($this->equalTo('layout.php'))
+                                            ->will($this->returnValue(true));
+            $this->config['template_engine']->expects($this->at(2))
+                                            ->method('fetch')
+                                            ->with($this->equalTo('layout.php'), $this->equalTo(array('name'=>'Jeff', 'breeze'=>$this->application, 'layout_contents'=>'Hello Jeff')))
+                                            ->will($this->returnValue('¡Hello Jeff!'));
         }
     }
 }

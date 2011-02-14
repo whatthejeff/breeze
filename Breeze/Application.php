@@ -156,28 +156,28 @@ namespace Breeze\View\Driver {
          *
          * @var string
          */
-        protected $_path;
+        protected $path;
 
         /**
          * The real path to the base templates directory.
          *
          * @var string
          */
-        protected $_real_path;
+        protected $real_path;
 
         /**
          * The extra options for the template engine.
          *
          * @var array
          */
-        protected $_options = array();
+        protected $options = array();
 
         /**
          * An instance of the base Breeze Framework class.
          *
          * @var Breeze\Application
          */
-        protected $_application;
+        protected $application;
 
         /**
          * Sets up the templates directory path and the extra options for a
@@ -192,7 +192,7 @@ namespace Breeze\View\Driver {
          */
         public function __construct(Application $application, $path = null, array $options = array())
         {
-            $this->_application = $application;
+            $this->application = $application;
 
             if (!empty($options)) {
                 $this->setOptions($options);
@@ -219,8 +219,8 @@ namespace Breeze\View\Driver {
                 throw new \InvalidArgumentException(sprintf(self::INVALID_PATH_ERROR, $path));
             }
 
-            $this->_real_path = realpath($path);
-            $this->_path = $path;
+            $this->real_path = realpath($path);
+            $this->path = $path;
         }
 
         /**
@@ -232,7 +232,7 @@ namespace Breeze\View\Driver {
          */
         public function setOptions(array $options)
         {
-            $this->_options = $options;
+            $this->options = $options;
         }
 
         /**
@@ -245,7 +245,7 @@ namespace Breeze\View\Driver {
          */
         public function getOption($option, $default = null)
         {
-            return isset($this->_options[$option]) ? $this->_options[$option] : $default;
+            return isset($this->options[$option]) ? $this->options[$option] : $default;
         }
 
         /**
@@ -255,7 +255,7 @@ namespace Breeze\View\Driver {
          */
         public function getPath()
         {
-            return $this->_real_path;
+            return $this->real_path;
         }
 
         /**
@@ -310,7 +310,7 @@ namespace Breeze\View\Driver {
          */
         public function config()
         {
-            if ($this->_application->config('template_directory') != $this->_path || $this->_application->config('template_options') != $this->_options) {
+            if ($this->application->config('template_directory') != $this->path || $this->application->config('template_options') != $this->options) {
                 $this->_config();
             }
         }
@@ -406,19 +406,19 @@ namespace Breeze\View {
          *
          * @var Breeze\Application
          */
-        protected $_application;
+        protected $application;
         /**
          * Variables to use in the templates.
          *
          * @var array
          */
-        protected $_template_variables = array();
+        protected $template_variables = array();
         /**
          * The current template engine.
          *
          * @var Breeze\View\Driver\DriverInterface
          */
-        protected $_engine = null;
+        protected $engine = null;
 
         /**
          * Creates a new View.
@@ -429,7 +429,7 @@ namespace Breeze\View {
          */
         public function __construct(Application $application)
         {
-            $this->_application = $application;
+            $this->application = $application;
         }
 
         /**
@@ -442,7 +442,7 @@ namespace Breeze\View {
          */
         public function __set($name, $value)
         {
-            $this->_template_variables[$name] = $value;
+            $this->template_variables[$name] = $value;
         }
 
         /**
@@ -454,7 +454,7 @@ namespace Breeze\View {
          */
         public function __get($name)
         {
-            return isset($this->_template_variables[$name]) ? $this->_template_variables[$name] : null;
+            return isset($this->template_variables[$name]) ? $this->template_variables[$name] : null;
         }
 
         /**
@@ -466,7 +466,7 @@ namespace Breeze\View {
          */
         public function __isset($name)
         {
-            return isset($this->_template_variables[$name]);
+            return isset($this->template_variables[$name]);
         }
 
         /**
@@ -478,7 +478,7 @@ namespace Breeze\View {
          */
         public function __unset($name)
         {
-            unset($this->_template_variables[$name]);
+            unset($this->template_variables[$name]);
         }
 
         /**
@@ -490,12 +490,12 @@ namespace Breeze\View {
          */
         public function addVariables(array $variables)
         {
-            $this->_template_variables = array_merge($this->_template_variables, $variables);
+            $this->template_variables = array_merge($this->template_variables, $variables);
         }
 
         /**
          * Fetches the contents of the template specified by the $template argument using the
-         * variables specified in the {@link Breeze\View\View::$_template_variables} instance
+         * variables specified in the {@link Breeze\View\View::$template_variables} instance
          * variable.
          *
          * @param string $template  The path to the template, excluding the base templates directory and extension.
@@ -509,9 +509,9 @@ namespace Breeze\View {
                 $this->addVariables($variables);
             }
 
-            $this->__set($this->_application->config('application_variable'), $this->_application);
+            $this->__set($this->application->config('application_variable'), $this->application);
 
-            $contents = $this->getEngine()->fetch($template . $this->_application->config('template_extension'), $this->_template_variables);
+            $contents = $this->getEngine()->fetch($template . $this->application->config('template_extension'), $this->template_variables);
             return $this->layoutExists() ? $this->fetchLayout($contents) : $contents;
         }
 
@@ -525,7 +525,7 @@ namespace Breeze\View {
          */
         public function fetchLayout($contents)
         {
-            return $this->getEngine()->fetch($this->_application->config('template_layout') . $this->_application->config('template_extension'), array_merge($this->_template_variables, array('layout_contents'=>$contents)));
+            return $this->getEngine()->fetch($this->application->config('template_layout') . $this->application->config('template_extension'), array_merge($this->template_variables, array('layout_contents'=>$contents)));
         }
 
         /**
@@ -535,13 +535,13 @@ namespace Breeze\View {
          */
         public function layoutExists()
         {
-            $layout_path = $this->_application->config('template_layout');
-            return $layout_path && $this->getEngine()->templateExists($layout_path . $this->_application->config('template_extension'));
+            $layout_path = $this->application->config('template_layout');
+            return $layout_path && $this->getEngine()->templateExists($layout_path . $this->application->config('template_extension'));
         }
 
         /**
          * Displays the contents of the template specified by the $template argument using the
-         * variables specified in the {@link Breeze\View\View::$_template_variables} instance
+         * variables specified in the {@link Breeze\View\View::$template_variables} instance
          * variable.
          *
          * @param string $template  The path to the template, excluding the base templates directory and extension.
@@ -556,7 +556,7 @@ namespace Breeze\View {
 
         /**
          * Fetches the contents of the template specified by the $template argument using the
-         * variables specified in the {@link Breeze\View\View::$_template_variables} instance
+         * variables specified in the {@link Breeze\View\View::$template_variables} instance
          * variable.
          *
          * NOTE: This works just like {@link Breeze\View\View::fetch()} but it ignores the
@@ -569,11 +569,11 @@ namespace Breeze\View {
          */
         public function partial($template, array $variables = array())
         {
-            $old_layout = $this->_application->config('template_layout');
-            $this->_application->config('template_layout', false);
+            $old_layout = $this->application->config('template_layout');
+            $this->application->config('template_layout', false);
 
             $return = $this->fetch($template, $variables);
-            $this->_application->config('template_layout', $old_layout);
+            $this->application->config('template_layout', $old_layout);
 
             return $return;
         }
@@ -588,7 +588,7 @@ namespace Breeze\View {
          */
         public function layout($layout)
         {
-            $this->_application->config('template_layout', $layout);
+            $this->application->config('template_layout', $layout);
         }
 
         /**
@@ -600,20 +600,20 @@ namespace Breeze\View {
          */
         public function getEngine()
         {
-            $engine = $this->_application->config('template_engine');
+            $engine = $this->application->config('template_engine');
 
             if (is_object($engine)) {
                 $this->_setEngineWithObject($engine);
             } else {
                 $engine_class = __NAMESPACE__ . '\\Driver\\' . $engine;
-                if (strtolower(get_class((object)$this->_engine)) != strtolower($engine_class)) {
+                if (strtolower(get_class((object)$this->engine)) != strtolower($engine_class)) {
                     $this->_getEngineWithString($engine_class);
                 } else {
-                    $this->_engine->config();
+                    $this->engine->config();
                 }
             }
 
-            return $this->_engine;
+            return $this->engine;
         }
 
         /**
@@ -625,7 +625,7 @@ namespace Breeze\View {
          */
         protected function _setEngineWithObject(Driver\DriverInterface $engine)
         {
-            $this->_engine = $engine;
+            $this->engine = $engine;
         }
 
         /**
@@ -642,7 +642,7 @@ namespace Breeze\View {
                 throw new \UnexpectedValueException(sprintf(self::INVALID_TEMPLATE_ENGINE_ERROR, $engine_class));
             }
 
-            $this->_engine = new $engine_class($this->_application, $this->_application->config('template_directory'), $this->_application->config('template_options'));
+            $this->engine = new $engine_class($this->application, $this->application->config('template_directory'), $this->application->config('template_options'));
         }
     }
 }
@@ -741,22 +741,22 @@ namespace Breeze\Errors {
          *
          * @var Closure
          */
-        protected $_default_error;
+        protected $default_error;
         /**
          * An instance of the base Breeze Framework class for passing into closures.
          *
          * @var Breeze\Application
          */
-        protected $_application;
+        protected $application;
         /**
          * If dispatching an error should cause the application to exit.
          *
          * @var boolean
          */
-        protected $_exit = true;
+        protected $exit = true;
 
         /**
-         * Sets up the {@link Breeze\Errors\Errors::$_default_error} instance variable
+         * Sets up the {@link Breeze\Errors\Errors::$default_error} instance variable
          * for handling errors with no defined handler.
          *
          * @param Breeze\Application $application an instance of the base Breeze Framework class for passing into closures.
@@ -765,8 +765,8 @@ namespace Breeze\Errors {
          */
         public function __construct(Application $application)
         {
-            $this->_application = $application;
-            $this->_default_error = function(Application $application, \Exception $exception) use ($application) {
+            $this->application = $application;
+            $this->default_error = function(Application $application, \Exception $exception) use ($application) {
                 $body = sprintf("<h1>%s</h1>", $exception->getMessage());
                 if ($application->config('errors_backtrace')) {
                     $body .= sprintf('<pre><code>%s</code></pre>', $exception->getTraceAsString());
@@ -787,7 +787,7 @@ namespace Breeze\Errors {
          */
         public function getExit()
         {
-            return $this->_exit;
+            return $this->exit;
         }
 
         /**
@@ -799,7 +799,7 @@ namespace Breeze\Errors {
          */
         public function setExit($exit)
         {
-            $this->_exit = $exit;
+            $this->exit = $exit;
         }
 
         /**
@@ -835,7 +835,7 @@ namespace Breeze\Errors {
         public function add($names, $handler = null, $validate = null)
         {
             if (!isset($handler) && is_callable($names)) {
-                $this->_default_error = $names;
+                $this->default_error = $names;
             } else {
                 parent::add($names, $handler, self::VALIDATE_NAME);
             }
@@ -843,7 +843,7 @@ namespace Breeze\Errors {
 
         /**
          * Dispatches the closure associated with the $exception argument, falling
-         * back to the {@link Breeze\Errors\Errors::$_default_error} instance variable
+         * back to the {@link Breeze\Errors\Errors::$default_error} instance variable
          * if no closure can been found.
          *
          * @param mixed $exception The exception to dispatch an error for.
@@ -863,14 +863,14 @@ namespace Breeze\Errors {
             $http_message = $this->getErrorForCode($number);
 
             if (!($function = $this->get($number)) && !($function = $this->get(get_class($exception)))) {
-                $function = $this->_default_error;
+                $function = $this->default_error;
             }
 
             if (!headers_sent() && $http_message && isset($_SERVER['SERVER_PROTOCOL'])) {
                 header("{$_SERVER['SERVER_PROTOCOL']} $number $http_message");
             }
 
-            $function($this->_application, $exception);
+            $function($this->application, $exception);
 
             if ($this->getExit()) {
                 exit;
@@ -1046,32 +1046,32 @@ namespace Breeze\Dispatcher {
          *
          * @var array
          */
-        protected static $_supported_methods = array('GET','POST','PUT','DELETE');
+        protected static $supported_methods = array('GET','POST','PUT','DELETE');
 
         /**
          * An instance of the base Breeze Framework class for querying configurations.
          *
          * @var Breeze\Application
          */
-        protected $_application;
+        protected $application;
         /**
          * The URI to use for routing.
          *
          * @var string
          */
-        protected $_request_uri;
+        protected $request_uri;
         /**
          * The HTTP method to use for routing.
          *
          * @var string
          */
-        protected $_request_method = 'GET';
+        protected $request_method = 'GET';
         /**
          * A collection of user-defined request handlers.
          *
          * @var array
          */
-        protected $_routes;
+        protected $routes;
 
         /**
          * Creates a new dispatcher for routing end-user requests.
@@ -1082,10 +1082,10 @@ namespace Breeze\Dispatcher {
          */
         public function __construct(Application $application)
         {
-            $this->_application = $application;
+            $this->application = $application;
 
-            foreach (self::$_supported_methods as $method) {
-                $this->_routes[$method] = array();
+            foreach (self::$supported_methods as $method) {
+                $this->routes[$method] = array();
             }
         }
 
@@ -1103,11 +1103,11 @@ namespace Breeze\Dispatcher {
         {
             $name = strtoupper($name);
 
-            if (in_array($name, self::$_supported_methods)) {
+            if (in_array($name, self::$supported_methods)) {
                 return call_user_func_array(array($this, '_addRoute'), array_merge(array($name), (array)$arguments));
             } elseif ($name == 'ANY') {
                 if (isset($arguments[1]) && is_callable($arguments[1])) {
-                    $arguments = array_merge(array(self::$_supported_methods), (array)$arguments);
+                    $arguments = array_merge(array(self::$supported_methods), (array)$arguments);
                 }
 
                 return call_user_func_array(array($this, '_addRoute'), $arguments);
@@ -1136,7 +1136,7 @@ namespace Breeze\Dispatcher {
                     throw new \InvalidArgumentException(self::NO_PATTERN_ERROR);
                 }
 
-                $this->_routes[$method][] = array('pattern'=>$pattern, 'handler'=>$handler);
+                $this->routes[$method][] = array('pattern'=>$pattern, 'handler'=>$handler);
             }
         }
 
@@ -1156,8 +1156,8 @@ namespace Breeze\Dispatcher {
             $this->setRequestUri($request_uri);
             $this->setRequestMethod($request_method);
 
-            if (isset($this->_routes[$this->_request_method])) {
-                foreach ($this->_routes[$this->_request_method] as $route) {
+            if (isset($this->routes[$this->request_method])) {
+                foreach ($this->routes[$this->request_method] as $route) {
                     try {
                         if ($route['pattern']{0} != '/') {
                             $this->_processRegexpRoute($route['pattern'], $route['handler']);
@@ -1175,7 +1175,7 @@ namespace Breeze\Dispatcher {
         }
 
         /**
-         * Invokes the $handler if the current value of  {@link Breeze\Dispatcher\Dispatcher::$_request_uri}
+         * Invokes the $handler if the current value of  {@link Breeze\Dispatcher\Dispatcher::$request_uri}
          * matches the $pattern.  Otherwise a {@link Breeze\Dispatcher\PassException}
          * exception is thrown.
          *
@@ -1187,15 +1187,15 @@ namespace Breeze\Dispatcher {
          */
         protected function _processRoute($pattern, $handler)
         {
-            if ($this->_request_uri != $pattern) {
+            if ($this->request_uri != $pattern) {
                 throw new PassException();
             }
 
-            $handler($this->_application);
+            $handler($this->application);
         }
 
         /**
-         * Invokes the $handler if the current value of  {@link Breeze\Dispatcher\Dispatcher::$_request_uri}
+         * Invokes the $handler if the current value of  {@link Breeze\Dispatcher\Dispatcher::$request_uri}
          * matches the regexp $pattern.  Otherwise a {@link Breeze\Dispatcher\PassException}
          * exception is thrown.
          *
@@ -1207,11 +1207,11 @@ namespace Breeze\Dispatcher {
          */
         protected function _processRegexpRoute($pattern, $handler)
         {
-            if (!preg_match($pattern, $this->_request_uri, $matches)) {
+            if (!preg_match($pattern, $this->request_uri, $matches)) {
                 throw new PassException();
             }
 
-            $handler($this->_application, $matches);
+            $handler($this->application, $matches);
         }
 
         /**
@@ -1226,25 +1226,25 @@ namespace Breeze\Dispatcher {
         {
             if ($request_uri === null) {
                 if (isset($_SERVER['HTTP_X_REWRITE_URL'])) {
-                    $this->_request_uri = $_SERVER['HTTP_X_REWRITE_URL'];
+                    $this->request_uri = $_SERVER['HTTP_X_REWRITE_URL'];
                 } elseif (isset($_SERVER['IIS_WasUrlRewritten']) && $_SERVER['IIS_WasUrlRewritten'] == '1'
                     && isset($_SERVER['UNENCODED_URL']) && $_SERVER['UNENCODED_URL'] != '') {
-                    $this->_request_uri = $_SERVER['UNENCODED_URL'];
+                    $this->request_uri = $_SERVER['UNENCODED_URL'];
                 } elseif (isset($_SERVER['REQUEST_URI'])) {
-                    $this->_request_uri = $_SERVER['REQUEST_URI'];
+                    $this->request_uri = $_SERVER['REQUEST_URI'];
                 } elseif (isset($_SERVER['ORIG_PATH_INFO'])) {
-                    $this->_request_uri = $_SERVER['ORIG_PATH_INFO'];
+                    $this->request_uri = $_SERVER['ORIG_PATH_INFO'];
                 }
             } else {
-                $this->_request_uri = $request_uri;
+                $this->request_uri = $request_uri;
             }
 
-            $this->_request_uri = parse_url($this->_request_uri, PHP_URL_PATH);
-            if ($this->_request_uri == '') {
-                $this->_request_uri = '/';
+            $this->request_uri = parse_url($this->request_uri, PHP_URL_PATH);
+            if ($this->request_uri == '') {
+                $this->request_uri = '/';
             }
-            if ($this->_request_uri != '/' && substr($this->_request_uri, -1) == '/') {
-                $this->_request_uri = substr($this->_request_uri, 0, -1);
+            if ($this->request_uri != '/' && substr($this->request_uri, -1) == '/') {
+                $this->request_uri = substr($this->request_uri, 0, -1);
             }
         }
 
@@ -1255,7 +1255,7 @@ namespace Breeze\Dispatcher {
          */
         public function getRequestUri()
         {
-            return $this->_request_uri;
+            return $this->request_uri;
         }
 
         /**
@@ -1270,19 +1270,19 @@ namespace Breeze\Dispatcher {
         {
             if ($request_method === null) {
                 if (isset($_ENV['HTTP_X_HTTP_METHOD_OVERRIDE'])) {
-                    $this->_request_method = $_ENV['HTTP_X_HTTP_METHOD_OVERRIDE'];
+                    $this->request_method = $_ENV['HTTP_X_HTTP_METHOD_OVERRIDE'];
                 } elseif (isset($_SERVER['REQUEST_METHOD'])) {
-                    $this->_request_method = $_SERVER['REQUEST_METHOD'];
+                    $this->request_method = $_SERVER['REQUEST_METHOD'];
                 }
             } else {
-                $this->_request_method = $request_method;
+                $this->request_method = $request_method;
             }
 
-            $this->_request_method = strtoupper($this->_request_method);
-            if ($this->_request_method == 'POST' && isset($_POST['_method'])) {
-                $this->_request_method = strtoupper($_POST['_method']);
-            } elseif ($this->_request_method == 'HEAD') {
-                $this->_request_method = 'GET';
+            $this->request_method = strtoupper($this->request_method);
+            if ($this->request_method == 'POST' && isset($_POST['_method'])) {
+                $this->request_method = strtoupper($_POST['_method']);
+            } elseif ($this->request_method == 'HEAD') {
+                $this->request_method = 'GET';
             }
         }
 
@@ -1293,7 +1293,7 @@ namespace Breeze\Dispatcher {
          */
         public function getRequestMethod()
         {
-            return $this->_request_method;
+            return $this->request_method;
         }
     }
 }
@@ -1354,13 +1354,13 @@ namespace Breeze {
          *
          * @var array
          */
-        protected $_named_closures = array();
+        protected $named_closures = array();
         /**
          * Collection of unnamed closures.
          *
          * @var array
          */
-        protected $_closures = array();
+        protected $closures = array();
 
         /**
          * Associates a closure with a single name or a group of names.
@@ -1389,13 +1389,13 @@ namespace Breeze {
                         throw new \InvalidArgumentException(NO_NAME_ERROR);
                     }
 
-                    $this->_closures[] = $closure;
+                    $this->closures[] = $closure;
                 } else {
                     if ($validate == self::VALIDATE_LABEL && !preg_match(self::VALID_LABEL, $name)) {
                         throw new \InvalidArgumentException(sprintf(self::INVALID_LABEL_ERROR, $name));
                     }
 
-                    $this->_named_closures[$name] = $closure;
+                    $this->named_closures[$name] = $closure;
                 }
             }
         }
@@ -1409,7 +1409,7 @@ namespace Breeze {
          */
         public function has($name)
         {
-            return isset($this->_named_closures[$name]);
+            return isset($this->named_closures[$name]);
         }
 
         /**
@@ -1421,7 +1421,7 @@ namespace Breeze {
          */
         public function get($name)
         {
-            return $this->has($name) ? $this->_named_closures[$name] : null;
+            return $this->has($name) ? $this->named_closures[$name] : null;
         }
 
         /**
@@ -1431,7 +1431,7 @@ namespace Breeze {
          */
         public function all()
         {
-            return array_merge($this->_closures, $this->_named_closures);
+            return array_merge($this->closures, $this->named_closures);
         }
     }
 
@@ -1453,7 +1453,7 @@ namespace Breeze {
          *
          * @var array
          */
-        protected $_configurations = array(
+        protected $configurations = array(
             'template_engine'       => 'PHP',      /* The template engine */
             'template_options'      => array(),    /* The extra options for the template engine */
             'template_directory'    => '../views', /* The base directory for all templates */
@@ -1472,7 +1472,7 @@ namespace Breeze {
          */
         public function __construct(array $options = array())
         {
-            $this->_configurations = array_merge($this->_configurations, $options);
+            $this->configurations = array_merge($this->configurations, $options);
         }
 
         /**
@@ -1492,9 +1492,9 @@ namespace Breeze {
         public function set($name, $value = null)
         {
             if (is_array($name)) {
-                $this->_configurations = array_merge($this->_configurations, $name);
+                $this->configurations = array_merge($this->configurations, $name);
             } else {
-                $this->_configurations[$name] = $value;
+                $this->configurations[$name] = $value;
             }
         }
 
@@ -1507,7 +1507,7 @@ namespace Breeze {
          */
         public function get($name)
         {
-            return isset($this->_configurations[$name]) ? $this->_configurations[$name] : null;
+            return isset($this->configurations[$name]) ? $this->configurations[$name] : null;
         }
     }
 
@@ -1561,13 +1561,13 @@ namespace Breeze {
          *
          * @var array
          */
-        protected static $_plugins = array();
+        protected static $plugins = array();
         /**
          * Collection of pre-defined helpers.
          *
          * @var array
          */
-        protected static $_core_helpers = array(
+        protected static $core_helpers = array(
             'get','delete','put','post','any','before','after',
             'config','template','display','fetch','pass','helper',
             'run','error','condition','redirect','partial'
@@ -1578,47 +1578,47 @@ namespace Breeze {
          *
          * @var Breeze\Configurations
          */
-        protected $_configurations;
+        protected $configurations;
         /**
          * Core view class for delegating to different template engines.
          *
          * @var Breeze\View\View
          */
-        protected $_view;
+        protected $view;
         /**
          * Core dispatcher for routing end-user requests to pre-defined
          * actions.
          *
          * @var Breeze\Dispatcher\Dispatcher
          */
-        protected $_dispatcher;
+        protected $dispatcher;
         /**
          * Core conditions manager for forwarding requests that don't
          * meet certain conditions.
          *
          * @var Breeze\Dispatcher\Conditions
          */
-        protected $_conditions;
+        protected $conditions;
         /**
          * Core error handler for managing errors which are invoked during
          * routing.
          *
          * @var Breeze\Errors\Errors
          */
-        protected $_error_handler;
+        protected $error_handler;
 
         /**
          * User-defined helpers.
          *
          * @var Breeze\ClosuresCollection
          */
-        protected $_user_helpers;
+        protected $user_helpers;
         /**
          * User-defined filters.
          *
          * @var Breeze\ClosuresCollection
          */
-        protected $_filters = array();
+        protected $filters = array();
 
         /**
          * Initializes defined plugins and allows for overriding of default
@@ -1630,20 +1630,20 @@ namespace Breeze {
          */
         public function __construct(Configurations $configurations = null)
         {
-            $this->_configurations = isset($configurations) ? $configurations : new Configurations();
+            $this->configurations = isset($configurations) ? $configurations : new Configurations();
 
-            $this->_view = $this->_getDependency('view_object', 'Breeze\\View\\View');
-            $this->_error_handler = $this->_getDependency('errors_object', 'Breeze\\Errors\\Errors');
-            $this->_dispatcher = $this->_getDependency('dispatcher_object', 'Breeze\\Dispatcher\\Dispatcher');
-            $this->_conditions = $this->_getDependency('conditions_object', 'Breeze\\Dispatcher\\Conditions');
+            $this->view = $this->_getDependency('view_object', 'Breeze\\View\\View');
+            $this->error_handler = $this->_getDependency('errors_object', 'Breeze\\Errors\\Errors');
+            $this->dispatcher = $this->_getDependency('dispatcher_object', 'Breeze\\Dispatcher\\Dispatcher');
+            $this->conditions = $this->_getDependency('conditions_object', 'Breeze\\Dispatcher\\Conditions');
 
-            $this->_user_helpers = $this->_getDependency('helpers_object', 'Breeze\\ClosuresCollection');
-            $this->_filters = array(
+            $this->user_helpers = $this->_getDependency('helpers_object', 'Breeze\\ClosuresCollection');
+            $this->filters = array(
                 self::BEFORE=>$this->_getDependency('before_filters_object', 'Breeze\\ClosuresCollection'),
                 self::AFTER=>$this->_getDependency('after_filters_object', 'Breeze\\ClosuresCollection')
             );
 
-            foreach (self::$_plugins as $plugin) {
+            foreach (self::$plugins as $plugin) {
                 $plugin($this);
             }
         }
@@ -1658,7 +1658,7 @@ namespace Breeze {
          */
         protected function _getDependency($key, $name)
         {
-            if ($dependency = $this->_configurations->get($key)) {
+            if ($dependency = $this->configurations->get($key)) {
                 if (!is_a($dependency, $name)) {
                     throw new \UnexpectedValueException(sprintf(self::INVALID_DEPENDENCY_ERROR, get_class($dependency), $name));
                 }
@@ -1728,10 +1728,10 @@ namespace Breeze {
         public function config($name, $value = null)
         {
             if (func_num_args() > 1 || is_array($name)) {
-                return $this->_configurations->set($name, $value);
+                return $this->configurations->set($name, $value);
             }
 
-            return $this->_configurations->get($name);
+            return $this->configurations->get($name);
         }
 
         /**
@@ -1752,10 +1752,10 @@ namespace Breeze {
         public function condition($name, $handler = null)
         {
             if (is_callable($handler)) {
-                return $this->_conditions->add($name, $handler);
+                return $this->conditions->add($name, $handler);
             }
 
-            return call_user_func_array(array($this->_conditions, 'dispatchCondition'), func_get_args());
+            return call_user_func_array(array($this->conditions, 'dispatchCondition'), func_get_args());
         }
 
         /**
@@ -1775,12 +1775,12 @@ namespace Breeze {
         public function template($name, $value = null)
         {
             if (func_num_args() > 1) {
-                return $this->_view->__set($name, $value);
+                return $this->view->__set($name, $value);
             } elseif (is_array($name)) {
-                return $this->_view->addVariables($name);
+                return $this->view->addVariables($name);
             }
 
-            return $this->_view->__get($name);
+            return $this->view->__get($name);
         }
 
         /**
@@ -1808,7 +1808,7 @@ namespace Breeze {
         public function error($var1 = '', $var2 = '')
         {
             if (is_callable($var2) || is_callable($var1)) {
-                return call_user_func_array(array($this->_error_handler, 'add'), func_get_args());
+                return call_user_func_array(array($this->error_handler, 'add'), func_get_args());
             }
 
             if (!is_numeric($var1)) {
@@ -1817,14 +1817,14 @@ namespace Breeze {
             }
 
             if (!$var2) {
-                if ($var2 = $this->_error_handler->getErrorForCode($var1)) {
+                if ($var2 = $this->error_handler->getErrorForCode($var1)) {
                     $var2 = sprintf(self::ERROR_CODE_MESSAGE, $var1, $var2);
                 } else {
                     $var2 = self::GENERIC_ERROR;
                 }
             }
 
-            return $this->_error_handler->dispatchError($var2, $var1);
+            return $this->error_handler->dispatchError($var2, $var1);
         }
 
         /**
@@ -1839,18 +1839,18 @@ namespace Breeze {
         public function __call($name, $arguments)
         {
             if (in_array($name, array('display','fetch','layout','partial','layoutExists','fetchLayout'))) {
-                return call_user_func_array(array($this->_view, $name), $arguments);
+                return call_user_func_array(array($this->view, $name), $arguments);
             }
 
             if (in_array($name, array('get','delete','put','post','any'))) {
                 if ($name != 'any' && (count($arguments) < 2 || !is_callable($arguments[1]))) {
                    return call_user_func_array(array($this, 'run'), array_merge(array($name), $arguments));
                 }
-                return call_user_func_array(array($this->_dispatcher, $name), $arguments);
+                return call_user_func_array(array($this->dispatcher, $name), $arguments);
             }
 
-            if ($this->_user_helpers->has($name)) {
-                return call_user_func_array($this->_user_helpers->get($name), $arguments);
+            if ($this->user_helpers->has($name)) {
+                return call_user_func_array($this->user_helpers->get($name), $arguments);
             }
 
             trigger_error(sprintf(\Breeze\Errors\UNDEFINED_FUNCTION, get_class($this), $name), E_USER_ERROR);
@@ -1866,7 +1866,7 @@ namespace Breeze {
          */
         public function __set($name, $value)
         {
-            $this->_view->__set($name, $value);
+            $this->view->__set($name, $value);
         }
 
         /**
@@ -1878,7 +1878,7 @@ namespace Breeze {
          */
         public function __get($name)
         {
-            return $this->_view->__get($name);
+            return $this->view->__get($name);
         }
 
         /**
@@ -1890,7 +1890,7 @@ namespace Breeze {
          */
         public function __isset($name)
         {
-            return $this->_view->__isset($name);
+            return $this->view->__isset($name);
         }
 
         /**
@@ -1902,7 +1902,7 @@ namespace Breeze {
          */
         public function __unset($name)
         {
-            $this->_view->__unset($name);
+            $this->view->__unset($name);
         }
 
         /**
@@ -1922,7 +1922,7 @@ namespace Breeze {
                 throw new \InvalidArgumentException(NO_NAME_ERROR);
             }
 
-            self::$_plugins[$name] = $plugin;
+            self::$plugins[$name] = $plugin;
         }
 
         /**
@@ -1934,8 +1934,8 @@ namespace Breeze {
          */
         public static function unregister($name)
         {
-            if (isset(self::$_plugins[$name])) {
-                unset(self::$_plugins[$name]);
+            if (isset(self::$plugins[$name])) {
+                unset(self::$plugins[$name]);
             }
         }
 
@@ -1949,7 +1949,7 @@ namespace Breeze {
          */
         public function helper($name, $helper)
         {
-            $this->_user_helpers->add($name, $helper, ClosuresCollection::VALIDATE_LABEL);
+            $this->user_helpers->add($name, $helper, ClosuresCollection::VALIDATE_LABEL);
         }
 
         /**
@@ -1959,7 +1959,7 @@ namespace Breeze {
          */
         public function getHelpers()
         {
-            return array_merge(array_keys($this->_user_helpers->all()), self::$_core_helpers);
+            return array_merge(array_keys($this->user_helpers->all()), self::$core_helpers);
         }
 
         /**
@@ -1971,7 +1971,7 @@ namespace Breeze {
          */
         public function before($filter)
         {
-            $this->_filters[self::BEFORE]->add($filter);
+            $this->filters[self::BEFORE]->add($filter);
         }
 
         /**
@@ -1983,7 +1983,7 @@ namespace Breeze {
          */
         public function after($filter)
         {
-            $this->_filters[self::AFTER]->add($filter);
+            $this->filters[self::AFTER]->add($filter);
         }
 
         /**
@@ -2000,7 +2000,7 @@ namespace Breeze {
                 throw new \InvalidArgumentException(sprintf(self::INVALID_FILTER_ERROR, $type));
             }
 
-            foreach ((array)$this->_filters[$type]->all() as $filter) {
+            foreach ((array)$this->filters[$type]->all() as $filter) {
                 $filter($this);
             }
         }
@@ -2017,9 +2017,9 @@ namespace Breeze {
         {
             $this->filter(self::BEFORE);
             try {
-                $this->_dispatcher->dispatch($request_method, $request_uri);
+                $this->dispatcher->dispatch($request_method, $request_uri);
             } catch (\Exception $exception) {
-                $this->_error_handler->dispatchError($exception);
+                $this->error_handler->dispatchError($exception);
             }
             $this->filter(self::AFTER);
         }

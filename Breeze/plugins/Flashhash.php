@@ -49,7 +49,7 @@ namespace Breeze\Plugins\Flashhash {
          *
          * @var array
          */
-        protected $_variables = array();
+        protected $variables = array();
 
         /**
          * Starts a new flashhash instance using the $key parameter as the index
@@ -66,7 +66,7 @@ namespace Breeze\Plugins\Flashhash {
             @session_start();
 
             if (isset($_SESSION[$key])) {
-                $this->_variables = $_SESSION[$key];
+                $this->variables = $_SESSION[$key];
                 unset($_SESSION[$key]);
             }
         }
@@ -81,7 +81,7 @@ namespace Breeze\Plugins\Flashhash {
          */
         public function offsetSet($offset, $value)
         {
-            $this->_variables[$offset] = $value;
+            $this->variables[$offset] = $value;
         }
 
         /**
@@ -93,7 +93,7 @@ namespace Breeze\Plugins\Flashhash {
          */
         public function offsetExists($offset)
         {
-            return isset($this->_variables[$offset]);
+            return isset($this->variables[$offset]);
         }
 
         /**
@@ -105,7 +105,7 @@ namespace Breeze\Plugins\Flashhash {
          */
         public function offsetUnset($offset)
         {
-            unset($this->_variables[$offset]);
+            unset($this->variables[$offset]);
         }
 
         /**
@@ -117,7 +117,7 @@ namespace Breeze\Plugins\Flashhash {
          */
         public function offsetGet($offset)
         {
-            return isset($this->_variables[$offset]) ? $this->_variables[$offset] : null;
+            return isset($this->variables[$offset]) ? $this->variables[$offset] : null;
         }
 
         /**
@@ -131,7 +131,7 @@ namespace Breeze\Plugins\Flashhash {
          */
         public function asArray()
         {
-            return $this->_variables;
+            return $this->variables;
         }
     }
 

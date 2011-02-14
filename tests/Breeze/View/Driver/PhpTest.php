@@ -42,13 +42,13 @@ namespace Breeze\View\Driver\Tests {
          *
          * @param Breeze\Application
          */
-        protected $_application;
+        protected $application;
         /**
          * The driver object for testing.
          *
          * @param Breeze\View\Driver\Php
          */
-        protected $_driver;
+        protected $driver;
 
         /**
          * Sets up the test case for {@link Breeze\View\Driver\Php}.
@@ -57,8 +57,8 @@ namespace Breeze\View\Driver\Tests {
          */
         public function setUp()
         {
-            $this->_application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
-            $this->_driver = new Php($this->_application, \Breeze\Tests\FIXTURES_PATH);
+            $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
+            $this->driver = new Php($this->application, \Breeze\Tests\FIXTURES_PATH);
         }
 
         /**
@@ -67,7 +67,7 @@ namespace Breeze\View\Driver\Tests {
         public function testFetchWithInvalidTemplate()
         {
             $this->setExpectedException('\\InvalidArgumentException', 'is not a valid template.');
-            $this->_driver->fetch('DOES NOT EXIST');
+            $this->driver->fetch('DOES NOT EXIST');
         }
 
         /**
@@ -75,7 +75,7 @@ namespace Breeze\View\Driver\Tests {
          */
         public function testFetchWithNoVariables()
         {
-            $this->assertSame('Hello World', $this->_driver->fetch('template.php'));
+            $this->assertSame('Hello World', $this->driver->fetch('template.php'));
         }
 
         /**
@@ -83,7 +83,7 @@ namespace Breeze\View\Driver\Tests {
          */
         public function testFetchWithVariables()
         {
-            $this->assertSame('Hello Jeff', $this->_driver->fetch('template.php', array('name'=>'Jeff')));
+            $this->assertSame('Hello Jeff', $this->driver->fetch('template.php', array('name'=>'Jeff')));
         }
     }
 }

@@ -52,20 +52,20 @@ namespace Breeze\View\Driver\Tests {
          *
          * @param string
          */
-        static protected $_plugin_path = 'Breeze/plugins/Dwoo.php';
+        static protected $plugin_path = 'Breeze/plugins/Dwoo.php';
         /**
          * The name of the plugin
          *
          * @param string
          */
-        static protected $_plugin_name = 'Dwoo';
+        static protected $plugin_name = 'Dwoo';
 
         /**
          * The driver object for testing.
          *
          * @param Breeze\View\Driver\Dwoo
          */
-        protected $_driver;
+        protected $driver;
 
         /**
          * Sets up the test case for {@link Breeze\View\Driver\Dwoo}.
@@ -78,8 +78,8 @@ namespace Breeze\View\Driver\Tests {
                 $this->markTestSkipped('Dwoo is not available for testing');
             }
 
-            $this->_application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
-            $this->_driver = new Dwoo($this->_application, \Breeze\Tests\FIXTURES_PATH . '/Dwoo');
+            $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
+            $this->driver = new Dwoo($this->application, \Breeze\Tests\FIXTURES_PATH . '/Dwoo');
         }
 
         /**
@@ -88,7 +88,7 @@ namespace Breeze\View\Driver\Tests {
         public function testFetchWithInvalidTemplate()
         {
             $this->setExpectedException('\\InvalidArgumentException', 'is not a valid template.');
-            $this->_driver->fetch('DOES NOT EXIST');
+            $this->driver->fetch('DOES NOT EXIST');
         }
 
         /**
@@ -96,7 +96,7 @@ namespace Breeze\View\Driver\Tests {
          */
         public function testFetchWithNoVariables()
         {
-            $this->assertSame('Hello World', $this->_driver->fetch('template.tpl'));
+            $this->assertSame('Hello World', $this->driver->fetch('template.tpl'));
         }
 
         /**
@@ -104,7 +104,7 @@ namespace Breeze\View\Driver\Tests {
          */
         public function testFetchWithVariables()
         {
-            $this->assertSame('Hello Jeff', $this->_driver->fetch('template.tpl', array('name'=>'Jeff')));
+            $this->assertSame('Hello Jeff', $this->driver->fetch('template.tpl', array('name'=>'Jeff')));
         }
 
         /**
@@ -121,9 +121,9 @@ namespace Breeze\View\Driver\Tests {
             );
 
             $this->_setupMockedDependencies();
-            $this->_configurations->expects($this->once())
-                                  ->method('set')
-                                  ->with($this->equalTo($config));
+            $this->configurations->expects($this->once())
+                                 ->method('set')
+                                 ->with($this->equalTo($config));
             $this->_mockApplication();
         }
     }

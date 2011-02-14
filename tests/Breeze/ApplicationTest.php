@@ -54,7 +54,7 @@ namespace Breeze\Tests {
         public function testPass()
         {
             $this->setExpectedException('Breeze\\Dispatcher\\PassException');
-            $this->_application->pass();
+            $this->application->pass();
         }
 
         /**
@@ -62,7 +62,7 @@ namespace Breeze\Tests {
          */
         public function testRedirect()
         {
-            $this->_application->redirect('http://www.breezephp.com/', null, false);
+            $this->application->redirect('http://www.breezephp.com/', null, false);
             $this->assertSame(xdebug_get_headers(), array('Location: http://www.breezephp.com/'));
         }
 
@@ -81,10 +81,10 @@ namespace Breeze\Tests {
          */
         public function testConfigSetWithSingleValue()
         {
-            $this->_configurations->expects($this->once())
-                                  ->method('set')
-                                  ->with($this->equalTo('this is a'), $this->equalTo('test'));
-            $this->_application->config('this is a', 'test');
+            $this->configurations->expects($this->once())
+                                 ->method('set')
+                                 ->with($this->equalTo('this is a'), $this->equalTo('test'));
+            $this->application->config('this is a', 'test');
         }
 
         /**
@@ -97,10 +97,10 @@ namespace Breeze\Tests {
                 'test2' => 'value2'
             );
 
-            $this->_configurations->expects($this->once())
-                                  ->method('set')
-                                  ->with($this->equalTo($config));
-            $this->_application->config($config);
+            $this->configurations->expects($this->once())
+                                 ->method('set')
+                                 ->with($this->equalTo($config));
+            $this->application->config($config);
         }
 
         /**
@@ -108,11 +108,11 @@ namespace Breeze\Tests {
          */
         public function testConfigGet()
         {
-            $this->_configurations->expects($this->at(0))
-                                  ->method('get')
-                                  ->with($this->equalTo('this is a'))
-                                  ->will($this->returnValue('test'));
-            $this->assertSame('test', $this->_application->config('this is a'));
+            $this->configurations->expects($this->at(0))
+                                 ->method('get')
+                                 ->with($this->equalTo('this is a'))
+                                 ->will($this->returnValue('test'));
+            $this->assertSame('test', $this->application->config('this is a'));
         }
 
         /**
@@ -120,10 +120,10 @@ namespace Breeze\Tests {
          */
         public function testConditionGetWithoutParameters()
         {
-           $this->_mocks['conditions_object']->expects($this->once())
-                                             ->method('dispatchCondition')
-                                             ->with($this->equalTo('test'));
-           $this->_application->condition('test');
+           $this->mocks['conditions_object']->expects($this->once())
+                                            ->method('dispatchCondition')
+                                            ->with($this->equalTo('test'));
+           $this->application->condition('test');
         }
 
         /**
@@ -131,10 +131,10 @@ namespace Breeze\Tests {
          */
         public function testConditionGetWithParameters()
         {
-           $this->_mocks['conditions_object']->expects($this->once())
-                                             ->method('dispatchCondition')
-                                             ->with($this->equalTo('test'), $this->equalTo('param1'), $this->equalTo('param2'));
-           $this->_application->condition('test', 'param1', 'param2');
+           $this->mocks['conditions_object']->expects($this->once())
+                                            ->method('dispatchCondition')
+                                            ->with($this->equalTo('test'), $this->equalTo('param1'), $this->equalTo('param2'));
+           $this->application->condition('test', 'param1', 'param2');
         }
 
         /**
@@ -143,10 +143,10 @@ namespace Breeze\Tests {
         public function testConditionSet()
         {
            $closure = function(){};
-           $this->_mocks['conditions_object']->expects($this->once())
-                                             ->method('add')
-                                             ->with($this->equalTo('test'), $this->equalTo($closure));
-           $this->_application->condition('test', $closure);
+           $this->mocks['conditions_object']->expects($this->once())
+                                            ->method('add')
+                                            ->with($this->equalTo('test'), $this->equalTo($closure));
+           $this->application->condition('test', $closure);
         }
 
         /**
@@ -154,11 +154,11 @@ namespace Breeze\Tests {
          */
         public function testTemplateGet()
         {
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('__get')
-                                        ->with($this->equalTo('this_is_a'))
-                                        ->will($this->returnValue('test'));
-            $this->assertSame('test', $this->_application->template('this_is_a'));
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('__get')
+                                       ->with($this->equalTo('this_is_a'))
+                                       ->will($this->returnValue('test'));
+            $this->assertSame('test', $this->application->template('this_is_a'));
         }
 
         /**
@@ -166,10 +166,10 @@ namespace Breeze\Tests {
          */
         public function testTemplateSetSingle()
         {
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('__set')
-                                        ->with($this->equalTo('this_is_a'), $this->equalTo('value'));
-            $this->_application->template('this_is_a', 'value');
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('__set')
+                                       ->with($this->equalTo('this_is_a'), $this->equalTo('value'));
+            $this->application->template('this_is_a', 'value');
         }
 
         /**
@@ -183,10 +183,10 @@ namespace Breeze\Tests {
                 'test2' => 'value2'
             );
 
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('addVariables')
-                                        ->with($this->equalTo($template_variables));
-            $this->_application->template($template_variables);
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('addVariables')
+                                       ->with($this->equalTo($template_variables));
+            $this->application->template($template_variables);
         }
 
         /**
@@ -195,14 +195,14 @@ namespace Breeze\Tests {
          */
         public function testErrorDispatchDefaultHttpErrorCode()
         {
-            $this->_mocks['errors_object']->expects($this->once())
-                                          ->method('getErrorForCode')
-                                          ->with($this->equalTo(404))
-                                          ->will($this->returnValue('Page Not Found'));
-            $this->_mocks['errors_object']->expects($this->once())
-                                          ->method('dispatchError')
-                                          ->with($this->equalTo('404 - Page Not Found'), $this->equalTo('404'));
-            $this->_application->error(404);
+            $this->mocks['errors_object']->expects($this->once())
+                                         ->method('getErrorForCode')
+                                         ->with($this->equalTo(404))
+                                         ->will($this->returnValue('Page Not Found'));
+            $this->mocks['errors_object']->expects($this->once())
+                                         ->method('dispatchError')
+                                         ->with($this->equalTo('404 - Page Not Found'), $this->equalTo('404'));
+            $this->application->error(404);
         }
 
         /**
@@ -211,14 +211,14 @@ namespace Breeze\Tests {
          */
         public function testErrorDispatchGenericMessageWithNonHttpErrorCode()
         {
-            $this->_mocks['errors_object']->expects($this->once())
-                                          ->method('getErrorForCode')
-                                          ->with($this->equalTo(600))
-                                          ->will($this->returnValue(null));
-            $this->_mocks['errors_object']->expects($this->once())
-                                          ->method('dispatchError')
-                                          ->with($this->equalTo('An Error Occurred.'), $this->equalTo('600'));
-            $this->_application->error(600);
+            $this->mocks['errors_object']->expects($this->once())
+                                         ->method('getErrorForCode')
+                                         ->with($this->equalTo(600))
+                                         ->will($this->returnValue(null));
+            $this->mocks['errors_object']->expects($this->once())
+                                         ->method('dispatchError')
+                                         ->with($this->equalTo('An Error Occurred.'), $this->equalTo('600'));
+            $this->application->error(600);
         }
 
         /**
@@ -226,10 +226,10 @@ namespace Breeze\Tests {
          */
         public function testErrorDispatchCustomMessage()
         {
-            $this->_mocks['errors_object']->expects($this->once())
-                                          ->method('dispatchError')
-                                          ->with($this->equalTo('this is a message'), $this->equalTo('0'));
-            $this->_application->error("this is a message");
+            $this->mocks['errors_object']->expects($this->once())
+                                         ->method('dispatchError')
+                                         ->with($this->equalTo('this is a message'), $this->equalTo('0'));
+            $this->application->error("this is a message");
         }
 
         /**
@@ -238,10 +238,10 @@ namespace Breeze\Tests {
         public function testErrorAddDefault()
         {
             $closure = function(){};
-            $this->_mocks['errors_object']->expects($this->once())
-                                          ->method('add')
-                                          ->with($this->equalTo($closure));
-            $this->_application->error($closure);
+            $this->mocks['errors_object']->expects($this->once())
+                                         ->method('add')
+                                         ->with($this->equalTo($closure));
+            $this->application->error($closure);
         }
 
         /**
@@ -250,10 +250,10 @@ namespace Breeze\Tests {
         public function testErrorAddCode()
         {
             $closure = function(){};
-            $this->_mocks['errors_object']->expects($this->once())
-                                          ->method('add')
-                                          ->with($this->equalTo(403), $this->equalTo($closure));
-            $this->_application->error(403, $closure);
+            $this->mocks['errors_object']->expects($this->once())
+                                         ->method('add')
+                                         ->with($this->equalTo(403), $this->equalTo($closure));
+            $this->application->error(403, $closure);
         }
 
         /**
@@ -262,10 +262,10 @@ namespace Breeze\Tests {
         public function testErrorAddException()
         {
             $closure = function(){};
-            $this->_mocks['errors_object']->expects($this->once())
-                                          ->method('add')
-                                          ->with($this->equalTo('Exception'), $this->equalTo($closure));
-            $this->_application->error('Exception', $closure);
+            $this->mocks['errors_object']->expects($this->once())
+                                         ->method('add')
+                                         ->with($this->equalTo('Exception'), $this->equalTo($closure));
+            $this->application->error('Exception', $closure);
         }
 
         /**
@@ -275,10 +275,10 @@ namespace Breeze\Tests {
         {
             $closure = function(){};
             $range = range(400, 500);
-            $this->_mocks['errors_object']->expects($this->once())
-                                          ->method('add')
-                                          ->with($this->equalTo($range), $this->equalTo($closure));
-            $this->_application->error($range, $closure);
+            $this->mocks['errors_object']->expects($this->once())
+                                         ->method('add')
+                                         ->with($this->equalTo($range), $this->equalTo($closure));
+            $this->application->error($range, $closure);
         }
 
         /**
@@ -287,7 +287,7 @@ namespace Breeze\Tests {
         public function testCallUnkownMethod()
         {
             $this->setExpectedException('\\PHPUnit_Framework_Error', 'Call to undefined function:');
-            $this->_application->this_will_fail();
+            $this->application->this_will_fail();
         }
 
         /**
@@ -295,10 +295,10 @@ namespace Breeze\Tests {
          */
         public function testViewDisplay()
         {
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('display')
-                                        ->with($this->equalTo('template'));
-            $this->_application->display('template');
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('display')
+                                       ->with($this->equalTo('template'));
+            $this->application->display('template');
         }
 
         /**
@@ -307,10 +307,10 @@ namespace Breeze\Tests {
         public function testViewDisplayWithVariables()
         {
             $template_variables = array('this is a', 'test');
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('display')
-                                        ->with($this->equalTo('template'), $this->equalTo($template_variables));
-            $this->_application->display('template', $template_variables);
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('display')
+                                       ->with($this->equalTo('template'), $this->equalTo($template_variables));
+            $this->application->display('template', $template_variables);
         }
 
         /**
@@ -318,11 +318,11 @@ namespace Breeze\Tests {
          */
         public function testFetch()
         {
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('fetch')
-                                        ->with($this->equalTo('template'))
-                                        ->will($this->returnValue('template contents'));
-            $this->assertSame('template contents', $this->_application->fetch('template'));
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('fetch')
+                                       ->with($this->equalTo('template'))
+                                       ->will($this->returnValue('template contents'));
+            $this->assertSame('template contents', $this->application->fetch('template'));
         }
 
         /**
@@ -331,11 +331,11 @@ namespace Breeze\Tests {
         public function testViewFetchWithVariables()
         {
             $template_variables = array('this is a', 'test');
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('fetch')
-                                        ->with($this->equalTo('template'), $this->equalTo($template_variables))
-                                        ->will($this->returnValue('template contents'));
-            $this->assertSame('template contents', $this->_application->fetch('template', $template_variables));
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('fetch')
+                                       ->with($this->equalTo('template'), $this->equalTo($template_variables))
+                                       ->will($this->returnValue('template contents'));
+            $this->assertSame('template contents', $this->application->fetch('template', $template_variables));
         }
 
         /**
@@ -343,10 +343,10 @@ namespace Breeze\Tests {
          */
         public function testViewLayout()
         {
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('layout')
-                                        ->with($this->equalTo('layout'));
-            $this->_application->layout('layout');
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('layout')
+                                       ->with($this->equalTo('layout'));
+            $this->application->layout('layout');
         }
 
         /**
@@ -354,11 +354,11 @@ namespace Breeze\Tests {
          */
         public function testPartial()
         {
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('partial')
-                                        ->with($this->equalTo('template'))
-                                        ->will($this->returnValue('template contents'));
-            $this->assertSame('template contents', $this->_application->partial('template'));
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('partial')
+                                       ->with($this->equalTo('template'))
+                                       ->will($this->returnValue('template contents'));
+            $this->assertSame('template contents', $this->application->partial('template'));
         }
 
         /**
@@ -368,11 +368,11 @@ namespace Breeze\Tests {
         public function testViewPartialWithVariables()
         {
             $template_variables = array('this is a', 'test');
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('partial')
-                                        ->with($this->equalTo('template'), $this->equalTo($template_variables))
-                                        ->will($this->returnValue('template contents'));
-            $this->assertSame('template contents', $this->_application->partial('template', $template_variables));
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('partial')
+                                       ->with($this->equalTo('template'), $this->equalTo($template_variables))
+                                       ->will($this->returnValue('template contents'));
+            $this->assertSame('template contents', $this->application->partial('template', $template_variables));
         }
 
         /**
@@ -380,10 +380,10 @@ namespace Breeze\Tests {
          */
         public function testViewLayoutExists()
         {
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('layoutExists')
-                                        ->will($this->returnValue(true));
-            $this->assertTrue($this->_application->layoutExists());
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('layoutExists')
+                                       ->will($this->returnValue(true));
+            $this->assertTrue($this->application->layoutExists());
         }
 
         /**
@@ -391,11 +391,11 @@ namespace Breeze\Tests {
          */
         public function testViewFetchLayout()
         {
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('fetchLayout')
-                                        ->with($this->equalTo('contents'))
-                                        ->will($this->returnValue('<layout>contents</layout>'));
-            $this->assertSame('<layout>contents</layout>', $this->_application->fetchLayout('contents'));
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('fetchLayout')
+                                       ->with($this->equalTo('contents'))
+                                       ->will($this->returnValue('<layout>contents</layout>'));
+            $this->assertSame('<layout>contents</layout>', $this->application->fetchLayout('contents'));
         }
 
         /**
@@ -406,10 +406,10 @@ namespace Breeze\Tests {
         public function testDispatcherSyntheticRequest()
         {
             foreach (array('get','post','put','delete') as $method) {
-                $this->_mocks['dispatcher_object']->expects($this->at(0))
-                                                  ->method('dispatch')
-                                                  ->with($this->equalTo($method), $this->equalTo('/my/page'));
-                $this->_application->$method('/my/page');
+                $this->mocks['dispatcher_object']->expects($this->at(0))
+                                                 ->method('dispatch')
+                                                 ->with($this->equalTo($method), $this->equalTo('/my/page'));
+                $this->application->$method('/my/page');
             }
         }
 
@@ -422,10 +422,10 @@ namespace Breeze\Tests {
         {
             $closure = function(){};
             foreach (array('get','post','put','delete') as $method) {
-                $this->_mocks['dispatcher_object']->expects($this->at(0))
-                                                  ->method('__call')
-                                                  ->with($this->equalTo($method), $this->equalTo(array('/my/page', $closure)));
-                $this->_application->$method('/my/page', $closure);
+                $this->mocks['dispatcher_object']->expects($this->at(0))
+                                                 ->method('__call')
+                                                 ->with($this->equalTo($method), $this->equalTo(array('/my/page', $closure)));
+                $this->application->$method('/my/page', $closure);
             }
         }
 
@@ -434,10 +434,10 @@ namespace Breeze\Tests {
          */
         public function testSet()
         {
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('__set')
-                                        ->with($this->equalTo('this_is_a'), $this->equalTo('test'));
-            $this->_application->this_is_a = 'test';
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('__set')
+                                       ->with($this->equalTo('this_is_a'), $this->equalTo('test'));
+            $this->application->this_is_a = 'test';
         }
 
         /**
@@ -445,11 +445,11 @@ namespace Breeze\Tests {
          */
         public function testGet()
         {
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('__get')
-                                        ->with($this->equalTo('this_is_a'))
-                                        ->will($this->returnValue('test'));
-            $this->assertSame('test', $this->_application->this_is_a);
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('__get')
+                                       ->with($this->equalTo('this_is_a'))
+                                       ->will($this->returnValue('test'));
+            $this->assertSame('test', $this->application->this_is_a);
         }
 
         /**
@@ -457,11 +457,11 @@ namespace Breeze\Tests {
          */
         public function testIsset()
         {
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('__isset')
-                                        ->with($this->equalTo('this_is_a'))
-                                        ->will($this->returnValue(false));
-            $this->assertFalse(isset($this->_application->this_is_a));
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('__isset')
+                                       ->with($this->equalTo('this_is_a'))
+                                       ->will($this->returnValue(false));
+            $this->assertFalse(isset($this->application->this_is_a));
         }
 
         /**
@@ -469,10 +469,10 @@ namespace Breeze\Tests {
          */
         public function testUnset()
         {
-            $this->_mocks['view_object']->expects($this->once())
-                                        ->method('__unset')
-                                        ->with($this->equalTo('this_is_a'));
-            unset($this->_application->this_is_a);
+            $this->mocks['view_object']->expects($this->once())
+                                       ->method('__unset')
+                                       ->with($this->equalTo('this_is_a'));
+            unset($this->application->this_is_a);
         }
 
         /**
@@ -481,10 +481,10 @@ namespace Breeze\Tests {
         public function testAddHelper()
         {
             $closure = function(){};
-            $this->_mocks['helpers_object']->expects($this->once())
-                                           ->method('add')
-                                           ->with($this->equalTo('name'), $this->equalTo($closure), 'label');
-            $this->_application->helper('name', $closure);
+            $this->mocks['helpers_object']->expects($this->once())
+                                          ->method('add')
+                                          ->with($this->equalTo('name'), $this->equalTo($closure), 'label');
+            $this->application->helper('name', $closure);
         }
 
         /**
@@ -492,15 +492,15 @@ namespace Breeze\Tests {
          */
         public function testRunHelper()
         {
-            $this->_mocks['helpers_object']->expects($this->once())
-                                           ->method('has')
-                                           ->with('test_helper')
-                                           ->will($this->returnValue(true));
-            $this->_mocks['helpers_object']->expects($this->once())
-                                           ->method('get')
-                                           ->with('test_helper')
-                                           ->will($this->returnValue(function($name){ return "hello $name"; }));
-            $this->assertSame('hello test', $this->_application->test_helper('test'));
+            $this->mocks['helpers_object']->expects($this->once())
+                                          ->method('has')
+                                          ->with('test_helper')
+                                          ->will($this->returnValue(true));
+            $this->mocks['helpers_object']->expects($this->once())
+                                          ->method('get')
+                                          ->with('test_helper')
+                                          ->will($this->returnValue(function($name){ return "hello $name"; }));
+            $this->assertSame('hello test', $this->application->test_helper('test'));
         }
 
         /**
@@ -513,10 +513,10 @@ namespace Breeze\Tests {
                 'template','display','fetch','pass','helper','run','error','condition','redirect',
                 'partial'
             );
-            $this->_mocks['helpers_object']->expects($this->once())
-                                           ->method('all')
-                                           ->will($this->returnValue(array('test1'=>function(){}, 'test2'=>function(){})));
-            $this->assertSame($helpers, $this->_application->getHelpers());
+            $this->mocks['helpers_object']->expects($this->once())
+                                          ->method('all')
+                                          ->will($this->returnValue(array('test1'=>function(){}, 'test2'=>function(){})));
+            $this->assertSame($helpers, $this->application->getHelpers());
         }
 
         /**
@@ -525,10 +525,10 @@ namespace Breeze\Tests {
         public function testAddBeforeFilter()
         {
             $closure = function(){};
-            $this->_mocks['before_filters_object']->expects($this->once())
-                                                  ->method('add')
-                                                  ->with($this->equalTo($closure));
-            $this->_application->before($closure);
+            $this->mocks['before_filters_object']->expects($this->once())
+                                                 ->method('add')
+                                                 ->with($this->equalTo($closure));
+            $this->application->before($closure);
         }
 
         /**
@@ -537,10 +537,10 @@ namespace Breeze\Tests {
         public function testAddAfterFilter()
         {
             $closure = function(){};
-            $this->_mocks['after_filters_object']->expects($this->once())
-                                                 ->method('add')
-                                                 ->with($this->equalTo($closure));
-            $this->_application->after($closure);
+            $this->mocks['after_filters_object']->expects($this->once())
+                                                ->method('add')
+                                                ->with($this->equalTo($closure));
+            $this->application->after($closure);
         }
 
         /**
@@ -550,7 +550,7 @@ namespace Breeze\Tests {
         public function testFilterWithBadType()
         {
             $this->setExpectedException('\\InvalidArgumentException', 'is not a valid filter type.');
-            $this->_application->filter('DOES NOT EXIST');
+            $this->application->filter('DOES NOT EXIST');
         }
 
         /**
@@ -559,10 +559,10 @@ namespace Breeze\Tests {
         public function testFilterBefore()
         {
             $this->expectOutputString('test1test2');
-            $this->_mocks['before_filters_object']->expects($this->once())
-                                                  ->method('all')
-                                                  ->will($this->returnValue(array('test1'=>function(){ echo "test1"; }, 'test2'=>function(){ echo "test2"; })));
-            $this->_application->filter('before');
+            $this->mocks['before_filters_object']->expects($this->once())
+                                                 ->method('all')
+                                                 ->will($this->returnValue(array('test1'=>function(){ echo "test1"; }, 'test2'=>function(){ echo "test2"; })));
+            $this->application->filter('before');
         }
 
         /**
@@ -571,10 +571,10 @@ namespace Breeze\Tests {
         public function testFilterAfter()
         {
             $this->expectOutputString('test1test2');
-            $this->_mocks['after_filters_object']->expects($this->once())
-                                                 ->method('all')
-                                                 ->will($this->returnValue(array('test1'=>function(){ echo "test1"; }, 'test2'=>function(){ echo "test2"; })));
-            $this->_application->filter('after');
+            $this->mocks['after_filters_object']->expects($this->once())
+                                                ->method('all')
+                                                ->will($this->returnValue(array('test1'=>function(){ echo "test1"; }, 'test2'=>function(){ echo "test2"; })));
+            $this->application->filter('after');
         }
 
         /**
@@ -583,18 +583,18 @@ namespace Breeze\Tests {
         public function testRun()
         {
             $this->expectOutputString('before1before2contentsafter1after2');
-            $this->_mocks['before_filters_object']->expects($this->once())
-                                                  ->method('all')
-                                                  ->will($this->returnValue(array('test1'=>function(){ echo "before1"; }, 'test2'=>function(){ echo "before2"; })));
-            $this->_mocks['after_filters_object']->expects($this->once())
+            $this->mocks['before_filters_object']->expects($this->once())
                                                  ->method('all')
-                                                 ->will($this->returnValue(array('test1'=>function(){ echo "after1"; }, 'test2'=>function(){ echo "after2"; })));
-            $this->_mocks['dispatcher_object']->expects($this->once())
-                                              ->method('dispatch')
-                                              ->will($this->returnCallback(function(){
-                                                  echo "contents";
-                                              }));
-            $this->_application->run();
+                                                 ->will($this->returnValue(array('test1'=>function(){ echo "before1"; }, 'test2'=>function(){ echo "before2"; })));
+            $this->mocks['after_filters_object']->expects($this->once())
+                                                ->method('all')
+                                                ->will($this->returnValue(array('test1'=>function(){ echo "after1"; }, 'test2'=>function(){ echo "after2"; })));
+            $this->mocks['dispatcher_object']->expects($this->once())
+                                             ->method('dispatch')
+                                             ->will($this->returnCallback(function(){
+                                                 echo "contents";
+                                               }));
+            $this->application->run();
         }
 
         /**
@@ -604,13 +604,13 @@ namespace Breeze\Tests {
         public function testRunWithExceptions()
         {
             $exception = new \Exception('Something bad happened');
-            $this->_mocks['dispatcher_object']->expects($this->once())
-                                              ->method('dispatch')
-                                              ->will($this->throwException($exception));
-            $this->_mocks['errors_object']->expects($this->once())
-                                          ->method('dispatchError')
-                                          ->with($this->equalTo($exception));
-            $this->_application->run();
+            $this->mocks['dispatcher_object']->expects($this->once())
+                                             ->method('dispatch')
+                                             ->will($this->throwException($exception));
+            $this->mocks['errors_object']->expects($this->once())
+                                         ->method('dispatchError')
+                                         ->with($this->equalTo($exception));
+            $this->application->run();
         }
 
         /**
@@ -620,12 +620,12 @@ namespace Breeze\Tests {
         public function testInjectBadDependency()
         {
             $this->setExpectedException('\\UnexpectedValueException', 'stdClass is not an instance of Breeze\\View\\View.');
-            $this->_configurations = $this->getMock('Breeze\\Configurations', array(), array(), '', FALSE);
-            $this->_configurations->expects($this->any())
-                                  ->method('get')
-                                  ->will($this->returnValue(new \stdClass()));
+            $this->configurations = $this->getMock('Breeze\\Configurations', array(), array(), '', FALSE);
+            $this->configurations->expects($this->any())
+                                 ->method('get')
+                                 ->will($this->returnValue(new \stdClass()));
 
-            new Application($this->_configurations);
+            new Application($this->configurations);
         }
 
         /**
@@ -666,9 +666,9 @@ namespace Breeze\Tests {
         public function testRegisterPluginWithHelper()
         {
             $closure = function(){};
-            $this->_mocks['helpers_object']->expects($this->once())
-                                           ->method('add')
-                                           ->with($this->equalTo('name'), $this->equalTo($closure), 'label');
+            $this->mocks['helpers_object']->expects($this->once())
+                                          ->method('add')
+                                          ->with($this->equalTo('name'), $this->equalTo($closure), 'label');
             Application::register('test_plugin', function($app) use ($closure){
                 $app->helper('name', $closure);
             });

@@ -52,20 +52,20 @@ namespace Breeze\View\Driver\Tests {
          *
          * @param string
          */
-        static protected $_plugin_path = 'Breeze/plugins/Smarty.php';
+        static protected $plugin_path = 'Breeze/plugins/Smarty.php';
         /**
          * The name of the plugin
          *
          * @param string
          */
-        static protected $_plugin_name = 'Smarty';
+        static protected $plugin_name = 'Smarty';
 
         /**
          * The driver object for testing.
          *
          * @param Breeze\View\Driver\Smarty
          */
-        protected $_driver;
+        protected $driver;
 
         /**
          * Sets up the test case for {@link Breeze\View\Driver\Smarty}.
@@ -78,8 +78,8 @@ namespace Breeze\View\Driver\Tests {
                 $this->markTestSkipped('Smarty is not available for testing');
             }
 
-            $this->_application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
-            $this->_driver = new Smarty($this->_application, \Breeze\Tests\FIXTURES_PATH . '/Smarty');
+            $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
+            $this->driver = new Smarty($this->application, \Breeze\Tests\FIXTURES_PATH . '/Smarty');
         }
 
         /**
@@ -88,7 +88,7 @@ namespace Breeze\View\Driver\Tests {
         public function testFetchWithInvalidTemplate()
         {
             $this->setExpectedException('\\InvalidArgumentException', 'is not a valid template.');
-            $this->_driver->fetch('DOES NOT EXIST');
+            $this->driver->fetch('DOES NOT EXIST');
         }
 
         /**
@@ -96,7 +96,7 @@ namespace Breeze\View\Driver\Tests {
          */
         public function testFetchWithNoVariables()
         {
-            $this->assertSame('Hello World', $this->_driver->fetch('template.tpl'));
+            $this->assertSame('Hello World', $this->driver->fetch('template.tpl'));
         }
 
         /**
@@ -104,7 +104,7 @@ namespace Breeze\View\Driver\Tests {
          */
         public function testFetchWithVariables()
         {
-            $this->assertSame('Hello Jeff', $this->_driver->fetch('template.tpl', array('name'=>'Jeff')));
+            $this->assertSame('Hello Jeff', $this->driver->fetch('template.tpl', array('name'=>'Jeff')));
         }
 
         /**
@@ -113,7 +113,7 @@ namespace Breeze\View\Driver\Tests {
         public function testPartialWithoutFile()
         {
             $this->setExpectedException('\\PHPUnit_Framework_Error', 'Smarty error: [partial] missing parameter \'file\'');
-            $this->_driver->partial(array(), $this->getMock('Smarty'));
+            $this->driver->partial(array(), $this->getMock('Smarty'));
         }
 
         /**
@@ -121,11 +121,11 @@ namespace Breeze\View\Driver\Tests {
          */
         public function testPartialWithoutVariables()
         {
-            $this->_application->expects($this->once())
-                               ->method('__call')
-                               ->with($this->equalTo('partial'), $this->equalTo(array('template.tpl', array())))
-                               ->will($this->returnValue('Hello World'));
-            $this->assertSame('Hello World', $this->_driver->partial(array('file'=>'template.tpl'), $this->getMock('Smarty')));
+            $this->application->expects($this->once())
+                              ->method('__call')
+                              ->with($this->equalTo('partial'), $this->equalTo(array('template.tpl', array())))
+                              ->will($this->returnValue('Hello World'));
+            $this->assertSame('Hello World', $this->driver->partial(array('file'=>'template.tpl'), $this->getMock('Smarty')));
         }
 
         /**
@@ -133,11 +133,11 @@ namespace Breeze\View\Driver\Tests {
          */
         public function testPartialWithVariables()
         {
-            $this->_application->expects($this->once())
-                               ->method('__call')
-                               ->with($this->equalTo('partial'), $this->equalTo(array('template.tpl', array('name'=>'Jeff'))))
-                               ->will($this->returnValue('Hello Jeff'));
-            $this->assertSame('Hello Jeff', $this->_driver->partial(array('file'=>'template.tpl', 'name'=>'Jeff'), $this->getMock('Smarty')));
+            $this->application->expects($this->once())
+                              ->method('__call')
+                              ->with($this->equalTo('partial'), $this->equalTo(array('template.tpl', array('name'=>'Jeff'))))
+                              ->will($this->returnValue('Hello Jeff'));
+            $this->assertSame('Hello Jeff', $this->driver->partial(array('file'=>'template.tpl', 'name'=>'Jeff'), $this->getMock('Smarty')));
         }
 
         /**
@@ -155,9 +155,9 @@ namespace Breeze\View\Driver\Tests {
             );
 
             $this->_setupMockedDependencies();
-            $this->_configurations->expects($this->once())
-                                  ->method('set')
-                                  ->with($this->equalTo($config));
+            $this->configurations->expects($this->once())
+                                 ->method('set')
+                                 ->with($this->equalTo($config));
             $this->_mockApplication();
         }
     }

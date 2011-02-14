@@ -46,27 +46,27 @@ namespace Breeze\Dispatcher\Tests {
          *
          * @param Breeze\Application
          */
-        protected $_application;
+        protected $application;
         /**
          * The dispatcher object for testing.
          *
          * @param Breeze\Dispatcher\Dispatcher
          */
-        protected $_dispatcher;
+        protected $dispatcher;
 
         /**
          * The valid request methods.
          *
          * @param array
          */
-        protected static $_supported_methods = array('GET','POST','PUT','DELETE');
+        protected static $supported_methods = array('GET','POST','PUT','DELETE');
         /**
          * A mapping of original URIs and the expected final result after the
          * dispatcher normalizes them.
          *
          * @param array
          */
-        protected static $_uris = array(
+        protected static $uris = array(
 
             # Empty url, means homepage
             array(
@@ -130,8 +130,8 @@ namespace Breeze\Dispatcher\Tests {
          */
         public function setUp()
         {
-            $this->_application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
-            $this->_dispatcher = new Dispatcher($this->_application);
+            $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
+            $this->dispatcher = new Dispatcher($this->application);
         }
 
         /**
@@ -140,7 +140,7 @@ namespace Breeze\Dispatcher\Tests {
         public function testInvalidRequestMethod()
         {
             $this->setExpectedException('PHPUnit_Framework_Error', 'Call to undefined function:');
-            $this->_dispatcher->invalid('/something', function(){});
+            $this->dispatcher->invalid('/something', function(){});
         }
 
         /**
@@ -149,8 +149,8 @@ namespace Breeze\Dispatcher\Tests {
          */
         public function testSetRequestMethodWithHeadUsesGet()
         {
-            $this->_dispatcher->setRequestMethod('HEAD');
-            $this->assertSame('GET', $this->_dispatcher->getRequestMethod());
+            $this->dispatcher->setRequestMethod('HEAD');
+            $this->assertSame('GET', $this->dispatcher->getRequestMethod());
         }
 
         /**
@@ -159,7 +159,7 @@ namespace Breeze\Dispatcher\Tests {
          */
         public function testSetRequestMethodWithParameter()
         {
-            $dispatcher = $this->_dispatcher;
+            $dispatcher = $this->dispatcher;
             $this->_testSetRequestMethod(function($method) use ($dispatcher){
                 $dispatcher->setRequestMethod($method);
             });
@@ -205,12 +205,12 @@ namespace Breeze\Dispatcher\Tests {
          */
         public function testSetRequesMethodFromDispatch()
         {
-            foreach (self::$_supported_methods as $method) {
+            foreach (self::$supported_methods as $method) {
                 try {
-                    $this->_dispatcher->dispatch($method);
+                    $this->dispatcher->dispatch($method);
                     $this->fail("Expected exception Breeze\\Dispatcher\\NotFoundException");
                 } catch (NotFoundException $exception) {
-                    $this->assertSame($method, $this->_dispatcher->getRequestMethod());
+                    $this->assertSame($method, $this->dispatcher->getRequestMethod());
                 }
             }
         }
@@ -221,7 +221,7 @@ namespace Breeze\Dispatcher\Tests {
          */
         public function testSetRequestUriWithParameter()
         {
-            $dispatcher = $this->_dispatcher;
+            $dispatcher = $this->dispatcher;
             $this->_testSetRequestUri(function($uri) use ($dispatcher){
                 $dispatcher->setRequestUri($uri['original']);
             });
@@ -278,12 +278,12 @@ namespace Breeze\Dispatcher\Tests {
          */
         public function testSetRequestUriFromDispatch()
         {
-            foreach (self::$_uris as $uri) {
+            foreach (self::$uris as $uri) {
                 try {
-                    $this->_dispatcher->dispatch(null, $uri['original']);
+                    $this->dispatcher->dispatch(null, $uri['original']);
                     $this->fail("Expected exception Breeze\\Dispatcher\\NotFoundException");
                 } catch (NotFoundException $exception) {
-                    $this->assertSame($uri['final'], $this->_dispatcher->getRequestUri());
+                    $this->assertSame($uri['final'], $this->dispatcher->getRequestUri());
                 }
             }
         }
@@ -295,7 +295,7 @@ namespace Breeze\Dispatcher\Tests {
         public function testAddRouteWithNoPattern()
         {
             $this->setExpectedException('\\InvalidArgumentException', 'You must provide a non-empty pattern');
-            $this->_dispatcher->get(null, function(){});
+            $this->dispatcher->get(null, function(){});
         }
 
         /**
@@ -305,7 +305,7 @@ namespace Breeze\Dispatcher\Tests {
         public function testAddRouteWithNoCallback()
         {
             $this->setExpectedException('\\InvalidArgumentException', 'You must provide a callable PHP function.');
-            $this->_dispatcher->get('invalid closure', 'INVALID CLOSURE');
+            $this->dispatcher->get('invalid closure', 'INVALID CLOSURE');
         }
 
         /**
@@ -316,7 +316,7 @@ namespace Breeze\Dispatcher\Tests {
         {
             $this->setExpectedException('Breeze\\Dispatcher\\NotFoundException', 'No Matching Routes Found');
             $this->_addUris();
-            $this->_dispatcher->dispatch('POST', '/path/with/querystring?this=neat&this=cool');
+            $this->dispatcher->dispatch('POST', '/path/with/querystring?this=neat&this=cool');
         }
 
         /**
@@ -327,7 +327,7 @@ namespace Breeze\Dispatcher\Tests {
         {
             $this->setExpectedException('Breeze\\Dispatcher\\NotFoundException', 'No Matching Routes Found');
             $this->_addUris();
-            $this->_dispatcher->dispatch('GET', '/abc');
+            $this->dispatcher->dispatch('GET', '/abc');
         }
 
         /**
@@ -346,7 +346,7 @@ namespace Breeze\Dispatcher\Tests {
          */
         public function testDispatchWithStringMatch()
         {
-            $this->_addUris(self::$_supported_methods);
+            $this->_addUris(self::$supported_methods);
             $this->_testAllUrisWithAllMethods();
 
         }
@@ -357,12 +357,12 @@ namespace Breeze\Dispatcher\Tests {
          */
         public function testDispatchWithRegexpMatch()
         {
-            $this->_dispatcher->any(';wont match;', function() {
+            $this->dispatcher->any(';wont match;', function() {
                 $this->fail('Pattern ;wont match; should not match.');
             });
 
-            $this->_dispatcher->any(';(.+);', function($app, $matches) {
-               echo "Hi from {$matches[1]}";
+            $this->dispatcher->any(';(.+);', function($app, $matches) {
+                echo "Hi from {$matches[1]}";
             });
 
             $this->_testAllUrisWithAllMethods();
@@ -378,14 +378,14 @@ namespace Breeze\Dispatcher\Tests {
          */
         protected function _testSetRequestMethod($callback, $call_setter = true)
         {
-            foreach (self::$_supported_methods as $method) {
+            foreach (self::$supported_methods as $method) {
                 $callback($method);
 
                 if ($call_setter) {
-                    $this->_dispatcher->setRequestMethod();
+                    $this->dispatcher->setRequestMethod();
                 }
 
-                $this->assertSame($method, $this->_dispatcher->getRequestMethod());
+                $this->assertSame($method, $this->dispatcher->getRequestMethod());
             }
         }
 
@@ -399,19 +399,19 @@ namespace Breeze\Dispatcher\Tests {
          */
         protected function _testSetRequestUri($callback, $call_setter = true)
         {
-            foreach (self::$_uris as $uri) {
+            foreach (self::$uris as $uri) {
                 $callback($uri);
 
                 if ($call_setter) {
-                    $this->_dispatcher->setRequestUri();
+                    $this->dispatcher->setRequestUri();
                 }
 
-                $this->assertSame($uri['final'], $this->_dispatcher->getRequestUri());
+                $this->assertSame($uri['final'], $this->dispatcher->getRequestUri());
             }
         }
 
         /**
-         * Tests hitting all uris in {@link Breeze\Dispatcher\Tests\DispatcherTest::$_uris} on
+         * Tests hitting all uris in {@link Breeze\Dispatcher\Tests\DispatcherTest::$uris} on
          * all methods defined in {@link Breeze\Dispatcher\Tests\DispatcherTest::$method}.
          *
          * @param Closure $callback    A callback for setting the request URI
@@ -421,17 +421,17 @@ namespace Breeze\Dispatcher\Tests {
          */
         protected function _testAllUrisWithAllMethods()
         {
-            foreach (self::$_supported_methods as $method) {
-                foreach (self::$_uris as $uri) {
+            foreach (self::$supported_methods as $method) {
+                foreach (self::$uris as $uri) {
                     ob_start();
-                    $this->_dispatcher->dispatch($method, $uri['original']);
+                    $this->dispatcher->dispatch($method, $uri['original']);
                     $this->assertSame("Hi from " . $uri['final'], ob_get_clean());
                 }
             }
         }
 
         /**
-         * Add routes for the uris in {@link Breeze\Dispatcher\Tests\DispatcherTest::$_uris}.
+         * Add routes for the uris in {@link Breeze\Dispatcher\Tests\DispatcherTest::$uris}.
          *
          * @param string|array $methods Request methods to add the uris for.
          *
@@ -440,13 +440,12 @@ namespace Breeze\Dispatcher\Tests {
         protected function _addUris($methods = 'GET')
         {
             foreach ((array)$methods as $method) {
-                foreach (self::$_uris as $uri) {
-                    $this->_dispatcher->$method($uri['final'], function() use ($uri) {
+                foreach (self::$uris as $uri) {
+                    $this->dispatcher->$method($uri['final'], function() use ($uri) {
                         echo "Hi from {$uri['final']}";
                     });
                 }
             }
         }
     }
-
 }

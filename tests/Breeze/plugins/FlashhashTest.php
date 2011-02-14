@@ -52,20 +52,20 @@ namespace Breeze\Plugins\Flashhash\Tests {
          *
          * @param  string
          */
-        static protected $_plugin_path = 'Breeze/plugins/Flashhash.php';
+        static protected $plugin_path = 'Breeze/plugins/Flashhash.php';
         /**
          * The name of the plugin
          *
          * @param string
          */
-        static protected $_plugin_name = 'Flashhash';
+        static protected $plugin_name = 'Flashhash';
 
         /**
          * The flashhash object for testing.
          *
          * @param Breeze\Plugins\Flashhash
          */
-        protected $_flashhash;
+        protected $flashhash;
 
         /**
          * Sets up the test case for {@link Breeze\Plugins\Flashhash}.
@@ -74,7 +74,7 @@ namespace Breeze\Plugins\Flashhash\Tests {
          */
         public function setUp()
         {
-            $this->_flashhash = new FlashHash();
+            $this->flashhash = new FlashHash();
         }
 
         /**
@@ -83,8 +83,8 @@ namespace Breeze\Plugins\Flashhash\Tests {
          */
         public function testOffsetSet()
         {
-            $this->_flashhash['key'] = 'value';
-            $this->assertSame('value', $this->_flashhash['key']);
+            $this->flashhash['key'] = 'value';
+            $this->assertSame('value', $this->flashhash['key']);
         }
 
         /**
@@ -93,7 +93,7 @@ namespace Breeze\Plugins\Flashhash\Tests {
          */
         public function testOffsetExistsWhenNoOffsetExists()
         {
-            $this->assertFalse(isset($this->_flashhash['key']));
+            $this->assertFalse(isset($this->flashhash['key']));
         }
 
         /**
@@ -102,8 +102,8 @@ namespace Breeze\Plugins\Flashhash\Tests {
          */
         public function testOffsetExistsWhenOffsetExists()
         {
-            $this->_flashhash['key'] = 'value';
-            $this->assertTrue(isset($this->_flashhash['key']));
+            $this->flashhash['key'] = 'value';
+            $this->assertTrue(isset($this->flashhash['key']));
         }
 
         /**
@@ -112,10 +112,10 @@ namespace Breeze\Plugins\Flashhash\Tests {
          */
         public function testOffsetUnset()
         {
-            $this->_flashhash['key'] = 'value';
-            unset($this->_flashhash['key']);
+            $this->flashhash['key'] = 'value';
+            unset($this->flashhash['key']);
 
-            $this->assertFalse(isset($this->_flashhash['key']));
+            $this->assertFalse(isset($this->flashhash['key']));
         }
 
         /**
@@ -124,8 +124,8 @@ namespace Breeze\Plugins\Flashhash\Tests {
          */
         public function testAsArray()
         {
-            $this->_flashhash['key'] = 'value';
-            $this->assertSame(array('key' => 'value'), $this->_flashhash->asArray());
+            $this->flashhash['key'] = 'value';
+            $this->assertSame(array('key' => 'value'), $this->flashhash->asArray());
         }
 
         /**
@@ -138,8 +138,8 @@ namespace Breeze\Plugins\Flashhash\Tests {
                 'key' => 'value'
             );
 
-            $this->_flashhash = new FlashHash();
-            $this->assertSame(array('key' => 'value'), $this->_flashhash->asArray());
+            $this->flashhash = new FlashHash();
+            $this->assertSame(array('key' => 'value'), $this->flashhash->asArray());
         }
 
         /**
@@ -151,8 +151,8 @@ namespace Breeze\Plugins\Flashhash\Tests {
                 'key' => 'value'
             );
 
-            $this->_flashhash = new FlashHash('test');
-            $this->assertSame(array('key' => 'value'), $this->_flashhash->asArray());
+            $this->flashhash = new FlashHash('test');
+            $this->assertSame(array('key' => 'value'), $this->flashhash->asArray());
         }
 
         /**
@@ -165,8 +165,8 @@ namespace Breeze\Plugins\Flashhash\Tests {
             $this->_mockPluginSystem();
             $this->_mockApplication();
 
-            $this->_application->flashnow('key', 'value');
-            $this->assertSame('value', $this->_application->flash('key'));
+            $this->application->flashnow('key', 'value');
+            $this->assertSame('value', $this->application->flash('key'));
         }
 
         /**
@@ -179,7 +179,7 @@ namespace Breeze\Plugins\Flashhash\Tests {
             $this->_mockPluginSystem();
             $this->_mockApplication();
 
-            $this->_application->flash('key', 'value');
+            $this->application->flash('key', 'value');
             $this->assertSame('value', $_SESSION['flashhash']['key']);
         }
     }

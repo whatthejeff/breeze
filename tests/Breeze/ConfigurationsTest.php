@@ -42,14 +42,14 @@ namespace Breeze\Tests {
          *
          * @param Breeze\Configurations
          */
-        protected $_configurations;
+        protected $configurations;
 
         /**
          * The list default configuration settings.
          *
          * @param array
          */
-        protected $_defaults = array(
+        protected $defaults = array(
             'template_engine'       => 'PHP',
             'template_options'      => array(),
             'template_directory'    => '../views',
@@ -66,7 +66,7 @@ namespace Breeze\Tests {
          */
         public function setUp()
         {
-            $this->_configurations = new Configurations();
+            $this->configurations = new Configurations();
         }
 
         /**
@@ -74,7 +74,7 @@ namespace Breeze\Tests {
          */
         public function testGetWithUnsetKey()
         {
-            $this->assertNull($this->_configurations->get('unset key'));
+            $this->assertNull($this->configurations->get('unset key'));
         }
 
         /**
@@ -82,8 +82,8 @@ namespace Breeze\Tests {
          */
         public function testGetWithSetKey()
         {
-            $this->_configurations->set('a key', 'a value');
-            $this->assertSame('a value', $this->_configurations->get('a key'));
+            $this->configurations->set('a key', 'a value');
+            $this->assertSame('a value', $this->configurations->get('a key'));
         }
 
         /**
@@ -91,8 +91,8 @@ namespace Breeze\Tests {
          */
         public function testDefaults()
         {
-            foreach ($this->_defaults as $key => $default) {
-                $this->assertSame($default, $this->_configurations->get($key));
+            foreach ($this->defaults as $key => $default) {
+                $this->assertSame($default, $this->configurations->get($key));
             }
         }
 
@@ -106,10 +106,10 @@ namespace Breeze\Tests {
                 'template_extension'=>'.tpl'
             );
 
-            $this->_configurations = new Configurations($new_values);
+            $this->configurations = new Configurations($new_values);
 
-            foreach (array_merge($this->_defaults, $new_values) as $key => $default) {
-                $this->assertSame($default, $this->_configurations->get($key));
+            foreach (array_merge($this->defaults, $new_values) as $key => $default) {
+                $this->assertSame($default, $this->configurations->get($key));
             }
         }
 
@@ -118,8 +118,8 @@ namespace Breeze\Tests {
          */
         public function testSetWithStringAndNewKey()
         {
-            $this->_configurations->set('a key', 'a value');
-            $this->assertSame('a value', $this->_configurations->get('a key'));
+            $this->configurations->set('a key', 'a value');
+            $this->assertSame('a value', $this->configurations->get('a key'));
         }
 
         /**
@@ -127,8 +127,8 @@ namespace Breeze\Tests {
          */
         public function testSetWithStringAndExistingKey()
         {
-            $this->_configurations->set('template_engine', 'smarty');
-            $this->assertSame('smarty', $this->_configurations->get('template_engine'));
+            $this->configurations->set('template_engine', 'smarty');
+            $this->assertSame('smarty', $this->configurations->get('template_engine'));
         }
 
         /**
@@ -140,10 +140,10 @@ namespace Breeze\Tests {
                 'a key1' => 'a value1',
                 'a key2' => 'a value2'
             );
-            $this->_configurations->set($new_values);
+            $this->configurations->set($new_values);
 
             foreach ($new_values as $key => $value) {
-                $this->assertSame($value, $this->_configurations->get($key));
+                $this->assertSame($value, $this->configurations->get($key));
             }
         }
 
@@ -159,12 +159,11 @@ namespace Breeze\Tests {
                 'template_engine'=>'smarty',
                 'template_extension'=>'.tpl'
             );
-            $this->_configurations->set($new_values);
+            $this->configurations->set($new_values);
 
             foreach ($new_values as $key => $value) {
-                $this->assertSame($value, $this->_configurations->get($key));
+                $this->assertSame($value, $this->configurations->get($key));
             }
         }
     }
-
 }

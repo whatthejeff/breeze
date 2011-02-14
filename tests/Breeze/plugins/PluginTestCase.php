@@ -47,13 +47,13 @@ namespace Breeze\Plugins\Tests {
          *
          * @param string
          */
-        static protected $_plugin_path = '';
+        static protected $plugin_path = '';
         /**
          * The name of the plugin
          *
          * @param string
          */
-        static protected $_plugin_name = '';
+        static protected $plugin_name = '';
 
         /**
          * Includes the plugin for testing.
@@ -62,9 +62,9 @@ namespace Breeze\Plugins\Tests {
          */
         public static function setUpBeforeClass()
         {
-            $constant = '\\Breeze\\Tests\\TEST_' . strtoupper(static::$_plugin_name);
+            $constant = '\\Breeze\\Tests\\TEST_' . strtoupper(static::$plugin_name);
             if (!defined($constant) || constant($constant)) {
-                require_once static::$_plugin_path;
+                require_once static::$plugin_path;
             }
         }
 
@@ -75,7 +75,7 @@ namespace Breeze\Plugins\Tests {
          */
         public static function tearDownAfterClass()
         {
-            Application::unregister(static::$_plugin_name);
+            Application::unregister(static::$plugin_name);
         }
 
         /**
@@ -86,32 +86,32 @@ namespace Breeze\Plugins\Tests {
         protected function _mockPluginSystem()
         {
             $test = $this;
-            $this->_mocks['helpers_object']->expects($this->any())
-                                           ->method('add')
-                                           ->will($this->returnCallback(function($name, $value) use ($test){
-                                                 $test->helpers[$name] = $value;
-                                             }));
-            $this->_mocks['helpers_object']->expects($this->any())
-                                           ->method('has')
-                                           ->will($this->returnCallback(function($name) use ($test){
-                                                 return isset($test->helpers[$name]);
-                                             }));
-            $this->_mocks['helpers_object']->expects($this->any())
-                                           ->method('get')
-                                           ->will($this->returnCallback(function($name) use ($test){
-                                                 return $test->helpers[$name];
-                                             }));
+            $this->mocks['helpers_object']->expects($this->any())
+                                          ->method('add')
+                                          ->will($this->returnCallback(function($name, $value) use ($test){
+                                              $test->helpers[$name] = $value;
+                                            }));
+            $this->mocks['helpers_object']->expects($this->any())
+                                          ->method('has')
+                                          ->will($this->returnCallback(function($name) use ($test){
+                                              return isset($test->helpers[$name]);
+                                            }));
+            $this->mocks['helpers_object']->expects($this->any())
+                                          ->method('get')
+                                          ->will($this->returnCallback(function($name) use ($test){
+                                              return $test->helpers[$name];
+                                            }));
 
-            $this->_mocks['view_object']->expects($this->any())
-                                        ->method('__set')
-                                        ->will($this->returnCallback(function($name, $value) use ($test){
-                                            $test->views[$name] = $value;
-                                          }));
-            $this->_mocks['view_object']->expects($this->any())
-                                        ->method('__get')
-                                        ->will($this->returnCallback(function($name) use ($test){
-                                            return $test->views[$name];
-                                          }));
+            $this->mocks['view_object']->expects($this->any())
+                                       ->method('__set')
+                                       ->will($this->returnCallback(function($name, $value) use ($test){
+                                           $test->views[$name] = $value;
+                                         }));
+            $this->mocks['view_object']->expects($this->any())
+                                       ->method('__get')
+                                       ->will($this->returnCallback(function($name) use ($test){
+                                           return $test->views[$name];
+                                         }));
         }
     }
 
