@@ -87,7 +87,7 @@ namespace Breeze\View\Driver {
          *
          * @return void
          */
-        protected function _config()
+        protected function config()
         {
             $path = $this->getPath();
             $this->dwoo->setCompileDir($path . '/' . $this->getOption('compile_dir', self::DEFAULT_COMPILE_DIR));
@@ -103,7 +103,7 @@ namespace Breeze\View\Driver {
          *
          * @return string The rendered template.
          */
-        protected function _fetch($template, array $variables = array())
+        protected function fetchTemplate($template, array $variables = array())
         {
             return $this->dwoo->get($this->getTemplatePath($template), $variables);
         }

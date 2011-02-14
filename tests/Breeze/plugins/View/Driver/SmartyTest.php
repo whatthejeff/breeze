@@ -154,11 +154,11 @@ namespace Breeze\View\Driver\Tests {
                     'config_dir'  => 'config')
             );
 
-            $this->_setupMockedDependencies();
+            $this->setupMockedDependencies();
             $this->configurations->expects($this->once())
                                  ->method('set')
                                  ->with($this->equalTo($config));
-            $this->_mockApplication();
+            $this->mockApplication();
         }
     }
 }

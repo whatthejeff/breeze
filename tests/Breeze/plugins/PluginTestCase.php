@@ -83,7 +83,7 @@ namespace Breeze\Plugins\Tests {
          *
          * @return void
          */
-        protected function _mockPluginSystem()
+        protected function mockPluginSystem()
         {
             $test = $this;
             $this->mocks['helpers_object']->expects($this->any())

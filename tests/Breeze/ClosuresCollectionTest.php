@@ -207,7 +207,7 @@ namespace Breeze\Tests {
                 $this->collection->add($name, $this->closure, ClosuresCollection::VALIDATE_NAME);
             }
 
-            $this->_testClosuresAdded($this->valid_names, $this->closure);
+            $this->checkClosuresAdded($this->valid_names, $this->closure);
         }
 
         /**
@@ -217,7 +217,7 @@ namespace Breeze\Tests {
         public function testAddWithArrayValidNameAndNameValidation()
         {
             $this->collection->add($this->valid_names, $this->closure, ClosuresCollection::VALIDATE_NAME);
-            $this->_testClosuresAdded($this->valid_names, $this->closure);
+            $this->checkClosuresAdded($this->valid_names, $this->closure);
         }
 
         /**
@@ -275,7 +275,7 @@ namespace Breeze\Tests {
             foreach ($this->valid_labels as $label) {
                 $this->collection->add($label, $this->closure, ClosuresCollection::VALIDATE_LABEL);
             }
-            $this->_testClosuresAdded($this->valid_labels, $this->closure);
+            $this->checkClosuresAdded($this->valid_labels, $this->closure);
         }
 
         /**
@@ -285,7 +285,7 @@ namespace Breeze\Tests {
         public function testAddWithArrayValidLabelAndLabelValidation()
         {
             $this->collection->add($this->valid_labels, $this->closure, ClosuresCollection::VALIDATE_LABEL);
-            $this->_testClosuresAdded($this->valid_labels, $this->closure);
+            $this->checkClosuresAdded($this->valid_labels, $this->closure);
         }
 
         /**
@@ -296,7 +296,7 @@ namespace Breeze\Tests {
          *
          * @return void
          */
-        protected function _testClosuresAdded($keys, $closures)
+        protected function checkClosuresAdded($keys, $closures)
         {
             $keys = (array)$keys;
 

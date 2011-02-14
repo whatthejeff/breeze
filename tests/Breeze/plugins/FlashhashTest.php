@@ -161,9 +161,9 @@ namespace Breeze\Plugins\Flashhash\Tests {
          */
         public function testFlashNow()
         {
-            $this->_setupMockedDependencies();
-            $this->_mockPluginSystem();
-            $this->_mockApplication();
+            $this->setupMockedDependencies();
+            $this->mockPluginSystem();
+            $this->mockApplication();
 
             $this->application->flashnow('key', 'value');
             $this->assertSame('value', $this->application->flash('key'));
@@ -175,9 +175,9 @@ namespace Breeze\Plugins\Flashhash\Tests {
          */
         public function testFlashSet()
         {
-            $this->_setupMockedDependencies();
-            $this->_mockPluginSystem();
-            $this->_mockApplication();
+            $this->setupMockedDependencies();
+            $this->mockPluginSystem();
+            $this->mockApplication();
 
             $this->application->flash('key', 'value');
             $this->assertSame('value', $_SESSION['flashhash']['key']);

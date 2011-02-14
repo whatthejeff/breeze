@@ -243,7 +243,7 @@ namespace Breeze\View\Tests {
         public function testFetchWithoutLayout()
         {
             $this->config['template_layout'] = '';
-            $this->_mockTemplate();
+            $this->mockTemplate();
 
             $this->assertSame('Hello Jeff', $this->view->fetch('template', array('name'=>'Jeff')));
         }
@@ -253,8 +253,8 @@ namespace Breeze\View\Tests {
          */
         public function testFetchWithLayout()
         {
-            $this->_mockTemplate();
-            $this->_mockLayout();
+            $this->mockTemplate();
+            $this->mockLayout();
 
             $this->assertSame('¡Hello Jeff!', $this->view->fetch('template', array('name'=>'Jeff')));
         }
@@ -267,7 +267,7 @@ namespace Breeze\View\Tests {
             $this->expectOutputString('Hello Jeff');
             $this->config['template_layout'] = '';
 
-            $this->_mockTemplate();
+            $this->mockTemplate();
             $this->view->display('template', array('name'=>'Jeff'));
         }
 
@@ -278,8 +278,8 @@ namespace Breeze\View\Tests {
         {
             $this->expectOutputString('¡Hello Jeff!');
 
-            $this->_mockTemplate();
-            $this->_mockLayout();
+            $this->mockTemplate();
+            $this->mockLayout();
 
             $this->view->display('template', array('name'=>'Jeff'));
         }
@@ -289,7 +289,7 @@ namespace Breeze\View\Tests {
          */
         public function testPartialDoesntUseLayout()
         {
-            $this->_mockTemplate();
+            $this->mockTemplate();
             $this->assertSame('Hello Jeff', $this->view->partial('template', array('name'=>'Jeff')));
         }
 
@@ -326,7 +326,7 @@ namespace Breeze\View\Tests {
          *
          * @return void
          */
-        protected function _mockTemplate()
+        protected function mockTemplate()
         {
             $this->config['template_engine']->expects($this->at(0))
                                             ->method('fetch')
@@ -341,7 +341,7 @@ namespace Breeze\View\Tests {
          *
          * @return void
          */
-        protected function _mockLayout()
+        protected function mockLayout()
         {
             $this->config['template_engine']->expects($this->at(1))
                                             ->method('templateExists')
@@ -393,12 +393,12 @@ namespace Breeze\View\Driver\Tests {
         public function __construct(Application $application, $path = null, array $options = array()) {}
 
         /**
-         * Sets up the internal template engine structures.  This is intended
-         * to be where engine specific options are set up.
+         * Updates the template engine if changes to the template-related
+         * configurations have changed.
          *
          * @return void
          */
-        public function config() {}
+        public function updateConfig() {}
 
         /**
          * Sets up the internal template engine structures.  This is intended
@@ -406,7 +406,7 @@ namespace Breeze\View\Driver\Tests {
          *
          * @return void
          */
-        protected function _config(){}
+        protected function config(){}
 
         /**
          * Renders a template using the $variables parameter and returns
@@ -417,6 +417,6 @@ namespace Breeze\View\Driver\Tests {
          *
          * @return string The rendered template.
          */
-        protected function _fetch($template, array $variables = array()){}
+        protected function fetchTemplate($template, array $variables = array()){}
     }
 }

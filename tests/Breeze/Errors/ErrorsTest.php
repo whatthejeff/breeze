@@ -116,7 +116,7 @@ namespace Breeze\Errors\Tests {
          */
         public function testDefinedErrorCodes()
         {
-            foreach (self::_getCodes() as $code => $message) {
+            foreach (self::getCodes() as $code => $message) {
                 $this->assertSame($this->errors->getErrorForCode(substr($code, 5)), $message);
             }
         }
@@ -128,7 +128,7 @@ namespace Breeze\Errors\Tests {
         public function testSettingDefaultHandler()
         {
             $this->errors->add($this->closure);
-            $this->_testErrorOutput();
+            $this->checkErrorOutput();
         }
 
         /**
@@ -138,7 +138,7 @@ namespace Breeze\Errors\Tests {
         public function testAddWithNumberName()
         {
             $this->errors->add('403', $this->closure);
-            $this->_testErrorOutput();
+            $this->checkErrorOutput();
         }
 
         /**
@@ -148,7 +148,7 @@ namespace Breeze\Errors\Tests {
         public function testAddWithNumberArray()
         {
             $this->errors->add(range(400,404), $this->closure);
-            $this->_testErrorOutput();
+            $this->checkErrorOutput();
         }
 
         /**
@@ -158,7 +158,7 @@ namespace Breeze\Errors\Tests {
         public function testAddWithExceptionName()
         {
             $this->errors->add('Exception', $this->closure);
-            $this->_testErrorOutput();
+            $this->checkErrorOutput();
         }
 
         /**
@@ -168,7 +168,7 @@ namespace Breeze\Errors\Tests {
         public function testAddWithExceptionArray()
         {
             $this->errors->add(array('InvalidArgumentException','Exception'), $this->closure);
-            $this->_testErrorOutput();
+            $this->checkErrorOutput();
         }
 
         /**
@@ -230,7 +230,7 @@ namespace Breeze\Errors\Tests {
             $this->application->expects($this->once())
                               ->method('config')
                               ->will($this->returnValue(true));
-            $this->_testErrorOutput(sprintf('<!DOCTYPE html><html><head><title>An error occurred</title></head><body><h1>test</h1><pre><code>%s</code></pre></body></html>', $this->exception->getTraceAsString()));
+            $this->checkErrorOutput(sprintf('<!DOCTYPE html><html><head><title>An error occurred</title></head><body><h1>test</h1><pre><code>%s</code></pre></body></html>', $this->exception->getTraceAsString()));
         }
 
         /**
@@ -247,7 +247,7 @@ namespace Breeze\Errors\Tests {
                               ->method('__call')
                               ->with($this->equalTo('fetchLayout'), $this->equalTo(array('<h1>test</h1>')))
                               ->will($this->returnValue("<mylayout><h1>test</h1></mylayout>"));
-            $this->_testErrorOutput('<mylayout><h1>test</h1></mylayout>');
+            $this->checkErrorOutput('<mylayout><h1>test</h1></mylayout>');
         }
 
         /**
@@ -270,7 +270,7 @@ namespace Breeze\Errors\Tests {
                               ->with($this->equalTo('fetchLayout'), $this->equalTo(array($contents)))
                               ->will($this->returnValue("<mylayout>$contents</mylayout>"));
 
-            $this->_testErrorOutput("<mylayout>$contents</mylayout>");
+            $this->checkErrorOutput("<mylayout>$contents</mylayout>");
         }
 
         /**
@@ -299,7 +299,7 @@ namespace Breeze\Errors\Tests {
          *
          * @return array
          */
-        protected static function _getCodes() {
+        protected static function getCodes() {
             $codes = array();
 
             $class = new \ReflectionClass(get_class());
@@ -318,7 +318,7 @@ namespace Breeze\Errors\Tests {
          *
          * @return array
          */
-        protected function _testErrorOutput($expected = 'Error Test')
+        protected function checkErrorOutput($expected = 'Error Test')
         {
             $this->expectOutputString($expected);
             $this->errors->dispatchError($this->exception);

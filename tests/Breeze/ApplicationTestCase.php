@@ -62,7 +62,7 @@ namespace Breeze\Tests {
          *
          * @return void
          */
-        protected function _setupMockedDependencies()
+        protected function setupMockedDependencies()
         {
             $this->mocks['view_object'] = $this->getMock('Breeze\\View\\View', array(), array(), '', FALSE);
             $this->mocks['errors_object'] = $this->getMock('Breeze\\Errors\\Errors', array(), array(), '', FALSE);
@@ -80,7 +80,7 @@ namespace Breeze\Tests {
          *
          * @return void
          */
-        protected function _mockApplication()
+        protected function mockApplication()
         {
             $i = 0;
             foreach ($this->mocks as $mock) {

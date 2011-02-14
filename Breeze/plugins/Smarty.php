@@ -93,7 +93,7 @@ namespace Breeze\View\Driver {
          *
          * @return void
          */
-        protected function _config()
+        protected function config()
         {
             $path = $this->getPath();
 
@@ -112,7 +112,7 @@ namespace Breeze\View\Driver {
          *
          * @return string
          */
-        protected function _fetch($template, array $variables = array())
+        protected function fetchTemplate($template, array $variables = array())
         {
             $this->smarty->assign($variables);
             return $this->smarty->fetch($template);

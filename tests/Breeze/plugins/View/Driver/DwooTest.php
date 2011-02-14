@@ -120,11 +120,11 @@ namespace Breeze\View\Driver\Tests {
                     'cache_dir'   => 'cache')
             );
 
-            $this->_setupMockedDependencies();
+            $this->setupMockedDependencies();
             $this->configurations->expects($this->once())
                                  ->method('set')
                                  ->with($this->equalTo($config));
-            $this->_mockApplication();
+            $this->mockApplication();
         }
     }
 }

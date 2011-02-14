@@ -44,8 +44,8 @@ namespace Breeze\Tests {
          */
         public function setUp()
         {
-            $this->_setupMockedDependencies();
-            $this->_mockApplication();
+            $this->setupMockedDependencies();
+            $this->mockApplication();
         }
 
         /**
@@ -655,7 +655,7 @@ namespace Breeze\Tests {
         {
             $this->expectOutputString('testing');
             Application::register('test_plugin', function(){ echo "testing"; });
-            $this->_mockApplication();
+            $this->mockApplication();
 
             Application::unregister('test_plugin');
         }
@@ -672,7 +672,7 @@ namespace Breeze\Tests {
             Application::register('test_plugin', function($app) use ($closure){
                 $app->helper('name', $closure);
             });
-            $this->_mockApplication();
+            $this->mockApplication();
 
             Application::unregister('test_plugin');
         }
