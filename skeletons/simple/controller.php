@@ -1,9 +1,9 @@
 <?php
 
-    require_once 'Breeze.php';
+require_once 'Breeze.php';
 
-    get('/', function(){
-        display('index');
-    });
+get('/', function(){
+    display('index');
+});
 
-    run();
+run();

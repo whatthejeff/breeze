@@ -19,166 +19,165 @@
  * @link       http://breezephp.com/
  */
 
-namespace Breeze\Plugins\Flashhash {
+namespace Breeze\Plugins\Flashhash;
 
-    /**
-     * @see Breeze\Application
-     */
-    use Breeze\Application;
+/**
+ * @see Breeze\Application
+ */
+use Breeze\Application;
 
-    /**
-     * @see Breeze\Application
-     */
-    require_once 'Breeze/Application.php';
+/**
+ * @see Breeze\Application
+ */
+require_once 'Breeze/Application.php';
 
+/**
+ * The base Flashhash class which can be used to pass arbitrary data between
+ * actions.
+ *
+ * @package    Breeze
+ * @subpackage Plugins
+ * @author     Jeff Welch <whatthejeff@gmail.com>
+ * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+ * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+ * @link       http://breezephp.com/
+ */
+class Flashhash implements \ArrayAccess
+{
     /**
-     * The base Flashhash class which can be used to pass arbitrary data between
-     * actions.
+     * Variables currently in the flashhash.
      *
-     * @package    Breeze
-     * @subpackage Plugins
-     * @author     Jeff Welch <whatthejeff@gmail.com>
-     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
-     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
-     * @link       http://breezephp.com/
+     * @var array
      */
-    class Flashhash implements \ArrayAccess
+    protected $variables = array();
+
+    /**
+     * Starts a new flashhash instance using the $key parameter as the index
+     * where the flashhash data will be stored in the current session.
+     *
+     * NOTE: This method will call session_start().
+     *
+     * @param string $key The key where the flashhash is stored in the session.
+     *
+     * @return void
+     */
+    public function __construct($key = 'flashhash')
     {
-        /**
-         * Variables currently in the flashhash.
-         *
-         * @var array
-         */
-        protected $variables = array();
+        @session_start();
 
-        /**
-         * Starts a new flashhash instance using the $key parameter as the index
-         * where the flashhash data will be stored in the current session.
-         *
-         * NOTE: This method will call session_start().
-         *
-         * @param string $key The key where the flashhash is stored in the session.
-         *
-         * @return void
-         */
-        public function __construct($key = 'flashhash')
-        {
-            @session_start();
-
-            if (isset($_SESSION[$key])) {
-                $this->variables = $_SESSION[$key];
-                unset($_SESSION[$key]);
-            }
-        }
-
-        /**
-         * Sets a new value in the flashhash.
-         *
-         * @param string $offset The offset where the value should be set.
-         * @param mixed  $value  The value to set.
-         *
-         * @return void
-         */
-        public function offsetSet($offset, $value)
-        {
-            $this->variables[$offset] = $value;
-        }
-
-        /**
-         * Checks if a value exists in the flashhash
-         *
-         * @param string $offset The offset where the value should be set.
-         *
-         * @return boolean If the value exists.
-         */
-        public function offsetExists($offset)
-        {
-            return isset($this->variables[$offset]);
-        }
-
-        /**
-         * Removes a value from the flashhash.
-         *
-         * @param string $offset The offset of the value that should be removed.
-         *
-         * @return void
-         */
-        public function offsetUnset($offset)
-        {
-            unset($this->variables[$offset]);
-        }
-
-        /**
-         * Gets a value from the flashhash.
-         *
-         * @param string $offset The offset where the value should be set.
-         *
-         * @return mixed The value from the flashhash.
-         */
-        public function offsetGet($offset)
-        {
-            return isset($this->variables[$offset]) ? $this->variables[$offset] : null;
-        }
-
-        /**
-         * Returns the flashhash as an actual array.
-         *
-         * Hack for the fact that some template engines, namely Smarty, don't
-         * support the \ArrayAccess interface for some of the more important
-         * constructs (like foreach).
-         *
-         * @return array
-         */
-        public function asArray()
-        {
-            return $this->variables;
+        if (isset($_SESSION[$key])) {
+            $this->variables = $_SESSION[$key];
+            unset($_SESSION[$key]);
         }
     }
 
-    Application::register('Flashhash', function($app){
-        // Make the flashhash available to templates
-        $app->flash = new Flashhash();
+    /**
+     * Sets a new value in the flashhash.
+     *
+     * @param string $offset The offset where the value should be set.
+     * @param mixed  $value  The value to set.
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->variables[$offset] = $value;
+    }
 
-        /**
-         *  @code
-         *      get('/', function(){
-         *          flash('name', 'This is a value');
-         *          redirect('/getflash');
-         *      });
-         *
-         *      get('/getflash', function(){
-         *          echo flash('name'); // This is a value
-         *          display('getflash');
-         *      });
-         *
-         *      // getflash.php
-         *      <p id="flash"><?php echo $flash['name']; ?></p>
-         *  @endcode
-         */
-        $app->helper('flash', function($name, $value = null) use ($app) {
-            $num_args = func_num_args();
+    /**
+     * Checks if a value exists in the flashhash
+     *
+     * @param string $offset The offset where the value should be set.
+     *
+     * @return boolean If the value exists.
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->variables[$offset]);
+    }
 
-            if ($num_args == 1) {
-                return $app->flash[$name];
-            } else {
-                $_SESSION['flashhash'][$name] = $value;
-            }
-        });
+    /**
+     * Removes a value from the flashhash.
+     *
+     * @param string $offset The offset of the value that should be removed.
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->variables[$offset]);
+    }
 
-        /**
-         *  @code
-         *      get('/', function(){
-         *          flashnow('name', 'This is a value');
-         *          echo flash('name'); // This is a value
-         *          display('getflash');
-         *      });
-         *
-         *      // getflash.php
-         *      <p id="flash"><?php echo $flash['name']; ?></p>
-         *  @endcode
-         */
-        $app->helper('flashnow', function($name, $value = null) use ($app) {
-            $app->flash[$name] = $value;
-        });
-    });
+    /**
+     * Gets a value from the flashhash.
+     *
+     * @param string $offset The offset where the value should be set.
+     *
+     * @return mixed The value from the flashhash.
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->variables[$offset]) ? $this->variables[$offset] : null;
+    }
+
+    /**
+     * Returns the flashhash as an actual array.
+     *
+     * Hack for the fact that some template engines, namely Smarty, don't
+     * support the \ArrayAccess interface for some of the more important
+     * constructs (like foreach).
+     *
+     * @return array
+     */
+    public function asArray()
+    {
+        return $this->variables;
+    }
 }
+
+Application::register('Flashhash', function($app){
+    // Make the flashhash available to templates
+    $app->flash = new Flashhash();
+
+    /**
+     *  @code
+     *      get('/', function(){
+     *          flash('name', 'This is a value');
+     *          redirect('/getflash');
+     *      });
+     *
+     *      get('/getflash', function(){
+     *          echo flash('name'); // This is a value
+     *          display('getflash');
+     *      });
+     *
+     *      // getflash.php
+     *      <p id="flash"><?php echo $flash['name']; ?></p>
+     *  @endcode
+     */
+    $app->helper('flash', function($name, $value = null) use ($app) {
+        $num_args = func_num_args();
+
+        if ($num_args == 1) {
+            return $app->flash[$name];
+        } else {
+            $_SESSION['flashhash'][$name] = $value;
+        }
+    });
+
+    /**
+     *  @code
+     *      get('/', function(){
+     *          flashnow('name', 'This is a value');
+     *          echo flash('name'); // This is a value
+     *          display('getflash');
+     *      });
+     *
+     *      // getflash.php
+     *      <p id="flash"><?php echo $flash['name']; ?></p>
+     *  @endcode
+     */
+    $app->helper('flashnow', function($name, $value = null) use ($app) {
+        $app->flash[$name] = $value;
+    });
+});

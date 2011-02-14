@@ -17,22 +17,23 @@
  * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
  * @link       http://breezephp.com/
  */
-namespace Breeze\Demos\Blog {
-    $breeze->get('/', function($breeze){
-        $breeze->redirect('/posts');
-    });
 
-    /**
-     * View actions
-     *
-     * GET /admin/posts/
-     * GET /admin/posts/:id
-     */
-    $breeze->get('/posts', function($breeze){
-        $breeze->display('posts/index', array('posts'=>\Doctrine_Core::getTable('Post')->findAll()));
-    });
-    $breeze->get(';^/posts/(?<id>\d+)$;', function($breeze, $params) {
-        $breeze->load($breeze, $params['id']);
-        $breeze->display('posts/show');
-    });
-}
+namespace Breeze\Demos\Blog;
+
+$breeze->get('/', function($breeze){
+    $breeze->redirect('/posts');
+});
+
+/**
+ * View actions
+ *
+ * GET /admin/posts/
+ * GET /admin/posts/:id
+ */
+$breeze->get('/posts', function($breeze){
+    $breeze->display('posts/index', array('posts'=>\Doctrine_Core::getTable('Post')->findAll()));
+});
+$breeze->get(';^/posts/(?<id>\d+)$;', function($breeze, $params) {
+    $breeze->load($breeze, $params['id']);
+    $breeze->display('posts/show');
+});

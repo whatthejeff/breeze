@@ -18,147 +18,146 @@
  * @link       http://breezephp.com/
  */
 
-namespace Breeze\View\Driver\Tests {
+namespace Breeze\View\Driver\Tests;
 
-    /**
-     * @see Breeze\Application
-     */
-    use Breeze\Application;
+/**
+ * @see Breeze\Application
+ */
+use Breeze\Application;
 
-    /**
-     * @see Breeze\View\Driver\Smarty
-     */
-    use Breeze\View\Driver\Smarty;
+/**
+ * @see Breeze\View\Driver\Smarty
+ */
+use Breeze\View\Driver\Smarty;
 
-    /**
-     * @see Breeze\Plugins\Tests\PluginTestCase
-     */
-    use Breeze\Plugins\Tests\PluginTestCase;
+/**
+ * @see Breeze\Plugins\Tests\PluginTestCase
+ */
+use Breeze\Plugins\Tests\PluginTestCase;
 
+/**
+ * The test case for the {@link Breeze\View\Driver\Smarty} class.
+ *
+ * @package    Breeze
+ * @subpackage Tests
+ * @author     Jeff Welch <whatthejeff@gmail.com>
+ * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+ * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+ * @link       http://breezephp.com/
+ */
+class SmartyTest extends PluginTestCase
+{
     /**
-     * The test case for the {@link Breeze\View\Driver\Smarty} class.
+     * The path to the plugin file.
      *
-     * @package    Breeze
-     * @subpackage Tests
-     * @author     Jeff Welch <whatthejeff@gmail.com>
-     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
-     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
-     * @link       http://breezephp.com/
+     * @param string
      */
-    class SmartyTest extends PluginTestCase
+    static protected $plugin_path = 'Breeze/plugins/Smarty.php';
+    /**
+     * The name of the plugin
+     *
+     * @param string
+     */
+    static protected $plugin_name = 'Smarty';
+
+    /**
+     * The driver object for testing.
+     *
+     * @param Breeze\View\Driver\Smarty
+     */
+    protected $driver;
+
+    /**
+     * Sets up the test case for {@link Breeze\View\Driver\Smarty}.
+     *
+     * @return void
+     */
+    public function setUp()
     {
-        /**
-         * The path to the plugin file.
-         *
-         * @param string
-         */
-        static protected $plugin_path = 'Breeze/plugins/Smarty.php';
-        /**
-         * The name of the plugin
-         *
-         * @param string
-         */
-        static protected $plugin_name = 'Smarty';
-
-        /**
-         * The driver object for testing.
-         *
-         * @param Breeze\View\Driver\Smarty
-         */
-        protected $driver;
-
-        /**
-         * Sets up the test case for {@link Breeze\View\Driver\Smarty}.
-         *
-         * @return void
-         */
-        public function setUp()
-        {
-            if (!\Breeze\Tests\TEST_SMARTY) {
-                $this->markTestSkipped('Smarty is not available for testing');
-            }
-
-            $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
-            $this->driver = new Smarty($this->application, \Breeze\Tests\FIXTURES_PATH . '/Smarty');
+        if (!\Breeze\Tests\TEST_SMARTY) {
+            $this->markTestSkipped('Smarty is not available for testing');
         }
 
-        /**
-         * Tests {@link Breeze\View\Driver\Smarty::fetch()} with an invalid template.
-         */
-        public function testFetchWithInvalidTemplate()
-        {
-            $this->setExpectedException('\\InvalidArgumentException', 'is not a valid template.');
-            $this->driver->fetch('DOES NOT EXIST');
-        }
+        $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
+        $this->driver = new Smarty($this->application, \Breeze\Tests\FIXTURES_PATH . '/Smarty');
+    }
 
-        /**
-         * Tests {@link Breeze\View\Driver\Smarty::fetch()} without variables.
-         */
-        public function testFetchWithNoVariables()
-        {
-            $this->assertSame('Hello World', $this->driver->fetch('template.tpl'));
-        }
+    /**
+     * Tests {@link Breeze\View\Driver\Smarty::fetch()} with an invalid template.
+     */
+    public function testFetchWithInvalidTemplate()
+    {
+        $this->setExpectedException('\\InvalidArgumentException', 'is not a valid template.');
+        $this->driver->fetch('DOES NOT EXIST');
+    }
 
-        /**
-         * Tests {@link Breeze\View\Driver\Smarty::fetch()} with variables.
-         */
-        public function testFetchWithVariables()
-        {
-            $this->assertSame('Hello Jeff', $this->driver->fetch('template.tpl', array('name'=>'Jeff')));
-        }
+    /**
+     * Tests {@link Breeze\View\Driver\Smarty::fetch()} without variables.
+     */
+    public function testFetchWithNoVariables()
+    {
+        $this->assertSame('Hello World', $this->driver->fetch('template.tpl'));
+    }
 
-        /**
-         * Tests {@link Breeze\View\Driver\Smarty::partial()} without a specified file.
-         */
-        public function testPartialWithoutFile()
-        {
-            $this->setExpectedException('\\PHPUnit_Framework_Error', 'Smarty error: [partial] missing parameter \'file\'');
-            $this->driver->partial(array(), $this->getMock('Smarty'));
-        }
+    /**
+     * Tests {@link Breeze\View\Driver\Smarty::fetch()} with variables.
+     */
+    public function testFetchWithVariables()
+    {
+        $this->assertSame('Hello Jeff', $this->driver->fetch('template.tpl', array('name'=>'Jeff')));
+    }
 
-        /**
-         * Tests {@link Breeze\View\Driver\Smarty::partial()} without variables.
-         */
-        public function testPartialWithoutVariables()
-        {
-            $this->application->expects($this->once())
-                              ->method('__call')
-                              ->with($this->equalTo('partial'), $this->equalTo(array('template.tpl', array())))
-                              ->will($this->returnValue('Hello World'));
-            $this->assertSame('Hello World', $this->driver->partial(array('file'=>'template.tpl'), $this->getMock('Smarty')));
-        }
+    /**
+     * Tests {@link Breeze\View\Driver\Smarty::partial()} without a specified file.
+     */
+    public function testPartialWithoutFile()
+    {
+        $this->setExpectedException('\\PHPUnit_Framework_Error', 'Smarty error: [partial] missing parameter \'file\'');
+        $this->driver->partial(array(), $this->getMock('Smarty'));
+    }
 
-        /**
-         * Tests {@link Breeze\View\Driver\Smarty::partial()} with variables.
-         */
-        public function testPartialWithVariables()
-        {
-            $this->application->expects($this->once())
-                              ->method('__call')
-                              ->with($this->equalTo('partial'), $this->equalTo(array('template.tpl', array('name'=>'Jeff'))))
-                              ->will($this->returnValue('Hello Jeff'));
-            $this->assertSame('Hello Jeff', $this->driver->partial(array('file'=>'template.tpl', 'name'=>'Jeff'), $this->getMock('Smarty')));
-        }
+    /**
+     * Tests {@link Breeze\View\Driver\Smarty::partial()} without variables.
+     */
+    public function testPartialWithoutVariables()
+    {
+        $this->application->expects($this->once())
+                          ->method('__call')
+                          ->with($this->equalTo('partial'), $this->equalTo(array('template.tpl', array())))
+                          ->will($this->returnValue('Hello World'));
+        $this->assertSame('Hello World', $this->driver->partial(array('file'=>'template.tpl'), $this->getMock('Smarty')));
+    }
 
-        /**
-         * Tests that the plugin was loaded correctly.
-         */
-        public function testPluginLoaded()
-        {
-            $config = array(
-                'template_engine'    => 'Smarty',
-                'template_extension' => '.tpl',
-                'template_options'   => array(
-                    'compile_dir' => 'compiled',
-                    'cache_dir'   => 'cache',
-                    'config_dir'  => 'config')
-            );
+    /**
+     * Tests {@link Breeze\View\Driver\Smarty::partial()} with variables.
+     */
+    public function testPartialWithVariables()
+    {
+        $this->application->expects($this->once())
+                          ->method('__call')
+                          ->with($this->equalTo('partial'), $this->equalTo(array('template.tpl', array('name'=>'Jeff'))))
+                          ->will($this->returnValue('Hello Jeff'));
+        $this->assertSame('Hello Jeff', $this->driver->partial(array('file'=>'template.tpl', 'name'=>'Jeff'), $this->getMock('Smarty')));
+    }
 
-            $this->setupMockedDependencies();
-            $this->configurations->expects($this->once())
-                                 ->method('set')
-                                 ->with($this->equalTo($config));
-            $this->mockApplication();
-        }
+    /**
+     * Tests that the plugin was loaded correctly.
+     */
+    public function testPluginLoaded()
+    {
+        $config = array(
+            'template_engine'    => 'Smarty',
+            'template_extension' => '.tpl',
+            'template_options'   => array(
+                'compile_dir' => 'compiled',
+                'cache_dir'   => 'cache',
+                'config_dir'  => 'config')
+        );
+
+        $this->setupMockedDependencies();
+        $this->configurations->expects($this->once())
+                             ->method('set')
+                             ->with($this->equalTo($config));
+        $this->mockApplication();
     }
 }

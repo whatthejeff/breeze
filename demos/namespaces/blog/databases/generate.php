@@ -23,15 +23,15 @@
  * @link       http://breezephp.com/
  */
 
-    define('BREEZE_APPLICATION', realpath(dirname(__FILE__) . '/..'));
+define('BREEZE_APPLICATION', realpath(dirname(__FILE__) . '/..'));
 
-    require_once('Doctrine/lib/Doctrine.php');
-    spl_autoload_register(array('Doctrine', 'autoload'));
-    spl_autoload_register(array('Doctrine_Core', 'modelsAutoload'));
+require_once('Doctrine/lib/Doctrine.php');
+spl_autoload_register(array('Doctrine', 'autoload'));
+spl_autoload_register(array('Doctrine_Core', 'modelsAutoload'));
 
-    $manager = Doctrine_Manager::getInstance();
-    Doctrine_Manager::connection('sqlite:///' . BREEZE_APPLICATION . '/databases/blog.db?mode=0666', 'blog');
+$manager = Doctrine_Manager::getInstance();
+Doctrine_Manager::connection('sqlite:///' . BREEZE_APPLICATION . '/databases/blog.db?mode=0666', 'blog');
 
-    Doctrine_Core::dropDatabases();
-    Doctrine_Core::createDatabases();
-    Doctrine_Core::createTablesFromModels(BREEZE_APPLICATION . '/models');
+Doctrine_Core::dropDatabases();
+Doctrine_Core::createDatabases();
+Doctrine_Core::createTablesFromModels(BREEZE_APPLICATION . '/models');

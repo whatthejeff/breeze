@@ -585,16 +585,16 @@ The best way to learn the plugin system is through example.  For starters, you m
 The most basic example of a plugin would be:
 
     // Helloworld.php
-    namespace Breeze\Plugins\HelloWorld {
-        use Breeze\Application;
-        require_once 'Breeze/Application.php';
+    namespace Breeze\Plugins\HelloWorld;
 
-        Application::register('HelloWorld', function($app){
-            $app->get('/', function(){
-                echo 'Hello World';
-            });
+    use Breeze\Application;
+    require_once 'Breeze/Application.php';
+
+    Application::register('HelloWorld', function($app){
+        $app->get('/', function(){
+            echo 'Hello World';
         });
-    }
+    });
 
 Now what's going on here?  It's actually rather simple, but it requires a little bit of insight into how the Breeze framework actually works.
 
@@ -615,26 +615,27 @@ The second argument is a function that will be called when a new instance of `Br
 **NOTE**: You must use the `$app->method()` syntax instead of the `method()` shortcuts when defining plugins.
 
     // Helloworld.php
-    namespace Breeze\Plugins\HelloWorld {
-        use Breeze\Application;
-        require_once 'Breeze/Application.php';
+    namespace Breeze\Plugins\HelloWorld;
 
-        Application::register('HelloWorld', function($app /* <-- this is an instance of Breeze\Application, ie your current app */){
-            // This is the same as calling get() after your application has started
-            $app->get('/', function(){
-                echo 'Hello World';
-            });
+    use Breeze\Application;
+    require_once 'Breeze/Application.php';
 
-            // This is the same as calling config() after your application has started
-            $app->config('this', 'is cool');
-
-            // Shorthand for assigning a template variable.
-            $app->something = 'cool';
-
-            // The longhand versions also work
-            $app->template('something', 'cool');
+    Application::register('HelloWorld', function($app /* <-- this is an instance of Breeze\Application, ie your current app */){
+        // This is the same as calling get() after your application has started
+        $app->get('/', function(){
+            echo 'Hello World';
         });
-    }
+
+        // This is the same as calling config() after your application has started
+        $app->config('this', 'is cool');
+
+        // Shorthand for assigning a template variable.
+        $app->something = 'cool';
+
+        // The longhand versions also work
+        $app->template('something', 'cool');
+    });
+
 
     // Controller.php
     require_once 'Breeze/plugins/Helloworld.php'; // This sets up the plugin
@@ -675,18 +676,19 @@ Okay, this isn't exactly useful.  You could've have just created a normal functi
 These two examples may look similar, but there's actually a very subtle difference.  The first example creates a function that is actually attached to the `Breeze\Application` class we described earlier.  We are just using the same trick to make it seem like a normal function.  This means that this function doesn't pollute the global scope if a user turns off shortcuts.  And since this method protects the global scope, it's safe to use when defining plugins.
 
     // Auth.php
-    namespace Breeze\Plugins\Auth {
-        use Breeze\Application;
-        require_once 'Breeze/Application.php';
+    namespace Breeze\Plugins\Auth;
 
-        Application::register('Auth', function($app){
-            $app->helper('auth', function($user, $redirect_url) use ($app){
-                if($user->name != 'admin') {
-                    $app->redirect($redirect_url);
-                }
-            });
+    use Breeze\Application;
+    require_once 'Breeze/Application.php';
+
+    Application::register('Auth', function($app){
+        $app->helper('auth', function($user, $redirect_url) use ($app){
+            if($user->name != 'admin') {
+                $app->redirect($redirect_url);
+            }
         });
-    }
+    });
+
 
     // Controller.php
     require_once 'Breeze/plugins/Auth.php';
@@ -702,18 +704,17 @@ The global scope
 Let's be honest, if you're using PHP, your global scope is already a bit compromised.  With the introduction of namespaces though, PHP has finally given us some tools to help combat this problem.  And while having functions like `get()` and `display()` in your global scope may save you some keystrokes, it isn't exactly the ideal situation, especially for larger applications.  Fortunately, Breeze allows you to turn off these shortcut functions and use a slightly more verbose syntax to protect your scope.
 
     // Controller.php
-    namespace Breeze\Demos\Scope {
-        use Breeze\Application;
+    namespace Breeze\Demos\Scope;
 
-        require_once 'Breeze/Application.php';
+    use Breeze\Application;
+    require_once 'Breeze/Application.php';
 
-        $app = new Application();
-        $app->get('/', function($app){
-            $app->display('index');
-        });
+    $app = new Application();
+    $app->get('/', function($app){
+        $app->display('index');
+    });
 
-        $app->run();
-    }
+    $app->run();
 
 ### Templates
 

@@ -17,20 +17,21 @@
  * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
  * @link       http://breezephp.com/
  */
-namespace Breeze\Demos\Blog {
-    /**
-     * Sets up the blog environment.
-     */
-    require_once 'setup.php';
 
-    /**
-     * The public posts controller
-     */
-    require_once 'controllers/posts.php';
-    /**
-     * The public admin controller
-     */
-    require_once 'controllers/admin.php';
+namespace Breeze\Demos\Blog;
 
-    $breeze->run();
-}
+/**
+ * Sets up the blog environment.
+ */
+require_once 'setup.php';
+
+/**
+ * The public posts controller
+ */
+require_once 'controllers/posts.php';
+/**
+ * The public admin controller
+ */
+require_once 'controllers/admin.php';
+
+$breeze->run();

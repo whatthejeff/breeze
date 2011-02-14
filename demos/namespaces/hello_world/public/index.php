@@ -18,29 +18,28 @@
  * @link       http://breezephp.com/
  */
 
-namespace Breeze\Demos\HelloWorld {
+namespace Breeze\Demos\HelloWorld;
 
-    /**
-     * @see Breeze\Application
-     */
-    use Breeze\Application;
+/**
+ * @see Breeze\Application
+ */
+use Breeze\Application;
 
-    /**
-     * @see Breeze\Application
-     */
-    require_once 'Breeze/Application.php';
+/**
+ * @see Breeze\Application
+ */
+require_once 'Breeze/Application.php';
 
-    $breeze = new Application();
+$breeze = new Application();
 
-    # Hello World!
-    $breeze->get('/', function($app) {
-        $app->display('hello', array('name'=>'World'));
-    });
+# Hello World!
+$breeze->get('/', function($app) {
+    $app->display('hello', array('name'=>'World'));
+});
 
-    # Hello $name!
-    $breeze->get(';/(?<name>.+);', function($app, $params) {
-        $app->display('hello', array('name'=>urldecode($params['name'])));
-    });
+# Hello $name!
+$breeze->get(';/(?<name>.+);', function($app, $params) {
+    $app->display('hello', array('name'=>urldecode($params['name'])));
+});
 
-    $breeze->run();
-}
+$breeze->run();

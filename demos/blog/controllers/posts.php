@@ -18,20 +18,20 @@
  * @link       http://breezephp.com/
  */
 
-    get('/', function(){
-        redirect('/posts');
-    });
+get('/', function(){
+    redirect('/posts');
+});
 
-    /**
-     * View actions
-     *
-     * GET /admin/posts/
-     * GET /admin/posts/:id
-     */
-    get('/posts', function(){
-        display('posts/index', array('posts'=>Doctrine_Core::getTable('Post')->findAll()));
-    });
-    get(';^/posts/(?<id>\d+)$;', function($app, $params) {
-        load($app, $params['id']);
-        display('posts/show');
-    });
+/**
+ * View actions
+ *
+ * GET /admin/posts/
+ * GET /admin/posts/:id
+ */
+get('/posts', function(){
+    display('posts/index', array('posts'=>Doctrine_Core::getTable('Post')->findAll()));
+});
+get(';^/posts/(?<id>\d+)$;', function($app, $params) {
+    load($app, $params['id']);
+    display('posts/show');
+});

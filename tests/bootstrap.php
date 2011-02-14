@@ -18,44 +18,42 @@
  * @link       http://breezephp.com/
  */
 
-namespace Breeze\Tests {
+namespace Breeze\Tests;
 
-    error_reporting(E_ALL | E_STRICT);
+error_reporting(E_ALL | E_STRICT);
 
-    /**
-     * The root path to the Breeze Framework's test suite.
-     */
-    define('Breeze\\Tests\\TESTS_PATH', dirname(__FILE__));
-    /**
-     * The path to the Breeze Framework's test fixtures.
-     */
-    define('Breeze\\Tests\\FIXTURES_PATH', TESTS_PATH . '/Breeze/fixtures');
+/**
+ * The root path to the Breeze Framework's test suite.
+ */
+define('Breeze\\Tests\\TESTS_PATH', dirname(__FILE__));
+/**
+ * The path to the Breeze Framework's test fixtures.
+ */
+define('Breeze\\Tests\\FIXTURES_PATH', TESTS_PATH . '/Breeze/fixtures');
 
-    /**
-     * Only test the Dwoo plugin if it's in the include path
-     */
-    define('Breeze\\Tests\\TEST_DWOO', @include_once('Dwoo/dwooAutoload.php'));
-    /**
-     * Only test the Smarty plugin if it's in the include path
-     */
-    define('Breeze\\Tests\\TEST_SMARTY', @include_once('Smarty.class.php'));
+/**
+ * Only test the Dwoo plugin if it's in the include path
+ */
+define('Breeze\\Tests\\TEST_DWOO', @include_once('Dwoo/dwooAutoload.php'));
+/**
+ * Only test the Smarty plugin if it's in the include path
+ */
+define('Breeze\\Tests\\TEST_SMARTY', @include_once('Smarty.class.php'));
 
-    /**
-     * @see Breeze\Application
-     */
-    require_once 'Breeze/Application.php';
+/**
+ * @see Breeze\Application
+ */
+require_once 'Breeze/Application.php';
 
-    /**
-     * @see PHPUnit_Extensions_OutputTestCase
-     */
-    require_once 'PHPUnit/Extensions/OutputTestCase.php';
-    /**
-     * @see Breeze\Tests\ApplicationTestCase
-     */
-    require_once TESTS_PATH . '/Breeze/ApplicationTestCase.php';
-    /**
-     * @see  Breeze\Plugins\Tests\PluginTestCase
-     */
-    require_once TESTS_PATH . '/Breeze/plugins/PluginTestCase.php';
-
-}
+/**
+ * @see PHPUnit_Extensions_OutputTestCase
+ */
+require_once 'PHPUnit/Extensions/OutputTestCase.php';
+/**
+ * @see Breeze\Tests\ApplicationTestCase
+ */
+require_once TESTS_PATH . '/Breeze/ApplicationTestCase.php';
+/**
+ * @see  Breeze\Plugins\Tests\PluginTestCase
+ */
+require_once TESTS_PATH . '/Breeze/plugins/PluginTestCase.php';

@@ -18,18 +18,18 @@
  * @link       http://breezephp.com/
  */
 
-    /**
-     * Sets up the blog environment.
-     */
-    require_once 'setup.php';
+/**
+ * Sets up the blog environment.
+ */
+require_once 'setup.php';
 
-    /**
-     * The public posts controller
-     */
-    require_once 'controllers/posts.php';
-    /**
-     * The public admin controller
-     */
-    require_once 'controllers/admin.php';
+/**
+ * The public posts controller
+ */
+require_once 'controllers/posts.php';
+/**
+ * The public admin controller
+ */
+require_once 'controllers/admin.php';
 
-    run();
+run();

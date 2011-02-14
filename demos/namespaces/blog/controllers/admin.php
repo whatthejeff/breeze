@@ -17,79 +17,79 @@
  * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
  * @link       http://breezephp.com/
  */
-namespace Breeze\Demos\Blog {
 
-    $breeze->get('/admin', function($breeze){
-        $breeze->redirect('/admin/posts');
-    });
+namespace Breeze\Demos\Blog;
 
-    /**
-     * Pre-processor for loading posts
-     */
-    $breeze->any(';^/admin/posts/(?<id>\d+);', function($breeze, $params){
-        $breeze->load($breeze, $params['id']);
-        $breeze->pass();
-    });
+$breeze->get('/admin', function($breeze){
+    $breeze->redirect('/admin/posts');
+});
 
-    /**
-     * View actions
-     *
-     * GET /admin/posts/
-     * GET /admin/posts/:id
-     */
-    $breeze->get('/admin/posts', function($breeze){
-        $breeze->display('admin/posts/index', array('posts'=>\Doctrine_Core::getTable('Post')->findAll()));
-    });
-    $breeze->get(';^/admin/posts/(?<id>\d+)$;', function($breeze, $params) {
-        $breeze->display('admin/posts/show');
-    });
+/**
+ * Pre-processor for loading posts
+ */
+$breeze->any(';^/admin/posts/(?<id>\d+);', function($breeze, $params){
+    $breeze->load($breeze, $params['id']);
+    $breeze->pass();
+});
 
-    /**
-     * New actions
-     *
-     * GET  /admin/posts/new
-     * POST /admin/posts
-     */
-    $breeze->get('/admin/posts/new', function($breeze){
-        $breeze->display('admin/posts/new');
-    });
-    $breeze->post('/admin/posts', function($breeze){
-        if ($breeze->save(new \Post())) {
-            $breeze->flash('notice', POST_CREATED_MESSAGE);
-            $breeze->redirect($breeze->p($post['id']));
-        }
-        $breeze->redirect('/admin/posts/new');
-    });
+/**
+ * View actions
+ *
+ * GET /admin/posts/
+ * GET /admin/posts/:id
+ */
+$breeze->get('/admin/posts', function($breeze){
+    $breeze->display('admin/posts/index', array('posts'=>\Doctrine_Core::getTable('Post')->findAll()));
+});
+$breeze->get(';^/admin/posts/(?<id>\d+)$;', function($breeze, $params) {
+    $breeze->display('admin/posts/show');
+});
 
-    /**
-     * Edit actions
-     *
-     * GET /admin/posts/:id/edit
-     * PUT /admin/posts/:id
-     */
-    $breeze->get(';^/admin/posts/(?<id>\d+)/edit$;', function($breeze, $params) {
-        $breeze->display('admin/posts/edit');
-    });
-    $breeze->put(';^/admin/posts/(?<id>\d+)$;', function($breeze, $params) {
-        if ($breeze->save($breeze->post)) {
-            $breeze->flash('notice', POST_UPDATED_MESSAGE);
-            $breeze->redirect($breeze->p($params['id']));
-        }
-        $breeze->redirect($breeze->p($params['id']) . '/edit');
-    });
+/**
+ * New actions
+ *
+ * GET  /admin/posts/new
+ * POST /admin/posts
+ */
+$breeze->get('/admin/posts/new', function($breeze){
+    $breeze->display('admin/posts/new');
+});
+$breeze->post('/admin/posts', function($breeze){
+    if ($breeze->save(new \Post())) {
+        $breeze->flash('notice', POST_CREATED_MESSAGE);
+        $breeze->redirect($breeze->p($post['id']));
+    }
+    $breeze->redirect('/admin/posts/new');
+});
 
-    /**
-     * Delete actions
-     *
-     * GET    /admin/posts/:id/delete
-     * DELETE /admin/posts/:id
-     */
-    $breeze->get(';^/admin/posts/(?<id>\d+)/delete$;', function($breeze, $params) {
-        $breeze->display('admin/posts/delete');
-    });
-    $breeze->delete(';^/admin/posts/(?<id>\d+)$;', function($breeze, $params) {
-        $breeze->post->delete();
-        $breeze->flash('notice', POST_DELETED_MESSAGE);
-        $breeze->redirect('/admin/posts');
-    });
-}
+/**
+ * Edit actions
+ *
+ * GET /admin/posts/:id/edit
+ * PUT /admin/posts/:id
+ */
+$breeze->get(';^/admin/posts/(?<id>\d+)/edit$;', function($breeze, $params) {
+    $breeze->display('admin/posts/edit');
+});
+$breeze->put(';^/admin/posts/(?<id>\d+)$;', function($breeze, $params) {
+    if ($breeze->save($breeze->post)) {
+        $breeze->flash('notice', POST_UPDATED_MESSAGE);
+        $breeze->redirect($breeze->p($params['id']));
+    }
+    $breeze->redirect($breeze->p($params['id']) . '/edit');
+});
+
+/**
+ * Delete actions
+ *
+ * GET    /admin/posts/:id/delete
+ * DELETE /admin/posts/:id
+ */
+$breeze->get(';^/admin/posts/(?<id>\d+)/delete$;', function($breeze, $params) {
+    $breeze->display('admin/posts/delete');
+});
+$breeze->delete(';^/admin/posts/(?<id>\d+)$;', function($breeze, $params) {
+    $breeze->post->delete();
+    $breeze->flash('notice', POST_DELETED_MESSAGE);
+    $breeze->redirect('/admin/posts');
+});

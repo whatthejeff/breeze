@@ -18,16 +18,16 @@
  * @link       http://breezephp.com/
  */
 
-    require_once 'Breeze.php';
+require_once 'Breeze.php';
 
-    # Hello World!
-    get('/', function() {
-        display('hello', array('name'=>'World'));
-    });
+# Hello World!
+get('/', function() {
+    display('hello', array('name'=>'World'));
+});
 
-    # Hello $name!
-    get(';/(?<name>.+);', function($app, $params) {
-        display('hello', array('name'=>urldecode($params['name'])));
-    });
+# Hello $name!
+get(';/(?<name>.+);', function($app, $params) {
+    display('hello', array('name'=>urldecode($params['name'])));
+});
 
-    run();
+run();

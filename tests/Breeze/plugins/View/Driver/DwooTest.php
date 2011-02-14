@@ -18,113 +18,112 @@
  * @link       http://breezephp.com/
  */
 
-namespace Breeze\View\Driver\Tests {
+namespace Breeze\View\Driver\Tests;
 
-    /**
-     * @see Breeze\Application
-     */
-    use Breeze\Application;
+/**
+ * @see Breeze\Application
+ */
+use Breeze\Application;
 
-    /**
-     * @see Breeze\View\Driver\Dwoo
-     */
-    use Breeze\View\Driver\Dwoo;
+/**
+ * @see Breeze\View\Driver\Dwoo
+ */
+use Breeze\View\Driver\Dwoo;
 
-    /**
-     * @see Breeze\Plugins\Tests\PluginTestCase
-     */
-    use Breeze\Plugins\Tests\PluginTestCase;
+/**
+ * @see Breeze\Plugins\Tests\PluginTestCase
+ */
+use Breeze\Plugins\Tests\PluginTestCase;
 
+/**
+ * The test case for the {@link Breeze\View\Driver\Dwoo} class.
+ *
+ * @package    Breeze
+ * @subpackage Tests
+ * @author     Jeff Welch <whatthejeff@gmail.com>
+ * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+ * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+ * @link       http://breezephp.com/
+ */
+class DwooTest extends PluginTestCase
+{
     /**
-     * The test case for the {@link Breeze\View\Driver\Dwoo} class.
+     * The path to the plugin file.
      *
-     * @package    Breeze
-     * @subpackage Tests
-     * @author     Jeff Welch <whatthejeff@gmail.com>
-     * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
-     * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
-     * @link       http://breezephp.com/
+     * @param string
      */
-    class DwooTest extends PluginTestCase
+    static protected $plugin_path = 'Breeze/plugins/Dwoo.php';
+    /**
+     * The name of the plugin
+     *
+     * @param string
+     */
+    static protected $plugin_name = 'Dwoo';
+
+    /**
+     * The driver object for testing.
+     *
+     * @param Breeze\View\Driver\Dwoo
+     */
+    protected $driver;
+
+    /**
+     * Sets up the test case for {@link Breeze\View\Driver\Dwoo}.
+     *
+     * @return void
+     */
+    public function setUp()
     {
-        /**
-         * The path to the plugin file.
-         *
-         * @param string
-         */
-        static protected $plugin_path = 'Breeze/plugins/Dwoo.php';
-        /**
-         * The name of the plugin
-         *
-         * @param string
-         */
-        static protected $plugin_name = 'Dwoo';
-
-        /**
-         * The driver object for testing.
-         *
-         * @param Breeze\View\Driver\Dwoo
-         */
-        protected $driver;
-
-        /**
-         * Sets up the test case for {@link Breeze\View\Driver\Dwoo}.
-         *
-         * @return void
-         */
-        public function setUp()
-        {
-            if (!\Breeze\Tests\TEST_DWOO) {
-                $this->markTestSkipped('Dwoo is not available for testing');
-            }
-
-            $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
-            $this->driver = new Dwoo($this->application, \Breeze\Tests\FIXTURES_PATH . '/Dwoo');
+        if (!\Breeze\Tests\TEST_DWOO) {
+            $this->markTestSkipped('Dwoo is not available for testing');
         }
 
-        /**
-         * Tests {@link Breeze\View\Driver\Dwoo::fetch()} with an invalid template.
-         */
-        public function testFetchWithInvalidTemplate()
-        {
-            $this->setExpectedException('\\InvalidArgumentException', 'is not a valid template.');
-            $this->driver->fetch('DOES NOT EXIST');
-        }
+        $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
+        $this->driver = new Dwoo($this->application, \Breeze\Tests\FIXTURES_PATH . '/Dwoo');
+    }
 
-        /**
-         * Tests {@link Breeze\View\Driver\Dwoo::fetch()} without variables.
-         */
-        public function testFetchWithNoVariables()
-        {
-            $this->assertSame('Hello World', $this->driver->fetch('template.tpl'));
-        }
+    /**
+     * Tests {@link Breeze\View\Driver\Dwoo::fetch()} with an invalid template.
+     */
+    public function testFetchWithInvalidTemplate()
+    {
+        $this->setExpectedException('\\InvalidArgumentException', 'is not a valid template.');
+        $this->driver->fetch('DOES NOT EXIST');
+    }
 
-        /**
-         * Tests {@link Breeze\View\Driver\Dwoo::fetch()} with variables.
-         */
-        public function testFetchWithVariables()
-        {
-            $this->assertSame('Hello Jeff', $this->driver->fetch('template.tpl', array('name'=>'Jeff')));
-        }
+    /**
+     * Tests {@link Breeze\View\Driver\Dwoo::fetch()} without variables.
+     */
+    public function testFetchWithNoVariables()
+    {
+        $this->assertSame('Hello World', $this->driver->fetch('template.tpl'));
+    }
 
-        /**
-         * Tests that the plugin was loaded correctly.
-         */
-        public function testPluginLoaded()
-        {
-            $config = array(
-                'template_engine'    => 'Dwoo',
-                'template_extension' => '.tpl',
-                'template_options'   => array(
-                    'compile_dir' => 'compiled',
-                    'cache_dir'   => 'cache')
-            );
+    /**
+     * Tests {@link Breeze\View\Driver\Dwoo::fetch()} with variables.
+     */
+    public function testFetchWithVariables()
+    {
+        $this->assertSame('Hello Jeff', $this->driver->fetch('template.tpl', array('name'=>'Jeff')));
+    }
 
-            $this->setupMockedDependencies();
-            $this->configurations->expects($this->once())
-                                 ->method('set')
-                                 ->with($this->equalTo($config));
-            $this->mockApplication();
-        }
+    /**
+     * Tests that the plugin was loaded correctly.
+     */
+    public function testPluginLoaded()
+    {
+        $config = array(
+            'template_engine'    => 'Dwoo',
+            'template_extension' => '.tpl',
+            'template_options'   => array(
+                'compile_dir' => 'compiled',
+                'cache_dir'   => 'cache')
+        );
+
+        $this->setupMockedDependencies();
+        $this->configurations->expects($this->once())
+                             ->method('set')
+                             ->with($this->equalTo($config));
+        $this->mockApplication();
     }
 }

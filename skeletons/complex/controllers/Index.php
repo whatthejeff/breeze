@@ -1,5 +1,5 @@
 <?php
 
-    get('/', function(){
-        display('index');
-    });
+get('/', function(){
+    display('index');
+});
