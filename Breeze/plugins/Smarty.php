@@ -80,8 +80,8 @@ class Smarty extends Driver
      * @return void
      */
     public function __construct(Application $application, $path = null,
-        array $options = array())
-    {
+        array $options = array()
+    ) {
         $this->smarty = new \Smarty();
         parent::__construct($application, $path, $options);
 

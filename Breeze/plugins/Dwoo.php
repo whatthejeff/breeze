@@ -76,8 +76,8 @@ class Dwoo extends Driver
      * @return void
      */
     public function __construct(Application $application, $path = null,
-        array $options = array())
-    {
+        array $options = array()
+    ) {
         $this->dwoo = new \Dwoo();
         parent::__construct($application, $path, $options);
     }

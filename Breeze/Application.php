@@ -50,8 +50,9 @@ interface DriverInterface
      *
      * @return void
      */
-    public function __construct(Application $application, $path = null, array
-        $options = array());
+    public function __construct(Application $application, $path = null,
+        array $options = array()
+    );
 
     /**
      * Sets the path for the base templates directory.
@@ -196,8 +197,8 @@ abstract class Driver implements DriverInterface
      * @return void
      */
     public function __construct(Application $application, $path = null,
-        array $options = array())
-    {
+        array $options = array()
+    ) {
         $this->application = $application;
 
         if (!empty($options)) {
@@ -324,8 +325,9 @@ abstract class Driver implements DriverInterface
      */
     public function updateConfig()
     {
-        if ($this->application->config('template_directory') != $this->path ||
-            $this->application->config('template_options') != $this->options) {
+        if ($this->application->config('template_directory') != $this->path
+            || $this->application->config('template_options') != $this->options
+        ) {
             $this->config();
         }
     }
@@ -350,7 +352,8 @@ abstract class Driver implements DriverInterface
      * @return string The rendered template
      */
     abstract protected function fetchTemplate($template,
-        array $variables = array());
+        array $variables = array()
+    );
 }
 
 /**
@@ -371,7 +374,9 @@ class Php extends Driver
      *
      * @return void
      */
-    protected function config(){}
+    protected function config()
+    {
+    }
 
     /**
      * Renders a template using the $variables parameter and returns
@@ -665,7 +670,7 @@ class View
     /**
      * Sets the current template engine with an engine object.
      *
-     * @param Breeze\View\Driver\DriverInterface The template engine to set.
+     * @param Breeze\View\Driver\DriverInterface $engine The template engine to set.
      *
      * @return void
      */
@@ -677,7 +682,8 @@ class View
     /**
      * Sets the current template engine with a engine class name.
      *
-     * @param Breeze\View\Driver\DriverInterface The template engine to set.
+     * @param Breeze\View\Driver\DriverInterface $engine_class The template engine
+     * to set.
      *
      * @return void
      * @throws UnexpectedValueException
@@ -685,8 +691,9 @@ class View
     protected function getEngineWithString($engine_class)
     {
         $base_interface = __NAMESPACE__ . '\\Driver\\DriverInterface';
-        if (!class_exists($engine_class) ||
-            !in_array($base_interface, class_implements($engine_class))) {
+        if (!class_exists($engine_class)
+            || !in_array($base_interface, class_implements($engine_class))
+        ) {
             throw new \UnexpectedValueException(
                 sprintf(self::INVALID_TEMPLATE_ENGINE_ERROR, $engine_class)
             );
@@ -732,7 +739,9 @@ const INVALID_CLOSURE_ERROR = 'You must provide a callable PHP function.';
  * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
  * @link       http://breezephp.com/
  */
-class Exception extends \Exception {}
+class Exception extends \Exception
+{
+}
 
 /**
  * The base error handler for the Breeze Framework.  This class is used to
@@ -924,13 +933,15 @@ class Errors extends ClosuresCollection
         $number = $exception->getCode();
         $http_message = $this->getErrorForCode($number);
 
-        if (!($function = $this->get($number)) &&
-            !($function = $this->get(get_class($exception)))) {
+        if (!($function = $this->get($number))
+            && !($function = $this->get(get_class($exception)))
+        ) {
             $function = $this->default_error;
         }
 
-        if (!headers_sent() && $http_message &&
-            isset($_SERVER['SERVER_PROTOCOL'])) {
+        if (!headers_sent() && $http_message
+            && isset($_SERVER['SERVER_PROTOCOL'])
+        ) {
             header("{$_SERVER['SERVER_PROTOCOL']} $number $http_message");
         }
 
@@ -979,7 +990,9 @@ use Breeze\Errors\Exception;
  * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
  * @link       http://breezephp.com/
  */
-class PassException extends Exception {}
+class PassException extends Exception
+{
+}
 
 /**
  * The "Not Found" exception used to indicate a HTTP 404 error.
@@ -1030,7 +1043,8 @@ class Conditions extends ClosuresCollection
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->add('user_agent_matches', function($pattern) {
             return (bool) preg_match($pattern, $_SERVER['HTTP_USER_AGENT']);
         });
@@ -1072,7 +1086,8 @@ class Conditions extends ClosuresCollection
                 sprintf(self::INVALID_CONDITION_ERROR, $name)
             );
         } elseif (!call_user_func_array($condition,
-            array_slice(func_get_args(), 1))) {
+            array_slice(func_get_args(), 1))
+        ) {
             throw new PassException();
         }
     }
@@ -1313,10 +1328,11 @@ class Dispatcher
         if ($request_uri === null) {
             if (isset($_SERVER['HTTP_X_REWRITE_URL'])) {
                 $this->request_uri = $_SERVER['HTTP_X_REWRITE_URL'];
-            } elseif (isset($_SERVER['IIS_WasUrlRewritten']) &&
-                $_SERVER['IIS_WasUrlRewritten'] == '1' &&
-                isset($_SERVER['UNENCODED_URL']) &&
-                $_SERVER['UNENCODED_URL'] != '') {
+            } elseif (isset($_SERVER['IIS_WasUrlRewritten'])
+                && $_SERVER['IIS_WasUrlRewritten'] == '1'
+                && isset($_SERVER['UNENCODED_URL'])
+                && $_SERVER['UNENCODED_URL'] != ''
+            ) {
                 $this->request_uri = $_SERVER['UNENCODED_URL'];
             } elseif (isset($_SERVER['REQUEST_URI'])) {
                 $this->request_uri = $_SERVER['REQUEST_URI'];
@@ -1483,8 +1499,9 @@ class ClosuresCollection
 
                 $this->closures[] = $closure;
             } else {
-                if ($validate == self::VALIDATE_LABEL &&
-                    !preg_match(self::VALID_LABEL, $name)) {
+                if ($validate == self::VALIDATE_LABEL
+                    && !preg_match(self::VALID_LABEL, $name)
+                ) {
                     throw new \InvalidArgumentException(
                         sprintf(self::INVALID_LABEL_ERROR, $name)
                     );
@@ -1960,13 +1977,15 @@ class Application
     public function __call($name, $arguments)
     {
         if (in_array($name, array('display','fetch','layout','partial',
-            'layoutExists','fetchLayout'))) {
+            'layoutExists','fetchLayout'))
+        ) {
             return call_user_func_array(array($this->view, $name), $arguments);
         }
 
         if (in_array($name, array('get','delete','put','post','any'))) {
             if ($name != 'any' && (count($arguments) < 2 ||
-                !is_callable($arguments[1]))) {
+                !is_callable($arguments[1]))
+            ) {
                 return call_user_func_array(
                     array($this, 'run'), array_merge(array($name), $arguments)
                 );

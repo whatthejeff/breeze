@@ -430,7 +430,9 @@ class Stub extends Driver {
      * @return void
      */
     public function __construct(Application $application, $path = null,
-        array $options = array()) {}
+        array $options = array()
+    ) {
+    }
 
     /**
      * Updates the template engine if changes to the template-related
@@ -438,7 +440,9 @@ class Stub extends Driver {
      *
      * @return void
      */
-    public function updateConfig() {}
+    public function updateConfig()
+    {
+    }
 
     /**
      * Sets up the internal template engine structures.  This is intended
@@ -446,7 +450,9 @@ class Stub extends Driver {
      *
      * @return void
      */
-    protected function config(){}
+    protected function config()
+    {
+    }
 
     /**
      * Renders a template using the $variables parameter and returns
@@ -459,5 +465,7 @@ class Stub extends Driver {
      *
      * @return string The rendered template.
      */
-    protected function fetchTemplate($template, array $variables = array()){}
+    protected function fetchTemplate($template, array $variables = array())
+    {
+    }
 }
