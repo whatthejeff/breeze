@@ -73,18 +73,21 @@ class Smarty extends Driver
      * database engine.  The extra options are to be defined by the
      * specific engines.
      *
-     * @param Breeze\Application $application An instance of the base Breeze Framework class.
+     * @param Breeze\Application $application A Breeze application
      * @param string             $path        The path to the templates directory
-     * @param array              $options     Extra options for setting up custom template engines
+     * @param array              $options     Extra options for custom engines
      *
      * @return void
      */
-    public function __construct(Application $application, $path = null, array $options = array())
+    public function __construct(Application $application, $path = null,
+        array $options = array())
     {
         $this->smarty = new \Smarty();
         parent::__construct($application, $path, $options);
 
-        $this->smarty->registerPlugin('function', 'partial', array($this, 'partial'));
+        $this->smarty->registerPlugin(
+            'function', 'partial', array($this, 'partial')
+        );
     }
 
     /**
@@ -98,17 +101,25 @@ class Smarty extends Driver
         $path = $this->getPath();
 
         $this->smarty->template_dir = $path;
-        $this->smarty->compile_dir  = $path . '/' . $this->getOption('compile_dir', self::DEFAULT_COMPILE_DIR);
-        $this->smarty->cache_dir    = $path . '/' . $this->getOption('cache_dir', self::DEFAULT_CACHE_DIR);
-        $this->smarty->config_dir   = $path . '/' . $this->getOption('config_dir', self::DEFAULT_CONFIG_DIR);
+        $this->smarty->compile_dir  = $path . '/' . $this->getOption(
+            'compile_dir', self::DEFAULT_COMPILE_DIR
+        );
+        $this->smarty->cache_dir    = $path . '/' . $this->getOption(
+            'cache_dir', self::DEFAULT_CACHE_DIR
+        );
+        $this->smarty->config_dir   = $path . '/' . $this->getOption(
+            'config_dir', self::DEFAULT_CONFIG_DIR
+        );
     }
 
     /**
      * Renders a template using the $variables parameter and returns
      * the contents.
      *
-     * @param string $template  The path to the template, excluding the base templates directory.
-     * @param array  $variables An associative array of variables to use in the template.
+     * @param string $template  The path to the template, excluding the base
+     * templates directory.
+     * @param array  $variables An associative array of variables to use in the
+     * template.
      *
      * @return string
      */
@@ -121,7 +132,8 @@ class Smarty extends Driver
     /**
      * Smarty wrapper for the {@link Breeze\View\View::partial()} function.
      *
-     * @param array  $params An associative array of parameters for the smarty function.
+     * @param array  $params An associative array of parameters for the smarty
+     * function.
      * @param Smarty $smarty An instance of the Smarty object.
      *
      * @return string
@@ -129,7 +141,9 @@ class Smarty extends Driver
     public function partial($params, \Smarty $smarty)
     {
         if (!array_key_exists('file', $params)) {
-           trigger_error("Smarty error: [partial] missing parameter 'file'", E_USER_ERROR);
+            trigger_error(
+                "Smarty error: [partial] missing parameter 'file'", E_USER_ERROR
+            );
         }
 
         $file = $params['file'];

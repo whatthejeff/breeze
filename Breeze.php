@@ -30,10 +30,15 @@ foreach ($breeze->getHelpers() as $application_helper) {
     if ($application_helper == 'helper') {
         function helper($name, $extension) {
             global $breeze;
-            $return = call_user_func_array(array($breeze, 'helper'), func_get_args());
+            $return = call_user_func_array(
+                array($breeze, 'helper'), func_get_args()
+            );
+
             eval("function $name() {
                 global \$breeze;
-                return call_user_func_array(array(\$breeze, '$name'), func_get_args());
+                return call_user_func_array(
+                    array(\$breeze, '$name'), func_get_args()
+                );
             }");
 
             return $return;
@@ -41,7 +46,9 @@ foreach ($breeze->getHelpers() as $application_helper) {
     } else {
         eval("function $application_helper() {
             global \$breeze;
-            return call_user_func_array(array(\$breeze, '$application_helper'), func_get_args());
+            return call_user_func_array(
+                array(\$breeze, '$application_helper'), func_get_args()
+            );
         }");
     }
 }

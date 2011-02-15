@@ -100,7 +100,9 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
     {
         $_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.0';
 
-        $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
+        $this->application = $this->getMock(
+            'Breeze\\Application', array(), array(), '', FALSE
+        );
         $this->exception = new \Exception('test', 403);
 
         $this->closure = function(){
@@ -112,12 +114,15 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
     }
 
     /**
-     * Tests default error codes with {@link Breeze\Errors\Errors::getErrorForCode()}.
+     * Tests default error codes with
+     * {@link Breeze\Errors\Errors::getErrorForCode()}.
      */
     public function testDefinedErrorCodes()
     {
         foreach (self::getCodes() as $code => $message) {
-            $this->assertSame($this->errors->getErrorForCode(substr($code, 5)), $message);
+            $this->assertSame(
+                $this->errors->getErrorForCode(substr($code, 5)), $message
+            );
         }
     }
 
@@ -167,7 +172,9 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testAddWithExceptionArray()
     {
-        $this->errors->add(array('InvalidArgumentException','Exception'), $this->closure);
+        $this->errors->add(
+            array('InvalidArgumentException','Exception'), $this->closure
+        );
         $this->checkErrorOutput();
     }
 
@@ -176,7 +183,9 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testAddWithStringEmptyName()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'You must provide a name.');
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'You must provide a name.'
+        );
         $this->errors->add('', $this->closure);
     }
 
@@ -186,7 +195,9 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testAddWithArrayEmptyName()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'You must provide a name.');
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'You must provide a name.'
+        );
         $this->errors->add(array(''), $this->closure);
     }
 
@@ -196,7 +207,10 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testDispatchWithInvalidError()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'Errors must be a string or a valid Exception');
+        $this->setExpectedException(
+            '\\InvalidArgumentException',
+            'Errors must be a string or a valid Exception'
+        );
         $this->errors->dispatchError(new \StdClass());
     }
 
@@ -217,7 +231,10 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testDefaultHandlerWithNoLayoutAndNoBacktrace()
     {
-        $this->expectOutputString('<!DOCTYPE html><html><head><title>An error occurred</title></head><body><h1>test</h1></body></html>');
+        $this->expectOutputString(
+            '<!DOCTYPE html><html><head><title>An error occurred</title>' .
+            '</head><body><h1>test</h1></body></html>'
+        );
         $this->errors->dispatchError($this->exception);
     }
 
@@ -230,7 +247,11 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
         $this->application->expects($this->once())
                           ->method('config')
                           ->will($this->returnValue(true));
-        $this->checkErrorOutput(sprintf('<!DOCTYPE html><html><head><title>An error occurred</title></head><body><h1>test</h1><pre><code>%s</code></pre></body></html>', $this->exception->getTraceAsString()));
+        $this->checkErrorOutput(sprintf(
+            '<!DOCTYPE html><html><head><title>An error occurred</title>' .
+            '</head><body><h1>test</h1><pre><code>%s</code></pre></body></html>',
+            $this->exception->getTraceAsString()
+        ));
     }
 
     /**
@@ -245,8 +266,13 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
                           ->will($this->returnValue(true));
         $this->application->expects($this->at(2))
                           ->method('__call')
-                          ->with($this->equalTo('fetchLayout'), $this->equalTo(array('<h1>test</h1>')))
-                          ->will($this->returnValue("<mylayout><h1>test</h1></mylayout>"));
+                          ->with(
+                              $this->equalTo('fetchLayout'),
+                              $this->equalTo(array('<h1>test</h1>'))
+                            )
+                          ->will($this->returnValue(
+                              "<mylayout><h1>test</h1></mylayout>"
+                            ));
         $this->checkErrorOutput('<mylayout><h1>test</h1></mylayout>');
     }
 
@@ -256,7 +282,10 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testDefaultHandlerWithLayoutAndBacktrace()
     {
-        $contents = sprintf('<h1>test</h1><pre><code>%s</code></pre>', $this->exception->getTraceAsString());
+        $contents = sprintf(
+            '<h1>test</h1><pre><code>%s</code></pre>',
+            $this->exception->getTraceAsString()
+        );
 
         $this->application->expects($this->once())
                           ->method('config')
@@ -267,8 +296,13 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
                           ->will($this->returnValue(true));
         $this->application->expects($this->at(2))
                           ->method('__call')
-                          ->with($this->equalTo('fetchLayout'), $this->equalTo(array($contents)))
-                          ->will($this->returnValue("<mylayout>$contents</mylayout>"));
+                          ->with(
+                              $this->equalTo('fetchLayout'),
+                              $this->equalTo(array($contents))
+                            )
+                          ->will(
+                              $this->returnValue("<mylayout>$contents</mylayout>")
+                            );
 
         $this->checkErrorOutput("<mylayout>$contents</mylayout>");
     }
@@ -290,7 +324,9 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
     public function testErrorsIssueCorrectStatusHeader()
     {
         $this->markTestSkipped(
-          "At the moment it's not possible to test HTTP status codes.  Xdebug offers xdebug_get_headers, but it doesn't check status codes.  See: http://bugs.xdebug.org/view.php?id=601"
+          "At the moment it's not possible to test HTTP status codes.  Xdebug " .
+          "offers xdebug_get_headers, but it doesn't check status codes.  " .
+          "See: http://bugs.xdebug.org/view.php?id=601"
         );
     }
 

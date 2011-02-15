@@ -69,13 +69,14 @@ class Dwoo extends Driver
      * database engine.  The extra options are to be defined by the
      * specific engines.
      *
-     * @param Breeze\Application $application An instance of the base Breeze Framework class.
+     * @param Breeze\Application $application A Breeze application
      * @param string             $path        The path to the templates directory
-     * @param array              $options     Extra options for setting up custom template engines
+     * @param array              $options     Extra options for custom engines
      *
      * @return void
      */
-    public function __construct(Application $application, $path = null, array $options = array())
+    public function __construct(Application $application, $path = null,
+        array $options = array())
     {
         $this->dwoo = new \Dwoo();
         parent::__construct($application, $path, $options);
@@ -90,16 +91,22 @@ class Dwoo extends Driver
     protected function config()
     {
         $path = $this->getPath();
-        $this->dwoo->setCompileDir($path . '/' . $this->getOption('compile_dir', self::DEFAULT_COMPILE_DIR));
-        $this->dwoo->setCacheDir($path . '/' . $this->getOption('cache_dir', self::DEFAULT_CACHE_DIR));
+        $this->dwoo->setCompileDir(
+            $path . '/' . $this->getOption('compile_dir', self::DEFAULT_COMPILE_DIR)
+        );
+        $this->dwoo->setCacheDir(
+            $path . '/' . $this->getOption('cache_dir', self::DEFAULT_CACHE_DIR)
+        );
     }
 
     /**
      * Renders a template using the $variables parameter and returns
      * the contents.
      *
-     * @param string $template  The path to the template, excluding the base templates directory.
-     * @param array  $variables An associative array of variables to use in the template.
+     * @param string $template  The path to the template, excluding the base
+     * templates directory.
+     * @param array  $variables An associative array of variables to use in the
+     * template.
      *
      * @return string The rendered template.
      */

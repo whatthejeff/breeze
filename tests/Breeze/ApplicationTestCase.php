@@ -44,14 +44,16 @@ class ApplicationTestCase extends \PHPUnit_Extensions_OutputTestCase
      */
     protected $application;
     /**
-     * The application configurations for {@link Breeze\Tests\ApplicationTest::$application}
-     * that will hold the mocked dependencies.
+     * The application configurations for
+     * {@link Breeze\Tests\ApplicationTest::$application} that will hold the mocked
+     * dependencies.
      *
      * @param Breeze\Configurations
      */
     protected $configurations;
     /**
-     * The mocked dependencies for {@link Breeze\Tests\ApplicationTest::$application}.
+     * The mocked dependencies for
+     * {@link Breeze\Tests\ApplicationTest::$application}.
      *
      * @param array
      */
@@ -64,15 +66,31 @@ class ApplicationTestCase extends \PHPUnit_Extensions_OutputTestCase
      */
     protected function setupMockedDependencies()
     {
-        $this->mocks['view_object'] = $this->getMock('Breeze\\View\\View', array(), array(), '', FALSE);
-        $this->mocks['errors_object'] = $this->getMock('Breeze\\Errors\\Errors', array(), array(), '', FALSE);
-        $this->mocks['dispatcher_object'] = $this->getMock('Breeze\\Dispatcher\\Dispatcher', array(), array(), '', FALSE);
-        $this->mocks['conditions_object'] = $this->getMock('Breeze\\Dispatcher\\Conditions', array(), array(), '', FALSE);
-        $this->mocks['helpers_object'] = $this->getMock('Breeze\\ClosuresCollection', array(), array(), '', FALSE);
-        $this->mocks['before_filters_object'] = $this->getMock('Breeze\\ClosuresCollection', array(), array(), '', FALSE);
-        $this->mocks['after_filters_object'] = $this->getMock('Breeze\\ClosuresCollection', array(), array(), '', FALSE);
+        $this->mocks['view_object'] = $this->getMock(
+            'Breeze\\View\\View', array(), array(), '', FALSE
+        );
+        $this->mocks['errors_object'] = $this->getMock(
+            'Breeze\\Errors\\Errors', array(), array(), '', FALSE
+        );
+        $this->mocks['dispatcher_object'] = $this->getMock(
+            'Breeze\\Dispatcher\\Dispatcher', array(), array(), '', FALSE
+        );
+        $this->mocks['conditions_object'] = $this->getMock(
+            'Breeze\\Dispatcher\\Conditions', array(), array(), '', FALSE
+        );
+        $this->mocks['helpers_object'] = $this->getMock(
+            'Breeze\\ClosuresCollection', array(), array(), '', FALSE
+        );
+        $this->mocks['before_filters_object'] = $this->getMock(
+            'Breeze\\ClosuresCollection', array(), array(), '', FALSE
+        );
+        $this->mocks['after_filters_object'] = $this->getMock(
+            'Breeze\\ClosuresCollection', array(), array(), '', FALSE
+        );
 
-        $this->configurations = $this->getMock('Breeze\\Configurations', array(), array(), '', FALSE);
+        $this->configurations = $this->getMock(
+            'Breeze\\Configurations', array(), array(), '', FALSE
+        );
     }
 
     /**

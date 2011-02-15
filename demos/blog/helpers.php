@@ -44,7 +44,9 @@ helper('load', function($app, $id) {
  * @return mixed
  */
 helper('save', function(Post $post) {
-    $post->fromArray(array_intersect_key((array)$_POST['post'], array_fill_keys(array('contents','title'), null)));
+    $post->fromArray(array_intersect_key(
+        (array)$_POST['post'], array_fill_keys(array('contents','title'), null)
+    ));
     try {
         $post->save();
         return true;

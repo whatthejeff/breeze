@@ -78,8 +78,12 @@ class SmartyTest extends PluginTestCase
             $this->markTestSkipped('Smarty is not available for testing');
         }
 
-        $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
-        $this->driver = new Smarty($this->application, \Breeze\Tests\FIXTURES_PATH . '/Smarty');
+        $this->application = $this->getMock(
+            'Breeze\\Application', array(), array(), '', FALSE
+        );
+        $this->driver = new Smarty(
+            $this->application, \Breeze\Tests\FIXTURES_PATH . '/Smarty'
+        );
     }
 
     /**
@@ -87,7 +91,9 @@ class SmartyTest extends PluginTestCase
      */
     public function testFetchWithInvalidTemplate()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'is not a valid template.');
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'is not a valid template.'
+        );
         $this->driver->fetch('DOES NOT EXIST');
     }
 
@@ -104,7 +110,9 @@ class SmartyTest extends PluginTestCase
      */
     public function testFetchWithVariables()
     {
-        $this->assertSame('Hello Jeff', $this->driver->fetch('template.tpl', array('name'=>'Jeff')));
+        $this->assertSame('Hello Jeff', $this->driver->fetch(
+            'template.tpl', array('name'=>'Jeff')
+        ));
     }
 
     /**
@@ -112,7 +120,10 @@ class SmartyTest extends PluginTestCase
      */
     public function testPartialWithoutFile()
     {
-        $this->setExpectedException('\\PHPUnit_Framework_Error', 'Smarty error: [partial] missing parameter \'file\'');
+        $this->setExpectedException(
+            '\\PHPUnit_Framework_Error',
+            'Smarty error: [partial] missing parameter \'file\''
+        );
         $this->driver->partial(array(), $this->getMock('Smarty'));
     }
 
@@ -123,9 +134,14 @@ class SmartyTest extends PluginTestCase
     {
         $this->application->expects($this->once())
                           ->method('__call')
-                          ->with($this->equalTo('partial'), $this->equalTo(array('template.tpl', array())))
+                          ->with(
+                              $this->equalTo('partial'),
+                              $this->equalTo(array('template.tpl', array()))
+                            )
                           ->will($this->returnValue('Hello World'));
-        $this->assertSame('Hello World', $this->driver->partial(array('file'=>'template.tpl'), $this->getMock('Smarty')));
+        $this->assertSame('Hello World', $this->driver->partial(
+            array('file'=>'template.tpl'), $this->getMock('Smarty')
+        ));
     }
 
     /**
@@ -135,9 +151,16 @@ class SmartyTest extends PluginTestCase
     {
         $this->application->expects($this->once())
                           ->method('__call')
-                          ->with($this->equalTo('partial'), $this->equalTo(array('template.tpl', array('name'=>'Jeff'))))
+                          ->with(
+                              $this->equalTo('partial'),
+                              $this->equalTo(
+                                  array('template.tpl', array('name'=>'Jeff'))
+                              )
+                            )
                           ->will($this->returnValue('Hello Jeff'));
-        $this->assertSame('Hello Jeff', $this->driver->partial(array('file'=>'template.tpl', 'name'=>'Jeff'), $this->getMock('Smarty')));
+        $this->assertSame('Hello Jeff', $this->driver->partial(
+            array('file'=>'template.tpl', 'name'=>'Jeff'), $this->getMock('Smarty')
+        ));
     }
 
     /**

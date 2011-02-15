@@ -130,7 +130,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
+        $this->application = $this->getMock(
+            'Breeze\\Application', array(), array(), '', FALSE
+        );
         $this->dispatcher = new Dispatcher($this->application);
     }
 
@@ -139,7 +141,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidRequestMethod()
     {
-        $this->setExpectedException('PHPUnit_Framework_Error', 'Call to undefined function:');
+        $this->setExpectedException(
+            'PHPUnit_Framework_Error', 'Call to undefined function:'
+        );
         $this->dispatcher->invalid('/something', function(){});
     }
 
@@ -208,7 +212,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         foreach (self::$supported_methods as $method) {
             try {
                 $this->dispatcher->dispatch($method);
-                $this->fail("Expected exception Breeze\\Dispatcher\\NotFoundException");
+                $this->fail(
+                    "Expected exception Breeze\\Dispatcher\\NotFoundException"
+                );
             } catch (NotFoundException $exception) {
                 $this->assertSame($method, $this->dispatcher->getRequestMethod());
             }
@@ -281,9 +287,13 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         foreach (self::$uris as $uri) {
             try {
                 $this->dispatcher->dispatch(null, $uri['original']);
-                $this->fail("Expected exception Breeze\\Dispatcher\\NotFoundException");
+                $this->fail(
+                    "Expected exception Breeze\\Dispatcher\\NotFoundException"
+                );
             } catch (NotFoundException $exception) {
-                $this->assertSame($uri['final'], $this->dispatcher->getRequestUri());
+                $this->assertSame(
+                    $uri['final'], $this->dispatcher->getRequestUri()
+                );
             }
         }
     }
@@ -294,7 +304,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddRouteWithNoPattern()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'You must provide a non-empty pattern');
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'You must provide a non-empty pattern'
+        );
         $this->dispatcher->get(null, function(){});
     }
 
@@ -304,7 +316,10 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddRouteWithNoCallback()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'You must provide a callable PHP function.');
+        $this->setExpectedException(
+            '\\InvalidArgumentException',
+            'You must provide a callable PHP function.'
+        );
         $this->dispatcher->get('invalid closure', 'INVALID CLOSURE');
     }
 
@@ -314,9 +329,13 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testDispatchWithMatchingUriAndNotMatchingMethod()
     {
-        $this->setExpectedException('Breeze\\Dispatcher\\NotFoundException', 'No Matching Routes Found');
+        $this->setExpectedException(
+            'Breeze\\Dispatcher\\NotFoundException', 'No Matching Routes Found'
+        );
         $this->addUris();
-        $this->dispatcher->dispatch('POST', '/path/with/querystring?this=neat&this=cool');
+        $this->dispatcher->dispatch(
+            'POST', '/path/with/querystring?this=neat&this=cool'
+        );
     }
 
     /**
@@ -325,7 +344,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testDispatchWithNotMatchingUriAndMatchingMethod()
     {
-        $this->setExpectedException('Breeze\\Dispatcher\\NotFoundException', 'No Matching Routes Found');
+        $this->setExpectedException(
+            'Breeze\\Dispatcher\\NotFoundException', 'No Matching Routes Found'
+        );
         $this->addUris();
         $this->dispatcher->dispatch('GET', '/abc');
     }
@@ -372,7 +393,8 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      * Tests setting the request method works as expected.
      *
      * @param Closure $callback    A callback for setting the request method
-     * @param boolean $call_setter If {@link Breeze\Dispatcher\Dispatcher::setRequestMethod()} should be called.
+     * @param boolean $call_setter If
+     * {@link Breeze\Dispatcher\Dispatcher::setRequestMethod()} should be called.
      *
      * @return void
      */
@@ -393,7 +415,8 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      * Tests setting the request URI works as expected.
      *
      * @param Closure $callback    A callback for setting the request URI
-     * @param boolean $call_setter If {@link Breeze\Dispatcher\Dispatcher::setRequestUri()} should be called.
+     * @param boolean $call_setter If
+     * {@link Breeze\Dispatcher\Dispatcher::setRequestUri()} should be called.
      *
      * @return void
      */
@@ -411,11 +434,13 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests hitting all uris in {@link Breeze\Dispatcher\Tests\DispatcherTest::$uris} on
-     * all methods defined in {@link Breeze\Dispatcher\Tests\DispatcherTest::$method}.
+     * Tests hitting all uris in
+     * {@link Breeze\Dispatcher\Tests\DispatcherTest::$uris} on all methods defined
+     * in {@link Breeze\Dispatcher\Tests\DispatcherTest::$method}.
      *
      * @param Closure $callback    A callback for setting the request URI
-     * @param boolean $call_setter If {@link Breeze\Dispatcher\Dispatcher::setRequestUri()} should be called.
+     * @param boolean $call_setter If
+     * {@link Breeze\Dispatcher\Dispatcher::setRequestUri()} should be called.
      *
      * @return void
      */
@@ -431,7 +456,8 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Add routes for the uris in {@link Breeze\Dispatcher\Tests\DispatcherTest::$uris}.
+     * Add routes for the uris in
+     * {@link Breeze\Dispatcher\Tests\DispatcherTest::$uris}.
      *
      * @param string|array $methods Request methods to add the uris for.
      *

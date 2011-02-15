@@ -78,8 +78,12 @@ class DwooTest extends PluginTestCase
             $this->markTestSkipped('Dwoo is not available for testing');
         }
 
-        $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
-        $this->driver = new Dwoo($this->application, \Breeze\Tests\FIXTURES_PATH . '/Dwoo');
+        $this->application = $this->getMock(
+            'Breeze\\Application', array(), array(), '', FALSE
+        );
+        $this->driver = new Dwoo(
+            $this->application, \Breeze\Tests\FIXTURES_PATH . '/Dwoo'
+        );
     }
 
     /**
@@ -87,7 +91,9 @@ class DwooTest extends PluginTestCase
      */
     public function testFetchWithInvalidTemplate()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'is not a valid template.');
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'is not a valid template.'
+        );
         $this->driver->fetch('DOES NOT EXIST');
     }
 
@@ -104,7 +110,9 @@ class DwooTest extends PluginTestCase
      */
     public function testFetchWithVariables()
     {
-        $this->assertSame('Hello Jeff', $this->driver->fetch('template.tpl', array('name'=>'Jeff')));
+        $this->assertSame('Hello Jeff', $this->driver->fetch(
+            'template.tpl', array('name'=>'Jeff')
+        ));
     }
 
     /**

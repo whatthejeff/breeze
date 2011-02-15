@@ -57,7 +57,9 @@ class PhpTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
+        $this->application = $this->getMock(
+            'Breeze\\Application', array(), array(), '', FALSE
+        );
         $this->driver = new Php($this->application, \Breeze\Tests\FIXTURES_PATH);
     }
 
@@ -66,7 +68,9 @@ class PhpTest extends \PHPUnit_Framework_TestCase
      */
     public function testFetchWithInvalidTemplate()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'is not a valid template.');
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'is not a valid template.'
+        );
         $this->driver->fetch('DOES NOT EXIST');
     }
 
@@ -83,6 +87,8 @@ class PhpTest extends \PHPUnit_Framework_TestCase
      */
     public function testFetchWithVariables()
     {
-        $this->assertSame('Hello Jeff', $this->driver->fetch('template.php', array('name'=>'Jeff')));
+        $this->assertSame('Hello Jeff', $this->driver->fetch(
+            'template.php', array('name'=>'Jeff')
+        ));
     }
 }

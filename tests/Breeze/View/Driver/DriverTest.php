@@ -64,8 +64,12 @@ class DriverTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
-        $this->driver = $this->getMockForAbstractClass('Breeze\\View\\Driver\\Driver', array($this->application));
+        $this->application = $this->getMock(
+            'Breeze\\Application', array(), array(), '', FALSE
+        );
+        $this->driver = $this->getMockForAbstractClass(
+            'Breeze\\View\\Driver\\Driver', array($this->application)
+        );
     }
 
     /**
@@ -73,7 +77,9 @@ class DriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetPathWithInvalidPath()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'is not a valid template path.');
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'is not a valid template path.'
+        );
         $this->driver->setPath('DOES NOT EXIST');
     }
 
@@ -91,8 +97,13 @@ class DriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetPathWithInvalidPathWithConstructor()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'is not a valid template path.');
-        $this->driver = $this->getMockForAbstractClass('Breeze\\View\\Driver\\Driver', array($this->application, 'DOES NOT EXIST'));
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'is not a valid template path.'
+        );
+        $this->driver = $this->getMockForAbstractClass(
+            'Breeze\\View\\Driver\\Driver',
+            array($this->application, 'DOES NOT EXIST')
+        );
     }
 
     /**
@@ -100,12 +111,16 @@ class DriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetPathWithValidPathWithConstructor()
     {
-        $this->driver = $this->getMockForAbstractClass('Breeze\\View\\Driver\\Driver', array($this->application, \Breeze\Tests\FIXTURES_PATH));
+        $this->driver = $this->getMockForAbstractClass(
+            'Breeze\\View\\Driver\\Driver',
+            array($this->application, \Breeze\Tests\FIXTURES_PATH)
+        );
         $this->assertSame(\Breeze\Tests\FIXTURES_PATH, $this->driver->getPath());
     }
 
     /**
-     * Tests {@link Breeze\View\Driver\Driver::templateExists()} with an invalid path.
+     * Tests {@link Breeze\View\Driver\Driver::templateExists()} with an invalid
+     * path.
      */
     public function testTemplateExistsWithInvalidTemplate()
     {
@@ -129,7 +144,10 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     public function testGetTemplatePath()
     {
         $this->driver->setPath(\Breeze\Tests\FIXTURES_PATH);
-        $this->assertSame(\Breeze\Tests\FIXTURES_PATH . "/template.php", $this->driver->getTemplatePath('template.php'));
+        $this->assertSame(
+            \Breeze\Tests\FIXTURES_PATH . "/template.php",
+            $this->driver->getTemplatePath('template.php')
+        );
     }
 
     /**
@@ -151,7 +169,10 @@ class DriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetOptionsWithConstructor()
     {
-        $this->driver = $this->getMockForAbstractClass('Breeze\\View\\Driver\\Driver', array($this->application, null, self::$options));
+        $this->driver = $this->getMockForAbstractClass(
+            'Breeze\\View\\Driver\\Driver',
+            array($this->application, null, self::$options)
+        );
 
         foreach (self::$options as $option => $value) {
             $this->assertSame($value, $this->driver->getOption($option));
@@ -164,7 +185,9 @@ class DriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetOptionWithDefault()
     {
-        $this->assertSame('default', $this->driver->getOption('DOES NOT EXIST', 'default'));
+        $this->assertSame(
+            'default', $this->driver->getOption('DOES NOT EXIST', 'default')
+        );
     }
 
     /**
@@ -177,11 +200,14 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests {@link Breeze\View\Driver\Driver::fetch()} with an invalid template path.
+     * Tests {@link Breeze\View\Driver\Driver::fetch()} with an invalid template
+     * path.
      */
     public function testFetchWithInvalidTemplate()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'is not a valid template.');
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'is not a valid template.'
+        );
         $this->driver->setPath(\Breeze\Tests\FIXTURES_PATH);
         $this->driver->fetch('DOES NOT EXIST');
     }
@@ -210,8 +236,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests {@link Breeze\View\Driver\Driver::updateConfig()} with options that have
-     * changed will call {@link Breeze\View\Driver\Driver::config()}.
+     * Tests {@link Breeze\View\Driver\Driver::updateConfig()} with options that
+     * have changed will call {@link Breeze\View\Driver\Driver::config()}.
      */
     public function testConfigWithDirtyOptions()
     {
@@ -226,8 +252,8 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests {@link Breeze\View\Driver\Driver::updateConfig()} with options that have
-     * not changed will not call {@link Breeze\View\Driver\Driver::config()}.
+     * Tests {@link Breeze\View\Driver\Driver::updateConfig()} with options that
+     * have not changed will not call {@link Breeze\View\Driver\Driver::config()}.
      */
     public function testConfigWithCleanOptions()
     {

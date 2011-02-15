@@ -165,7 +165,10 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
     public function testAddOneClosureToMultipleNames()
     {
         $this->collection->add($this->valid_names, $this->closure);
-        $this->assertSame(array_fill_keys($this->valid_names,  $this->closure), $this->collection->all());
+        $this->assertSame(
+            array_fill_keys($this->valid_names, $this->closure),
+            $this->collection->all()
+        );
     }
 
     /**
@@ -173,7 +176,10 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddWithInvalidClosure()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'You must provide a callable PHP function.');
+        $this->setExpectedException(
+            '\\InvalidArgumentException',
+            'You must provide a callable PHP function.'
+        );
         $this->collection->add('invalid closure', 'INVALID CLOSURE');
     }
 
@@ -183,8 +189,12 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddWithStringEmptyNameAndNameValidation()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'You must provide a name.');
-        $this->collection->add('', $this->closure, ClosuresCollection::VALIDATE_NAME);
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'You must provide a name.'
+        );
+        $this->collection->add(
+            '', $this->closure, ClosuresCollection::VALIDATE_NAME
+        );
     }
 
     /**
@@ -193,8 +203,12 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddWithArrayEmptyNameAndNameValidation()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'You must provide a name.');
-        $this->collection->add(array(''), $this->closure, ClosuresCollection::VALIDATE_NAME);
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'You must provide a name.'
+        );
+        $this->collection->add(
+            array(''), $this->closure, ClosuresCollection::VALIDATE_NAME
+        );
     }
 
     /**
@@ -204,7 +218,9 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
     public function testAddWithStringValidNameAndNameValidation()
     {
         foreach ($this->valid_names as $name) {
-            $this->collection->add($name, $this->closure, ClosuresCollection::VALIDATE_NAME);
+            $this->collection->add(
+                $name, $this->closure, ClosuresCollection::VALIDATE_NAME
+            );
         }
 
         $this->checkClosuresAdded($this->valid_names, $this->closure);
@@ -216,7 +232,9 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddWithArrayValidNameAndNameValidation()
     {
-        $this->collection->add($this->valid_names, $this->closure, ClosuresCollection::VALIDATE_NAME);
+        $this->collection->add(
+            $this->valid_names, $this->closure, ClosuresCollection::VALIDATE_NAME
+        );
         $this->checkClosuresAdded($this->valid_names, $this->closure);
     }
 
@@ -226,8 +244,12 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddWithStringEmptyLabelAndLabelValidation()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'You must provide a name.');
-        $this->collection->add('', $this->closure, ClosuresCollection::VALIDATE_LABEL);
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'You must provide a name.'
+        );
+        $this->collection->add(
+            '', $this->closure, ClosuresCollection::VALIDATE_LABEL
+        );
     }
 
     /**
@@ -236,8 +258,12 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddWithArrayEmptyLabelAndLabelValidation()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'You must provide a name.');
-        $this->collection->add(array(''), $this->closure, ClosuresCollection::VALIDATE_LABEL);
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'You must provide a name.'
+        );
+        $this->collection->add(
+            array(''), $this->closure, ClosuresCollection::VALIDATE_LABEL
+        );
     }
 
     /**
@@ -248,10 +274,14 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
     {
         foreach ($this->invalid_labels as $label) {
             try {
-                $this->collection->add($label, $this->closure, ClosuresCollection::VALIDATE_LABEL);
+                $this->collection->add(
+                    $label, $this->closure, ClosuresCollection::VALIDATE_LABEL
+                );
                 $this->fail("Expected exception \\InvalidArgumentException");
             } catch (\InvalidArgumentException $exception) {
-                $this->assertStringEndsWith('is not a valid PHP function name.', $exception->getMessage());
+                $this->assertStringEndsWith(
+                    'is not a valid PHP function name.', $exception->getMessage()
+                );
             }
         }
     }
@@ -262,8 +292,14 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddWithArrayInvalidLabelAndLabelValidation()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'is not a valid PHP function name.');
-        $this->collection->add($this->invalid_labels, $this->closure, ClosuresCollection::VALIDATE_LABEL);
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'is not a valid PHP function name.'
+        );
+        $this->collection->add(
+            $this->invalid_labels,
+            $this->closure,
+            ClosuresCollection::VALIDATE_LABEL
+        );
     }
 
     /**
@@ -273,7 +309,9 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
     public function testAddWithStringValidLabelAndLabelValidation()
     {
         foreach ($this->valid_labels as $label) {
-            $this->collection->add($label, $this->closure, ClosuresCollection::VALIDATE_LABEL);
+            $this->collection->add(
+                $label, $this->closure, ClosuresCollection::VALIDATE_LABEL
+            );
         }
         $this->checkClosuresAdded($this->valid_labels, $this->closure);
     }
@@ -284,12 +322,15 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddWithArrayValidLabelAndLabelValidation()
     {
-        $this->collection->add($this->valid_labels, $this->closure, ClosuresCollection::VALIDATE_LABEL);
+        $this->collection->add(
+            $this->valid_labels, $this->closure, ClosuresCollection::VALIDATE_LABEL
+        );
         $this->checkClosuresAdded($this->valid_labels, $this->closure);
     }
 
     /**
-     * Tests that closures were added to {@link Breeze\Tests\ClosuresCollectionTest::$collection}.
+     * Tests that closures were added to
+     * {@link Breeze\Tests\ClosuresCollectionTest::$collection}.
      *
      * @param mixed $keys     The keys that should've been added.
      * @param mixed $closures The closures that should've been added.

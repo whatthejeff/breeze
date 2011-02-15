@@ -64,7 +64,9 @@ class ConditionsTest extends \PHPUnit_Framework_TestCase
      */
     public function testDispatchWithInvalidName()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'is not a valid condition.');
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'is not a valid condition.'
+        );
         $this->conditions->dispatchCondition('invalid');
     }
 
@@ -74,7 +76,9 @@ class ConditionsTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddWithEmptyName()
     {
-        $this->setExpectedException('\\InvalidArgumentException', 'You must provide a name.');
+        $this->setExpectedException(
+            '\\InvalidArgumentException', 'You must provide a name.'
+        );
         $this->conditions->add('', function(){});
     }
 
@@ -100,13 +104,17 @@ class ConditionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests that the default conditions {@link Breeze\Dispatcher\Conditions::user_agent_matches()}
-     * and {@link Breeze\Dispatcher\Conditions::host_name_is()} are available
-     * by default.
+     * Tests that the default conditions
+     * {@link Breeze\Dispatcher\Conditions::user_agent_matches()} and
+     * {@link Breeze\Dispatcher\Conditions::host_name_is()} are available by
+     * default.
      */
     public function testDefaultConditions()
     {
-        $this->assertSame(array('user_agent_matches','host_name_is'), array_keys($this->conditions->all()));
+        $this->assertSame(
+            array('user_agent_matches','host_name_is'),
+            array_keys($this->conditions->all())
+        );
     }
 
     /**
@@ -118,7 +126,9 @@ class ConditionsTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Breeze\\Dispatcher\\PassException');
 
         $_SERVER['HTTP_USER_AGENT'] = 'test/agent 1.0';
-        $this->conditions->dispatchCondition('user_agent_matches', '/thsiwontmatch/');
+        $this->conditions->dispatchCondition(
+            'user_agent_matches', '/thsiwontmatch/'
+        );
         $this->fail("Expected exception PassException");
     }
 
@@ -129,7 +139,9 @@ class ConditionsTest extends \PHPUnit_Framework_TestCase
     public function testUserAgentMatchesWithGoodAgent()
     {
         $_SERVER['HTTP_USER_AGENT'] = 'test/agent 1.0';
-        $this->conditions->dispatchCondition('user_agent_matches', '/test\/agent 1\.0/');
+        $this->conditions->dispatchCondition(
+            'user_agent_matches', '/test\/agent 1\.0/'
+        );
     }
 
     /**

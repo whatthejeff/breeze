@@ -29,7 +29,9 @@ get('/', function(){
  * GET /admin/posts/:id
  */
 get('/posts', function(){
-    display('posts/index', array('posts'=>Doctrine_Core::getTable('Post')->findAll()));
+    display('posts/index', array(
+        'posts'=>Doctrine_Core::getTable('Post')->findAll())
+    );
 });
 get(';^/posts/(?<id>\d+)$;', function($app, $params) {
     load($app, $params['id']);

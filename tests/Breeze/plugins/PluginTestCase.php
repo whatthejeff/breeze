@@ -88,29 +88,39 @@ class PluginTestCase extends ApplicationTestCase
         $test = $this;
         $this->mocks['helpers_object']->expects($this->any())
                                       ->method('add')
-                                      ->will($this->returnCallback(function($name, $value) use ($test){
-                                          $test->helpers[$name] = $value;
-                                        }));
+                                      ->will($this->returnCallback(
+                                          function($name, $value) use ($test){
+                                              $test->helpers[$name] = $value;
+                                          })
+                                        );
         $this->mocks['helpers_object']->expects($this->any())
                                       ->method('has')
-                                      ->will($this->returnCallback(function($name) use ($test){
-                                          return isset($test->helpers[$name]);
-                                        }));
+                                      ->will($this->returnCallback(
+                                          function($name) use ($test){
+                                              return isset($test->helpers[$name]);
+                                          })
+                                        );
         $this->mocks['helpers_object']->expects($this->any())
                                       ->method('get')
-                                      ->will($this->returnCallback(function($name) use ($test){
-                                          return $test->helpers[$name];
-                                        }));
+                                      ->will($this->returnCallback(
+                                          function($name) use ($test){
+                                              return $test->helpers[$name];
+                                          })
+                                        );
 
         $this->mocks['view_object']->expects($this->any())
                                    ->method('__set')
-                                   ->will($this->returnCallback(function($name, $value) use ($test){
-                                       $test->views[$name] = $value;
-                                     }));
+                                   ->will($this->returnCallback(
+                                       function($name, $value) use ($test){
+                                           $test->views[$name] = $value;
+                                       })
+                                     );
         $this->mocks['view_object']->expects($this->any())
                                    ->method('__get')
-                                   ->will($this->returnCallback(function($name) use ($test){
-                                       return $test->views[$name];
-                                     }));
+                                   ->will($this->returnCallback(
+                                       function($name) use ($test){
+                                           return $test->views[$name];
+                                       })
+                                     );
     }
 }

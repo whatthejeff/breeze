@@ -31,7 +31,9 @@ $breeze->get('/', function($breeze){
  * GET /admin/posts/:id
  */
 $breeze->get('/posts', function($breeze){
-    $breeze->display('posts/index', array('posts'=>\Doctrine_Core::getTable('Post')->findAll()));
+    $breeze->display('posts/index', array(
+        'posts'=>\Doctrine_Core::getTable('Post')->findAll())
+    );
 });
 $breeze->get(';^/posts/(?<id>\d+)$;', function($breeze, $params) {
     $breeze->load($breeze, $params['id']);

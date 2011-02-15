@@ -36,7 +36,8 @@ require_once 'Breeze.php';
 require_once 'helpers.php';
 
 // Configure the breeze framework
-config('template_directory', BREEZE_APPLICATION . '/views/' . strtolower(config('template_engine')));
+config('template_directory',
+    BREEZE_APPLICATION . '/views/' . strtolower(config('template_engine')));
 config('errors_backtrace', false);
 error('404', function(){ display('errors/404'); });
 error(function(){ display('errors/500'); });
@@ -49,7 +50,11 @@ spl_autoload_register(array('Doctrine_Core', 'modelsAutoload'));
 $manager = Doctrine_Manager::getInstance();
 $manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_ALL);
 $manager->setAttribute(Doctrine_Core::ATTR_EXPORT, Doctrine_Core::EXPORT_ALL);
-$manager->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL_LOADING_CONSERVATIVE);
+$manager->setAttribute(
+    Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL_LOADING_CONSERVATIVE
+);
 
-Doctrine_Manager::connection('sqlite:///' . BREEZE_APPLICATION . '/databases/blog.db?mode=0666', 'blog');
+Doctrine_Manager::connection(
+    'sqlite:///' . BREEZE_APPLICATION . '/databases/blog.db?mode=0666', 'blog'
+);
 Doctrine_Core::loadModels(BREEZE_APPLICATION . '/models');

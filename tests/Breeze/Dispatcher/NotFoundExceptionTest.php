@@ -43,7 +43,9 @@ class NotFoundExceptionTest extends \PHPUnit_Framework_TestCase
      */
     public function testException()
     {
-        $this->setExpectedException('Breeze\\Dispatcher\\NotFoundException', 'Page not found', 404);
+        $this->setExpectedException(
+            'Breeze\\Dispatcher\\NotFoundException', 'Page not found', 404
+        );
         throw new NotFoundException('Page not found');
     }
 }

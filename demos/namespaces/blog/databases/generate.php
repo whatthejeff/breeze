@@ -30,7 +30,9 @@ spl_autoload_register(array('Doctrine', 'autoload'));
 spl_autoload_register(array('Doctrine_Core', 'modelsAutoload'));
 
 $manager = Doctrine_Manager::getInstance();
-Doctrine_Manager::connection('sqlite:///' . BREEZE_APPLICATION . '/databases/blog.db?mode=0666', 'blog');
+Doctrine_Manager::connection(
+    'sqlite:///' . BREEZE_APPLICATION . '/databases/blog.db?mode=0666', 'blog'
+);
 
 Doctrine_Core::dropDatabases();
 Doctrine_Core::createDatabases();

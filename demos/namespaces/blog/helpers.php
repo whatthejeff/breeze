@@ -46,7 +46,9 @@ $breeze->helper('load', function($breeze, $id) {
  * @return mixed
  */
 $breeze->helper('save', function(\Post $post) use ($breeze) {
-    $post->fromArray(array_intersect_key((array)$_POST['post'], array_fill_keys(array('contents','title'), null)));
+    $post->fromArray(array_intersect_key(
+        (array)$_POST['post'], array_fill_keys(array('contents','title'), null)
+    ));
     try {
         $post->save();
         return true;

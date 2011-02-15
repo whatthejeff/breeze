@@ -97,7 +97,8 @@ class ConfigurationsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests overriding the defaults in the {@link Breeze\Configurations::__construct()}.
+     * Tests overriding the defaults in the
+     * {@link Breeze\Configurations::__construct()}.
      */
     public function testOverriddingDefaultsInConstructor()
     {

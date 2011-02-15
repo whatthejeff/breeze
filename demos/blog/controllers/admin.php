@@ -37,7 +37,9 @@ any(';^/admin/posts/(?<id>\d+);', function($app, $params){
  * GET /admin/posts/:id
  */
 get('/admin/posts', function(){
-    display('admin/posts/index', array('posts'=>Doctrine_Core::getTable('Post')->findAll()));
+    display('admin/posts/index', array(
+        'posts'=>Doctrine_Core::getTable('Post')->findAll())
+    );
 });
 get(';^/admin/posts/(?<id>\d+)$;', function($app, $params) {
     display('admin/posts/show');

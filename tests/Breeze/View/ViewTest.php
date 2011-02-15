@@ -72,12 +72,20 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function setUp()
     {
-        $this->application = $this->getMock('Breeze\\Application', array(), array(), '', FALSE);
+        $this->application = $this->getMock(
+            'Breeze\\Application', array(), array(), '', FALSE
+        );
         $this->application->expects($this->any())
                           ->method('config')
                           ->will($this->returnCallback(array($this, 'getConfig')));
 
-        $this->config['template_engine'] = $this->getMock('Breeze\\View\\Driver\\PHP', array(), array($this->application), '', FALSE);
+        $this->config['template_engine'] = $this->getMock(
+            'Breeze\\View\\Driver\\PHP',
+            array(),
+            array($this->application),
+            '',
+            FALSE
+        );
         $this->view = new View($this->application);
     }
 
@@ -147,7 +155,9 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testGetEngineWithBadEngine()
     {
-        $this->setExpectedException('\\UnexpectedValueException', 'is not a valid template engine.');
+        $this->setExpectedException(
+            '\\UnexpectedValueException', 'is not a valid template engine.'
+        );
         $this->config['template_engine'] = 'INVALID';
         $this->view->getEngine();
     }
@@ -158,7 +168,9 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testGetEngineWithGoodEngine()
     {
-        $this->assertInstanceOf('Breeze\\View\\Driver\\DriverInterface', $this->view->getEngine());
+        $this->assertInstanceOf(
+            'Breeze\\View\\Driver\\DriverInterface', $this->view->getEngine()
+        );
     }
 
     /**
@@ -167,7 +179,9 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
     public function testGetEngineWithString()
     {
         $this->config['template_engine'] = 'Tests\\Stub';
-        $this->assertInstanceOf('Breeze\\View\\Driver\\Tests\\Stub', $this->view->getEngine());
+        $this->assertInstanceOf(
+            'Breeze\\View\\Driver\\Tests\\Stub', $this->view->getEngine()
+        );
     }
 
     /**
@@ -212,14 +226,17 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
     }
 
     /**
-     * Tests {@link Breeze\View\View::layout()} calls {@link Breeze\Application::config()}
-     * to set the 'template_layout' option.
+     * Tests {@link Breeze\View\View::layout()} calls
+     * {@link Breeze\Application::config()} to set the 'template_layout' option.
      */
     public function testLayout()
     {
         $this->application->expects($this->at(0))
                            ->method('config')
-                           ->with($this->equalTo('template_layout'), $this->equalTo('layout'));
+                           ->with(
+                               $this->equalTo('template_layout'),
+                               $this->equalTo('layout')
+                             );
         $this->view->layout('layout');
     }
 
@@ -231,7 +248,10 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
     {
         $this->config['template_engine']->expects($this->once())
                                         ->method('fetch')
-                                        ->with($this->equalTo('layout.php'), array('layout_contents'=>'My Contents'))
+                                        ->with(
+                                            $this->equalTo('layout.php'),
+                                            array('layout_contents'=>'My Contents')
+                                          )
                                         ->will($this->returnValue('¡My Contents!'));
 
         $this->assertSame('¡My Contents!', $this->view->fetchLayout('My Contents'));
@@ -245,7 +265,9 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
         $this->config['template_layout'] = '';
         $this->mockTemplate();
 
-        $this->assertSame('Hello Jeff', $this->view->fetch('template', array('name'=>'Jeff')));
+        $this->assertSame('Hello Jeff', $this->view->fetch(
+            'template', array('name'=>'Jeff')
+        ));
     }
 
     /**
@@ -256,7 +278,9 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
         $this->mockTemplate();
         $this->mockLayout();
 
-        $this->assertSame('¡Hello Jeff!', $this->view->fetch('template', array('name'=>'Jeff')));
+        $this->assertSame('¡Hello Jeff!', $this->view->fetch(
+            'template', array('name'=>'Jeff')
+        ));
     }
 
     /**
@@ -290,7 +314,9 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
     public function testPartialDoesntUseLayout()
     {
         $this->mockTemplate();
-        $this->assertSame('Hello Jeff', $this->view->partial('template', array('name'=>'Jeff')));
+        $this->assertSame('Hello Jeff', $this->view->partial(
+            'template', array('name'=>'Jeff')
+        ));
     }
 
     /**
@@ -330,7 +356,13 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
     {
         $this->config['template_engine']->expects($this->at(0))
                                         ->method('fetch')
-                                        ->with($this->equalTo('template.php'), $this->equalTo(array('name'=>'Jeff', 'breeze'=>$this->application)))
+                                        ->with(
+                                            $this->equalTo('template.php'),
+                                            $this->equalTo(array(
+                                                'name'=>'Jeff',
+                                                'breeze'=>$this->application)
+                                            )
+                                          )
                                         ->will($this->returnValue('Hello Jeff'));
     }
 
@@ -349,7 +381,14 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
                                         ->will($this->returnValue(true));
         $this->config['template_engine']->expects($this->at(2))
                                         ->method('fetch')
-                                        ->with($this->equalTo('layout.php'), $this->equalTo(array('name'=>'Jeff', 'breeze'=>$this->application, 'layout_contents'=>'Hello Jeff')))
+                                        ->with(
+                                            $this->equalTo('layout.php'),
+                                            $this->equalTo(array(
+                                                'name'=>'Jeff',
+                                                'breeze'=>$this->application,
+                                                'layout_contents'=>'Hello Jeff')
+                                            )
+                                          )
                                         ->will($this->returnValue('¡Hello Jeff!'));
     }
 }
@@ -384,13 +423,14 @@ class Stub extends Driver {
      * database engine.  The extra options are to be defined by the
      * specific engines.
      *
-     * @param Breeze\Application $application An instance of the base Breeze Framework class
+     * @param Breeze\Application $application A Breeze application
      * @param string             $path        The path to the templates directory
-     * @param array              $options     Extra options for setting up custom template engines
+     * @param array              $options     Extra options for custom engines
      *
      * @return void
      */
-    public function __construct(Application $application, $path = null, array $options = array()) {}
+    public function __construct(Application $application, $path = null,
+        array $options = array()) {}
 
     /**
      * Updates the template engine if changes to the template-related
@@ -412,8 +452,10 @@ class Stub extends Driver {
      * Renders a template using the $variables parameter and returns
      * the contents.
      *
-     * @param string $template  The path to the template, excluding the base templates directory.
-     * @param array  $variables An associative array of variables to use in the template.
+     * @param string $template  The path to the template, excluding the base
+     * templates directory.
+     * @param array  $variables An associative array of variables to use in the
+     * template.
      *
      * @return string The rendered template.
      */
