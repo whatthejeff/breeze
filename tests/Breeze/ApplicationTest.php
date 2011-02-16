@@ -63,7 +63,8 @@ class ApplicationTest extends ApplicationTestCase
      */
     public function testRedirect()
     {
-        $this->application->redirect('http://www.breezephp.com/', null, false);
+        $this->setExpectedException('Breeze\\Dispatcher\\EndRequestException');
+        $this->application->redirect('http://www.breezephp.com/', null);
         $this->assertSame(
             xdebug_get_headers(), array('Location: http://www.breezephp.com/')
         );

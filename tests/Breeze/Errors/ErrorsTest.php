@@ -110,7 +110,6 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
         };
 
         $this->errors = new Errors($this->application);
-        $this->errors->setExit(false);
     }
 
     /**
@@ -220,7 +219,9 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testDispatchWithString()
     {
+        $this->setExpectedException('Breeze\\Dispatcher\\EndRequestException');
         $this->expectOutputString('Error Test');
+
         $this->errors->add($this->closure);
         $this->errors->dispatchError('test', 403);
     }
@@ -231,11 +232,10 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testDefaultHandlerWithNoLayoutAndNoBacktrace()
     {
-        $this->expectOutputString(
+        $this->checkErrorOutput(
             '<!DOCTYPE html><html><head><title>An error occurred</title>' .
             '</head><body><h1>test</h1></body></html>'
         );
-        $this->errors->dispatchError($this->exception);
     }
 
     /**
@@ -308,17 +308,6 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
     }
 
     /**
-     * Tests {@link Breeze\Errors\Errors::setExit()} changes the exit
-     * option.
-     */
-    public function testExit()
-    {
-        $this->assertFalse($this->errors->getExit());
-        $this->errors->setExit(true);
-        $this->assertTrue($this->errors->getExit());
-    }
-
-    /**
      * Tests errors issue the correct status headers.
      */
     public function testErrorsIssueCorrectStatusHeader()
@@ -356,6 +345,7 @@ class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
      */
     protected function checkErrorOutput($expected = 'Error Test')
     {
+        $this->setExpectedException('Breeze\\Dispatcher\\EndRequestException');
         $this->expectOutputString($expected);
         $this->errors->dispatchError($this->exception);
     }

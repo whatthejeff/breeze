@@ -718,6 +718,10 @@ use Breeze\Application;
  * @see Breeze\ClosuresCollection
  */
 use Breeze\ClosuresCollection;
+/**
+ * @see Breeze\Dispatcher\EndRequestException
+ */
+use Breeze\Dispatcher\EndRequestException;
 
 /**
  * Standard "undefined function" error message to use in __call() functions.
@@ -813,12 +817,6 @@ class Errors extends ClosuresCollection
      * @var Breeze\Application
      */
     protected $application;
-    /**
-     * If dispatching an error should cause the application to exit.
-     *
-     * @var boolean
-     */
-    protected $exit = true;
 
     /**
      * Sets up the {@link Breeze\Errors\Errors::$default_error} instance variable
@@ -848,28 +846,6 @@ class Errors extends ClosuresCollection
                      "</head><body>{$body}</body></html>";
             }
         };
-    }
-
-    /**
-     * Sets if dispatching errors should cause the application to exit.
-     *
-     * @return boolean If dispatching errors should cause the application to exit.
-     */
-    public function getExit()
-    {
-        return $this->exit;
-    }
-
-    /**
-     * Sets if dispatching errors should cause the application to exit.
-     *
-     * @param boolean If dispatching errors should cause the application to exit.
-     *
-     * @return void
-     */
-    public function setExit($exit)
-    {
-        $this->exit = $exit;
     }
 
     /**
@@ -947,9 +923,7 @@ class Errors extends ClosuresCollection
 
         $function($this->application, $exception);
 
-        if ($this->getExit()) {
-            exit;
-        }
+        throw new EndRequestException();
     }
 }
 
@@ -991,6 +965,20 @@ use Breeze\Errors\Exception;
  * @link       http://breezephp.com/
  */
 class PassException extends Exception
+{
+}
+
+/**
+ * Internal exception used to end a request in lieu of exit().
+ *
+ * @package    Breeze
+ * @subpackage Dispatcher
+ * @author     Jeff Welch <whatthejeff@gmail.com>
+ * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+ * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+ * @link       http://breezephp.com/
+ */
+class EndRequestException extends Exception
 {
 }
 
@@ -1408,6 +1396,10 @@ namespace Breeze;
  * @see Breeze\Dispatcher\PassException
  */
 use Breeze\Dispatcher\PassException;
+/**
+ * @see Breeze\Dispatcher\EndRequestException
+ */
+use Breeze\Dispatcher\EndRequestException;
 
 /**
  * The current version of the Breeze Framework.
@@ -1830,17 +1822,13 @@ class Application
      *
      * @param string  $url  The url to redirect to.
      * @param integer $code The status code for the redirect.
-     * @param boolean $exit If the program should exit after header is sent.
      *
      * @return void
      */
-    public function redirect($url, $code = 302, $exit = true)
+    public function redirect($url, $code = 302)
     {
         header("Location: $url", true, $code);
-
-        if ($exit) {
-            exit;
-        }
+        throw new EndRequestException();
     }
 
     /**
@@ -2175,12 +2163,21 @@ class Application
      */
     public function run($request_method = null, $request_uri = null)
     {
-        $this->filter(self::BEFORE);
         try {
-            $this->dispatcher->dispatch($request_method, $request_uri);
-        } catch (\Exception $exception) {
-            $this->error_handler->dispatchError($exception);
+            $this->filter(self::BEFORE);
+            try {
+                $this->dispatcher->dispatch($request_method, $request_uri);
+            } catch (\Exception $exception) {
+                if ($exception instanceof EndRequestException) {
+                    throw $exception;
+                }
+
+                $this->error_handler->dispatchError($exception);
+            }
+            $this->filter(self::AFTER);
+        } catch (EndRequestException $exception) {
+            // Breeze\Dispatcher\EndRequestException is just a shortcut to skip to
+            // the end of a Breeze request
         }
-        $this->filter(self::AFTER);
     }
 }
