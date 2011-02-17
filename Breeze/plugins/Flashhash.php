@@ -2,8 +2,8 @@
 /**
  * Breeze Framework - Flashhash Plugin
  *
- * This file contains the Flashhash plugin for the Breeze Framework.  Flashhash is
- * a utility that can be used to pass arbitrary data between actions.
+ * This file contains the Flashhash plugin for the Breeze Framework.  Flashhash
+ * is a utility that can be used to pass arbitrary data between actions.
  *
  * LICENSE
  *
@@ -49,7 +49,7 @@ class Flashhash implements \ArrayAccess
      *
      * @var array
      */
-    protected $variables = array();
+    protected $_variables = array();
 
     /**
      * Starts a new flashhash instance using the $key parameter as the index
@@ -66,7 +66,7 @@ class Flashhash implements \ArrayAccess
         @session_start();
 
         if (isset($_SESSION[$key])) {
-            $this->variables = $_SESSION[$key];
+            $this->_variables = $_SESSION[$key];
             unset($_SESSION[$key]);
         }
     }
@@ -81,7 +81,7 @@ class Flashhash implements \ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        $this->variables[$offset] = $value;
+        $this->_variables[$offset] = $value;
     }
 
     /**
@@ -93,7 +93,7 @@ class Flashhash implements \ArrayAccess
      */
     public function offsetExists($offset)
     {
-        return isset($this->variables[$offset]);
+        return isset($this->_variables[$offset]);
     }
 
     /**
@@ -105,7 +105,7 @@ class Flashhash implements \ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        unset($this->variables[$offset]);
+        unset($this->_variables[$offset]);
     }
 
     /**
@@ -117,7 +117,8 @@ class Flashhash implements \ArrayAccess
      */
     public function offsetGet($offset)
     {
-        return isset($this->variables[$offset]) ? $this->variables[$offset] : null;
+        return isset($this->_variables[$offset]) ?
+            $this->_variables[$offset] : null;
     }
 
     /**
@@ -131,53 +132,65 @@ class Flashhash implements \ArrayAccess
      */
     public function asArray()
     {
-        return $this->variables;
+        return $this->_variables;
     }
 }
 
-Application::register('Flashhash', function($app){
-    // Make the flashhash available to templates
-    $app->flash = new Flashhash();
+Application::register(
+    'Flashhash',
+    function($app)
+    {
+        // Make the flashhash available to templates
+        $app->flash = new Flashhash();
 
-    /**
-     *  @code
-     *      get('/', function(){
-     *          flash('name', 'This is a value');
-     *          redirect('/getflash');
-     *      });
-     *
-     *      get('/getflash', function(){
-     *          echo flash('name'); // This is a value
-     *          display('getflash');
-     *      });
-     *
-     *      // getflash.php
-     *      <p id="flash"><?php echo $flash['name']; ?></p>
-     *  @endcode
-     */
-    $app->helper('flash', function($name, $value = null) use ($app) {
-        $num_args = func_num_args();
+        /**
+         *  @code
+         *      get('/', function(){
+         *          flash('name', 'This is a value');
+         *          redirect('/getflash');
+         *      });
+         *
+         *      get('/getflash', function(){
+         *          echo flash('name'); // This is a value
+         *          display('getflash');
+         *      });
+         *
+         *      // getflash.php
+         *      <p id="flash"><?php echo $flash['name']; ?></p>
+         *  @endcode
+         */
+        $app->helper(
+            'flash',
+            function($name, $value = null) use ($app)
+            {
+                $numArgs = func_num_args();
 
-        if ($num_args == 1) {
-            return $app->flash[$name];
-        } else {
-            $_SESSION['flashhash'][$name] = $value;
-        }
-    });
+                if ($numArgs == 1) {
+                    return $app->flash[$name];
+                } else {
+                    $_SESSION['flashhash'][$name] = $value;
+                }
+            }
+        );
 
-    /**
-     *  @code
-     *      get('/', function(){
-     *          flashnow('name', 'This is a value');
-     *          echo flash('name'); // This is a value
-     *          display('getflash');
-     *      });
-     *
-     *      // getflash.php
-     *      <p id="flash"><?php echo $flash['name']; ?></p>
-     *  @endcode
-     */
-    $app->helper('flashnow', function($name, $value = null) use ($app) {
-        $app->flash[$name] = $value;
-    });
-});
+        /**
+         *  @code
+         *      get('/', function(){
+         *          flashnow('name', 'This is a value');
+         *          echo flash('name'); // This is a value
+         *          display('getflash');
+         *      });
+         *
+         *      // getflash.php
+         *      <p id="flash"><?php echo $flash['name']; ?></p>
+         *  @endcode
+         */
+        $app->helper(
+            'flashnow',
+            function($name, $value = null) use ($app)
+            {
+                $app->flash[$name] = $value;
+            }
+        );
+    }
+);

@@ -450,7 +450,7 @@ class Stub extends Driver {
      *
      * @return void
      */
-    protected function config()
+    protected function _config()
     {
     }
 
@@ -465,7 +465,7 @@ class Stub extends Driver {
      *
      * @return string The rendered template.
      */
-    protected function fetchTemplate($template, array $variables = array())
+    protected function _fetchTemplate($template, array $variables = array())
     {
     }
 }

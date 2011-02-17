@@ -218,7 +218,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
     public function testFetchWithValidTemplate()
     {
         $this->driver->expects($this->once())
-                     ->method('fetchTemplate')
+                     ->method('_fetchTemplate')
                      ->will($this->returnValue('contents'));
         $this->driver->setPath(\Breeze\Tests\FIXTURES_PATH);
         $this->assertSame('contents', $this->driver->fetch('template.php'));
@@ -226,34 +226,38 @@ class DriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Tests {@link Breeze\View\Driver\Driver::__construct()} calls
-     * {@link Breeze\View\Driver\Driver::config()}.
+     * {@link Breeze\View\Driver\Driver::_config()}.
      */
     public function testConstructorCallsConfig()
     {
         $this->driver->expects($this->once())
-                     ->method('config');
+                     ->method('_config');
         $this->driver->__construct($this->application);
     }
 
     /**
      * Tests {@link Breeze\View\Driver\Driver::updateConfig()} with options that
-     * have changed will call {@link Breeze\View\Driver\Driver::config()}.
+     * have changed will call {@link Breeze\View\Driver\Driver::_config()}.
      */
     public function testConfigWithDirtyOptions()
     {
-        $this->application->expects($this->once())
+        $this->application->expects($this->at(0))
                           ->method('config')
                           ->with($this->equalTo('template_directory'))
                           ->will($this->returnValue(\Breeze\Tests\FIXTURES_PATH));
+        $this->application->expects($this->at(1))
+                          ->method('config')
+                          ->with($this->equalTo('template_options'))
+                          ->will($this->returnValue(array()));
 
         $this->driver->expects($this->once())
-                     ->method('config');
+                     ->method('_config');
         $this->driver->updateConfig();
     }
 
     /**
      * Tests {@link Breeze\View\Driver\Driver::updateConfig()} with options that
-     * have not changed will not call {@link Breeze\View\Driver\Driver::config()}.
+     * have not changed will not call {@link Breeze\View\Driver\Driver::_config()}.
      */
     public function testConfigWithCleanOptions()
     {
@@ -267,7 +271,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
                           ->will($this->returnValue(array()));
 
         $this->driver->expects($this->never())
-                     ->method('config');
+                     ->method('_config');
         $this->driver->setPath(\Breeze\Tests\FIXTURES_PATH);
         $this->driver->updateConfig();
     }

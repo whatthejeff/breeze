@@ -2,8 +2,8 @@
 /**
  * Breeze Framework - Dwoo Plugin
  *
- * This file contains the Dwoo plugin for the Breeze Framework.  For more information
- * on Dwoo, visit {@link http://dwoo.org/}.
+ * This file contains the Dwoo plugin for the Breeze Framework.  For more
+ * information on Dwoo, visit {@link http://dwoo.org/}.
  *
  * LICENSE
  *
@@ -53,7 +53,7 @@ class Dwoo extends Driver
      * @var Dwoo
      * @see http://dwoo.org/
      */
-    protected $dwoo;
+    protected $_dwoo;
 
     /**
      * The default directory for compiled templates.
@@ -70,15 +70,16 @@ class Dwoo extends Driver
      * specific engines.
      *
      * @param Breeze\Application $application A Breeze application
-     * @param string             $path        The path to the templates directory
+     * @param string             $path        The path to the templates
+     * directory
      * @param array              $options     Extra options for custom engines
      *
      * @return void
      */
     public function __construct(Application $application, $path = null,
-        array $options = array()
-    ) {
-        $this->dwoo = new \Dwoo();
+        array $options = array())
+    {
+        $this->_dwoo = new \Dwoo();
         parent::__construct($application, $path, $options);
     }
 
@@ -88,14 +89,18 @@ class Dwoo extends Driver
      *
      * @return void
      */
-    protected function config()
+    protected function _config()
     {
         $path = $this->getPath();
-        $this->dwoo->setCompileDir(
-            $path . '/' . $this->getOption('compile_dir', self::DEFAULT_COMPILE_DIR)
+        $this->_dwoo->setCompileDir(
+            $path . '/' . $this->getOption(
+                'compile_dir', self::DEFAULT_COMPILE_DIR
+            )
         );
-        $this->dwoo->setCacheDir(
-            $path . '/' . $this->getOption('cache_dir', self::DEFAULT_CACHE_DIR)
+        $this->_dwoo->setCacheDir(
+            $path . '/' . $this->getOption(
+                'cache_dir', self::DEFAULT_CACHE_DIR
+            )
         );
     }
 
@@ -110,21 +115,27 @@ class Dwoo extends Driver
      *
      * @return string The rendered template.
      */
-    protected function fetchTemplate($template, array $variables = array())
+    protected function _fetchTemplate($template, array $variables = array())
     {
-        return $this->dwoo->get($this->getTemplatePath($template), $variables);
+        return $this->_dwoo->get(
+            $this->getTemplatePath($template), $variables
+        );
     }
 }
 
-Application::register('Dwoo', function($app){
-
-    // Sets up some default Dwoo configurations
-    $app->config(array(
-        'template_engine'    => 'Dwoo',
-        'template_extension' => '.tpl',
-        'template_options'   => array(
-            'compile_dir' => Dwoo::DEFAULT_COMPILE_DIR,
-            'cache_dir'   => Dwoo::DEFAULT_CACHE_DIR)
-    ));
-
-});
+Application::register(
+    'Dwoo',
+    function($app)
+    {
+        // Sets up some default Dwoo configurations
+        $app->config(
+            array(
+                'template_engine'    => 'Dwoo',
+                'template_extension' => '.tpl',
+                'template_options'   => array(
+                    'compile_dir' => Dwoo::DEFAULT_COMPILE_DIR,
+                    'cache_dir'   => Dwoo::DEFAULT_CACHE_DIR)
+            )
+        );
+    }
+);

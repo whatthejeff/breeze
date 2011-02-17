@@ -2,8 +2,8 @@
 /**
  * Breeze Framework - Smarty Plugin
  *
- * This file contains the Smarty plugin for the Breeze Framework.  For more information
- * on Smarty, visit {@link http://www.smarty.net/}.
+ * This file contains the Smarty plugin for the Breeze Framework.  For more
+ * information on Smarty, visit {@link http://www.smarty.net/}.
  *
  * LICENSE
  *
@@ -53,7 +53,7 @@ class Smarty extends Driver
      * @var Smarty
      * @see http://www.smarty.net/
      */
-    protected $smarty;
+    protected $_smarty;
 
     /**
      * The default directory for compiled templates.
@@ -74,18 +74,19 @@ class Smarty extends Driver
      * specific engines.
      *
      * @param Breeze\Application $application A Breeze application
-     * @param string             $path        The path to the templates directory
+     * @param string             $path        The path to the templates
+     * directory
      * @param array              $options     Extra options for custom engines
      *
      * @return void
      */
     public function __construct(Application $application, $path = null,
-        array $options = array()
-    ) {
-        $this->smarty = new \Smarty();
+        array $options = array())
+    {
+        $this->_smarty = new \Smarty();
         parent::__construct($application, $path, $options);
 
-        $this->smarty->registerPlugin(
+        $this->_smarty->registerPlugin(
             'function', 'partial', array($this, 'partial')
         );
     }
@@ -96,18 +97,18 @@ class Smarty extends Driver
      *
      * @return void
      */
-    protected function config()
+    protected function _config()
     {
         $path = $this->getPath();
 
-        $this->smarty->template_dir = $path;
-        $this->smarty->compile_dir  = $path . '/' . $this->getOption(
+        $this->_smarty->template_dir = $path;
+        $this->_smarty->compile_dir  = $path . '/' . $this->getOption(
             'compile_dir', self::DEFAULT_COMPILE_DIR
         );
-        $this->smarty->cache_dir    = $path . '/' . $this->getOption(
+        $this->_smarty->cache_dir    = $path . '/' . $this->getOption(
             'cache_dir', self::DEFAULT_CACHE_DIR
         );
-        $this->smarty->config_dir   = $path . '/' . $this->getOption(
+        $this->_smarty->config_dir   = $path . '/' . $this->getOption(
             'config_dir', self::DEFAULT_CONFIG_DIR
         );
     }
@@ -123,10 +124,10 @@ class Smarty extends Driver
      *
      * @return string
      */
-    protected function fetchTemplate($template, array $variables = array())
+    protected function _fetchTemplate($template, array $variables = array())
     {
-        $this->smarty->assign($variables);
-        return $this->smarty->fetch($template);
+        $this->_smarty->assign($variables);
+        return $this->_smarty->fetch($template);
     }
 
     /**
@@ -142,27 +143,32 @@ class Smarty extends Driver
     {
         if (!array_key_exists('file', $params)) {
             trigger_error(
-                "Smarty error: [partial] missing parameter 'file'", E_USER_ERROR
+                "Smarty error: [partial] missing parameter 'file'",
+                E_USER_ERROR
             );
         }
 
         $file = $params['file'];
         unset($params['file']);
 
-        return $this->application->partial($file, $params);
+        return $this->_application->partial($file, $params);
     }
 }
 
-Application::register('Smarty', function($app){
-
-    // Sets up some default Smarty configurations
-    $app->config(array(
-        'template_engine'    => 'Smarty',
-        'template_extension' => '.tpl',
-        'template_options'   => array(
-            'compile_dir' => Smarty::DEFAULT_COMPILE_DIR,
-            'cache_dir'   => Smarty::DEFAULT_CACHE_DIR,
-            'config_dir'  => Smarty::DEFAULT_CONFIG_DIR)
-    ));
-
-});
+Application::register(
+    'Smarty',
+    function($app)
+    {
+        // Sets up some default Smarty configurations
+        $app->config(
+            array(
+                'template_engine'    => 'Smarty',
+                'template_extension' => '.tpl',
+                'template_options'   => array(
+                    'compile_dir' => Smarty::DEFAULT_COMPILE_DIR,
+                    'cache_dir'   => Smarty::DEFAULT_CACHE_DIR,
+                    'config_dir'  => Smarty::DEFAULT_CONFIG_DIR)
+            )
+        );
+    }
+);
