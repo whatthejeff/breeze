@@ -46,7 +46,7 @@ class ConditionsTest extends \PHPUnit_Framework_TestCase
      *
      * @param Breeze\Dispatcher\Conditions
      */
-    protected $conditions;
+    protected $_conditions;
 
     /**
      * Sets up the test case for {@link Breeze\Dispatcher\Conditions}.
@@ -55,7 +55,7 @@ class ConditionsTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->conditions = new Conditions();
+        $this->_conditions = new Conditions();
     }
 
     /**
@@ -67,7 +67,7 @@ class ConditionsTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(
             '\\InvalidArgumentException', 'is not a valid condition.'
         );
-        $this->conditions->dispatchCondition('invalid');
+        $this->_conditions->dispatchCondition('invalid');
     }
 
     /**
@@ -79,7 +79,7 @@ class ConditionsTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(
             '\\InvalidArgumentException', 'You must provide a name.'
         );
-        $this->conditions->add('', function(){});
+        $this->_conditions->add('', function(){});
     }
 
     /**
@@ -89,8 +89,8 @@ class ConditionsTest extends \PHPUnit_Framework_TestCase
     public function testConditionThrowsPassExceptionIfReturnsFalse()
     {
         $this->setExpectedException('Breeze\\Dispatcher\\PassException');
-        $this->conditions->add('returns_false', function(){ return false; });
-        $this->conditions->dispatchCondition('returns_false');
+        $this->_conditions->add('returns_false', function(){ return false; });
+        $this->_conditions->dispatchCondition('returns_false');
     }
 
     /**
@@ -99,8 +99,8 @@ class ConditionsTest extends \PHPUnit_Framework_TestCase
      */
     public function testConditionDoesntThrowPassExceptionIfReturnsTrue()
     {
-        $this->conditions->add('returns_true', function(){ return true; });
-        $this->conditions->dispatchCondition('returns_true');
+        $this->_conditions->add('returns_true', function(){ return true; });
+        $this->_conditions->dispatchCondition('returns_true');
     }
 
     /**
@@ -113,7 +113,7 @@ class ConditionsTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             array('user_agent_matches','host_name_is'),
-            array_keys($this->conditions->all())
+            array_keys($this->_conditions->all())
         );
     }
 
@@ -126,7 +126,7 @@ class ConditionsTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Breeze\\Dispatcher\\PassException');
 
         $_SERVER['HTTP_USER_AGENT'] = 'test/agent 1.0';
-        $this->conditions->dispatchCondition(
+        $this->_conditions->dispatchCondition(
             'user_agent_matches', '/thsiwontmatch/'
         );
         $this->fail("Expected exception PassException");
@@ -139,29 +139,33 @@ class ConditionsTest extends \PHPUnit_Framework_TestCase
     public function testUserAgentMatchesWithGoodAgent()
     {
         $_SERVER['HTTP_USER_AGENT'] = 'test/agent 1.0';
-        $this->conditions->dispatchCondition(
+        $this->_conditions->dispatchCondition(
             'user_agent_matches', '/test\/agent 1\.0/'
         );
     }
 
     /**
      * Tests {@link Breeze\Dispatcher\Conditions::host_name_is()} with a
-     * non-matching host name will throw a {@link Breeze\Dispatcher\PassException}.
+     * non-matching host name will throw a
+     * {@link Breeze\Dispatcher\PassException}.
      */
     public function testHostNameIsWithBadHostName()
     {
         $this->setExpectedException('Breeze\\Dispatcher\\PassException');
         $_SERVER['HTTP_HOST'] = 'www.test.com';
-        $this->conditions->dispatchCondition('host_name_is', 'www.wontmatch.com');
+        $this->_conditions->dispatchCondition(
+            'host_name_is', 'www.wontmatch.com'
+        );
     }
 
     /**
      * Tests {@link Breeze\Dispatcher\Conditions::host_name_is()} with a
-     * matching host name doesn't throw a {@link Breeze\Dispatcher\PassException}.
+     * matching host name doesn't throw a
+     * {@link Breeze\Dispatcher\PassException}.
      */
     public function testHostNameIsWithGoodHostName()
     {
         $_SERVER['HTTP_HOST'] = 'www.test.com';
-        $this->conditions->dispatchCondition('host_name_is', 'www.test.com');
+        $this->_conditions->dispatchCondition('host_name_is', 'www.test.com');
     }
 }

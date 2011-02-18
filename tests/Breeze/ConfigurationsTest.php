@@ -42,14 +42,14 @@ class ConfigurationsTest extends \PHPUnit_Framework_TestCase
      *
      * @param Breeze\Configurations
      */
-    protected $configurations;
+    protected $_configurations;
 
     /**
      * The list default configuration settings.
      *
      * @param array
      */
-    protected $defaults = array(
+    protected static $_defaults = array(
         'template_engine'       => 'PHP',
         'template_options'      => array(),
         'template_directory'    => '../views',
@@ -66,7 +66,7 @@ class ConfigurationsTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->configurations = new Configurations();
+        $this->_configurations = new Configurations();
     }
 
     /**
@@ -74,7 +74,7 @@ class ConfigurationsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetWithUnsetKey()
     {
-        $this->assertNull($this->configurations->get('unset key'));
+        $this->assertNull($this->_configurations->get('unset key'));
     }
 
     /**
@@ -82,8 +82,8 @@ class ConfigurationsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetWithSetKey()
     {
-        $this->configurations->set('a key', 'a value');
-        $this->assertSame('a value', $this->configurations->get('a key'));
+        $this->_configurations->set('a key', 'a value');
+        $this->assertSame('a value', $this->_configurations->get('a key'));
     }
 
     /**
@@ -91,8 +91,8 @@ class ConfigurationsTest extends \PHPUnit_Framework_TestCase
      */
     public function testDefaults()
     {
-        foreach ($this->defaults as $key => $default) {
-            $this->assertSame($default, $this->configurations->get($key));
+        foreach (self::$_defaults as $key => $default) {
+            $this->assertSame($default, $this->_configurations->get($key));
         }
     }
 
@@ -102,15 +102,17 @@ class ConfigurationsTest extends \PHPUnit_Framework_TestCase
      */
     public function testOverriddingDefaultsInConstructor()
     {
-        $new_values = array(
+        $newValues = array(
             'template_engine'=>'smarty',
             'template_extension'=>'.tpl'
         );
 
-        $this->configurations = new Configurations($new_values);
+        $this->_configurations = new Configurations($newValues);
 
-        foreach (array_merge($this->defaults, $new_values) as $key => $default) {
-            $this->assertSame($default, $this->configurations->get($key));
+        foreach (array_merge(self::$_defaults, $newValues) as
+            $key => $default
+        ) {
+            $this->assertSame($default, $this->_configurations->get($key));
         }
     }
 
@@ -119,8 +121,8 @@ class ConfigurationsTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetWithStringAndNewKey()
     {
-        $this->configurations->set('a key', 'a value');
-        $this->assertSame('a value', $this->configurations->get('a key'));
+        $this->_configurations->set('a key', 'a value');
+        $this->assertSame('a value', $this->_configurations->get('a key'));
     }
 
     /**
@@ -128,8 +130,10 @@ class ConfigurationsTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetWithStringAndExistingKey()
     {
-        $this->configurations->set('template_engine', 'smarty');
-        $this->assertSame('smarty', $this->configurations->get('template_engine'));
+        $this->_configurations->set('template_engine', 'smarty');
+        $this->assertSame(
+            'smarty', $this->_configurations->get('template_engine')
+        );
     }
 
     /**
@@ -137,14 +141,14 @@ class ConfigurationsTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetWithArrayAndNewKeys()
     {
-        $new_values = array(
+        $newValues = array(
             'a key1' => 'a value1',
             'a key2' => 'a value2'
         );
-        $this->configurations->set($new_values);
+        $this->_configurations->set($newValues);
 
-        foreach ($new_values as $key => $value) {
-            $this->assertSame($value, $this->configurations->get($key));
+        foreach ($newValues as $key => $value) {
+            $this->assertSame($value, $this->_configurations->get($key));
         }
     }
 
@@ -154,16 +158,16 @@ class ConfigurationsTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetWithArrayAndExistingKeys()
     {
-        $new_values = array(
+        $newValues = array(
             'a key1' => 'a value1',
             'a key2' => 'a value2',
             'template_engine'=>'smarty',
             'template_extension'=>'.tpl'
         );
-        $this->configurations->set($new_values);
+        $this->_configurations->set($newValues);
 
-        foreach ($new_values as $key => $value) {
-            $this->assertSame($value, $this->configurations->get($key));
+        foreach ($newValues as $key => $value) {
+            $this->assertSame($value, $this->_configurations->get($key));
         }
     }
 }

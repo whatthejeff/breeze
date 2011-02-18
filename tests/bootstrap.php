@@ -20,7 +20,7 @@
 
 namespace Breeze\Tests;
 
-error_reporting(E_ALL | E_STRICT);
+error_reporting(E_ALL);
 
 /**
  * The root path to the Breeze Framework's test suite.

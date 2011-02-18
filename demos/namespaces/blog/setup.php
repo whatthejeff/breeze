@@ -57,10 +57,15 @@ require_once('Doctrine/lib/Doctrine.php');
 \spl_autoload_register(array('Doctrine_Core', 'modelsAutoload'));
 
 $manager = \Doctrine_Manager::getInstance();
-$manager->setAttribute(\Doctrine_Core::ATTR_VALIDATE, \Doctrine_Core::VALIDATE_ALL);
-$manager->setAttribute(\Doctrine_Core::ATTR_EXPORT, \Doctrine_Core::EXPORT_ALL);
 $manager->setAttribute(
-    \Doctrine_Core::ATTR_MODEL_LOADING, \Doctrine_Core::MODEL_LOADING_CONSERVATIVE
+    \Doctrine_Core::ATTR_VALIDATE, \Doctrine_Core::VALIDATE_ALL
+);
+$manager->setAttribute(
+    \Doctrine_Core::ATTR_EXPORT, \Doctrine_Core::EXPORT_ALL
+);
+$manager->setAttribute(
+    \Doctrine_Core::ATTR_MODEL_LOADING,
+    \Doctrine_Core::MODEL_LOADING_CONSERVATIVE
 );
 
 \Doctrine_Manager::connection(

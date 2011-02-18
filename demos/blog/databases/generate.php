@@ -3,7 +3,8 @@
  * Blog - Database Generator
  *
  * This file contains a script for generating the database for the blog demo.
- * Running this script from command line as follows will generate a new database:
+ * Running this script from command line as follows will generate a new
+ * database:
  *
  * @code
  *     php generate.php

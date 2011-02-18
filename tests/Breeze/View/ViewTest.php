@@ -42,20 +42,20 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      *
      * @param Breeze\Application
      */
-    protected $application;
+    protected $_application;
     /**
      * The view object for testing.
      *
      * @param Breeze\View\View
      */
-    protected $view;
+    protected $_view;
 
     /**
      * Configuration values for testsing {@link Breeze\View\View}.
      *
      * @param array
      */
-    protected $config = array(
+    protected $_config = array(
         'template_engine'       => '',
         'template_options'      => array(),
         'template_directory'    => \Breeze\Tests\FIXTURES_PATH,
@@ -72,21 +72,23 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function setUp()
     {
-        $this->application = $this->getMock(
+        $this->_application = $this->getMock(
             'Breeze\\Application', array(), array(), '', FALSE
         );
-        $this->application->expects($this->any())
-                          ->method('config')
-                          ->will($this->returnCallback(array($this, 'getConfig')));
+        $this->_application->expects($this->any())
+                           ->method('config')
+                           ->will(
+                               $this->returnCallback(array($this, 'getConfig'))
+                             );
 
-        $this->config['template_engine'] = $this->getMock(
+        $this->_config['template_engine'] = $this->getMock(
             'Breeze\\View\\Driver\\PHP',
             array(),
-            array($this->application),
+            array($this->_application),
             '',
             FALSE
         );
-        $this->view = new View($this->application);
+        $this->_view = new View($this->_application);
     }
 
     /**
@@ -95,7 +97,7 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testGetWithUnsetVariable()
     {
-        $this->assertNull($this->view->does_not_exist);
+        $this->assertNull($this->_view->does_not_exist);
     }
 
     /**
@@ -104,8 +106,8 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testGetWithSetVariable()
     {
-        $this->view->addVariables(array('this_is_a' => 'test'));
-        $this->assertSame('test', $this->view->this_is_a);
+        $this->_view->addVariables(array('this_is_a' => 'test'));
+        $this->assertSame('test', $this->_view->this_is_a);
     }
 
     /**
@@ -114,8 +116,8 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testIssetWithSetVariable()
     {
-        $this->view->addVariables(array('this_is_a' => 'test'));
-        $this->assertTrue(isset($this->view->this_is_a));
+        $this->_view->addVariables(array('this_is_a' => 'test'));
+        $this->assertTrue(isset($this->_view->this_is_a));
     }
 
     /**
@@ -124,7 +126,7 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testIssetWithUnsetVariable()
     {
-        $this->assertFalse(isset($this->view->does_not_exist));
+        $this->assertFalse(isset($this->_view->does_not_exist));
     }
 
     /**
@@ -133,11 +135,11 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testUnsetVariable()
     {
-        $this->view->addVariables(array('this_is_a' => 'test'));
-        $this->assertTrue(isset($this->view->this_is_a));
+        $this->_view->addVariables(array('this_is_a' => 'test'));
+        $this->assertTrue(isset($this->_view->this_is_a));
 
-        unset($this->view->this_is_a);
-        $this->assertFalse(isset($this->view->this_is_a));
+        unset($this->_view->this_is_a);
+        $this->assertFalse(isset($this->_view->this_is_a));
     }
 
     /**
@@ -145,8 +147,8 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testSet()
     {
-        $this->view->this_is_a = 'test';
-        $this->assertSame('test', $this->view->this_is_a);
+        $this->_view->this_is_a = 'test';
+        $this->assertSame('test', $this->_view->this_is_a);
     }
 
     /**
@@ -158,8 +160,8 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
         $this->setExpectedException(
             '\\UnexpectedValueException', 'is not a valid template engine.'
         );
-        $this->config['template_engine'] = 'INVALID';
-        $this->view->getEngine();
+        $this->_config['template_engine'] = 'INVALID';
+        $this->_view->getEngine();
     }
 
     /**
@@ -169,7 +171,7 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
     public function testGetEngineWithGoodEngine()
     {
         $this->assertInstanceOf(
-            'Breeze\\View\\Driver\\DriverInterface', $this->view->getEngine()
+            'Breeze\\View\\Driver\\DriverInterface', $this->_view->getEngine()
         );
     }
 
@@ -178,9 +180,9 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testGetEngineWithString()
     {
-        $this->config['template_engine'] = 'Tests\\Stub';
+        $this->_config['template_engine'] = 'Tests\\Stub';
         $this->assertInstanceOf(
-            'Breeze\\View\\Driver\\Tests\\Stub', $this->view->getEngine()
+            'Breeze\\View\\Driver\\Tests\\Stub', $this->_view->getEngine()
         );
     }
 
@@ -190,8 +192,11 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testGetEngineWithStringCaches()
     {
-        $this->config['template_engine'] = 'Tests\\Stub';
-        $this->assertSame($this->view->getEngine(), $this->view->getEngine());
+        $this->_config['template_engine'] = 'Tests\\Stub';
+        $this->assertSame(
+            $this->_view->getEngine(),
+            $this->_view->getEngine()
+        );
     }
 
     /**
@@ -199,8 +204,8 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testLayoutExistsWithNoLayoutSet()
     {
-        $this->config['template_layout'] = '';
-        $this->assertFalse($this->view->layoutExists());
+        $this->_config['template_layout'] = '';
+        $this->assertFalse($this->_view->layoutExists());
     }
 
     /**
@@ -208,8 +213,8 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testLayoutExistsWithInvalidPath()
     {
-        $this->config['template_layout'] = 'DOES NOT EXIST';
-        $this->assertFalse($this->view->layoutExists());
+        $this->_config['template_layout'] = 'DOES NOT EXIST';
+        $this->assertFalse($this->_view->layoutExists());
     }
 
     /**
@@ -217,27 +222,28 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testLayoutExistsWithValidPath()
     {
-        $this->config['template_engine']->expects($this->once())
+        $this->_config['template_engine']->expects($this->once())
                                          ->method('templateExists')
                                          ->with($this->equalTo('layout.php'))
                                          ->will($this->returnValue(true));
 
-        $this->assertTrue($this->view->layoutExists());
+        $this->assertTrue($this->_view->layoutExists());
     }
 
     /**
      * Tests {@link Breeze\View\View::layout()} calls
-     * {@link Breeze\Application::config()} to set the 'template_layout' option.
+     * {@link Breeze\Application::config()} to set the 'template_layout'
+     * option.
      */
     public function testLayout()
     {
-        $this->application->expects($this->at(0))
+        $this->_application->expects($this->at(0))
                            ->method('config')
                            ->with(
                                $this->equalTo('template_layout'),
                                $this->equalTo('layout')
                              );
-        $this->view->layout('layout');
+        $this->_view->layout('layout');
     }
 
     /**
@@ -246,15 +252,20 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testFetchLayout()
     {
-        $this->config['template_engine']->expects($this->once())
-                                        ->method('fetch')
-                                        ->with(
-                                            $this->equalTo('layout.php'),
-                                            array('layout_contents'=>'My Contents')
-                                          )
-                                        ->will($this->returnValue('¡My Contents!'));
+        $this->_config['template_engine']->expects($this->once())
+                                         ->method('fetch')
+                                         ->with(
+                                             $this->equalTo('layout.php'),
+                                             array('layout_contents'=>'My Contents')
+                                           )
+                                         ->will(
+                                             $this->returnValue('¡My Contents!')
+                                           );
 
-        $this->assertSame('¡My Contents!', $this->view->fetchLayout('My Contents'));
+        $this->assertSame(
+            '¡My Contents!',
+            $this->_view->fetchLayout('My Contents')
+        );
     }
 
     /**
@@ -262,10 +273,10 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testFetchWithoutLayout()
     {
-        $this->config['template_layout'] = '';
-        $this->mockTemplate();
+        $this->_config['template_layout'] = '';
+        $this->_mockTemplate();
 
-        $this->assertSame('Hello Jeff', $this->view->fetch(
+        $this->assertSame('Hello Jeff', $this->_view->fetch(
             'template', array('name'=>'Jeff')
         ));
     }
@@ -275,10 +286,10 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testFetchWithLayout()
     {
-        $this->mockTemplate();
-        $this->mockLayout();
+        $this->_mockTemplate();
+        $this->_mockLayout();
 
-        $this->assertSame('¡Hello Jeff!', $this->view->fetch(
+        $this->assertSame('¡Hello Jeff!', $this->_view->fetch(
             'template', array('name'=>'Jeff')
         ));
     }
@@ -289,10 +300,10 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
     public function testDisplayWithoutLayout()
     {
         $this->expectOutputString('Hello Jeff');
-        $this->config['template_layout'] = '';
+        $this->_config['template_layout'] = '';
 
-        $this->mockTemplate();
-        $this->view->display('template', array('name'=>'Jeff'));
+        $this->_mockTemplate();
+        $this->_view->display('template', array('name'=>'Jeff'));
     }
 
     /**
@@ -302,10 +313,10 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
     {
         $this->expectOutputString('¡Hello Jeff!');
 
-        $this->mockTemplate();
-        $this->mockLayout();
+        $this->_mockTemplate();
+        $this->_mockLayout();
 
-        $this->view->display('template', array('name'=>'Jeff'));
+        $this->_view->display('template', array('name'=>'Jeff'));
     }
 
     /**
@@ -313,10 +324,13 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testPartialDoesntUseLayout()
     {
-        $this->mockTemplate();
-        $this->assertSame('Hello Jeff', $this->view->partial(
-            'template', array('name'=>'Jeff')
-        ));
+        $this->_mockTemplate();
+        $this->assertSame(
+            'Hello Jeff',
+            $this->_view->partial(
+                'template', array('name'=>'Jeff')
+            )
+        );
     }
 
     /**
@@ -325,8 +339,11 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      */
     public function testPartialDoesntDestoryLayoutPreferences()
     {
-        $this->view->partial('template', array('name'=>'Jeff'));
-        $this->assertSame('layout', $this->application->config('template_layout'));
+        $this->_view->partial('template', array('name'=>'Jeff'));
+        $this->assertSame(
+            'layout',
+            $this->_application->config('template_layout')
+        );
     }
 
     /**
@@ -340,9 +357,9 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
     public function getConfig($key, $value = null)
     {
         if(isset($value)) {
-            $this->config[$key] = $value;
+            $this->_config[$key] = $value;
         } else {
-            return isset($this->config[$key]) ? $this->config[$key] : null;
+            return isset($this->_config[$key]) ? $this->_config[$key] : null;
         }
     }
 
@@ -352,18 +369,20 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      *
      * @return void
      */
-    protected function mockTemplate()
+    protected function _mockTemplate()
     {
-        $this->config['template_engine']->expects($this->at(0))
-                                        ->method('fetch')
-                                        ->with(
-                                            $this->equalTo('template.php'),
-                                            $this->equalTo(array(
-                                                'name'=>'Jeff',
-                                                'breeze'=>$this->application)
-                                            )
-                                          )
-                                        ->will($this->returnValue('Hello Jeff'));
+        $this->_config['template_engine']->expects($this->at(0))
+                                         ->method('fetch')
+                                         ->with(
+                                             $this->equalTo('template.php'),
+                                             $this->equalTo(array(
+                                                 'name'=>'Jeff',
+                                                 'breeze'=>$this->_application)
+                                             )
+                                           )
+                                         ->will(
+                                             $this->returnValue('Hello Jeff')
+                                           );
     }
 
     /**
@@ -373,23 +392,27 @@ class ViewTest extends \PHPUnit_Extensions_OutputTestCase
      *
      * @return void
      */
-    protected function mockLayout()
+    protected function _mockLayout()
     {
-        $this->config['template_engine']->expects($this->at(1))
-                                        ->method('templateExists')
-                                        ->with($this->equalTo('layout.php'))
-                                        ->will($this->returnValue(true));
-        $this->config['template_engine']->expects($this->at(2))
-                                        ->method('fetch')
-                                        ->with(
-                                            $this->equalTo('layout.php'),
-                                            $this->equalTo(array(
-                                                'name'=>'Jeff',
-                                                'breeze'=>$this->application,
-                                                'layout_contents'=>'Hello Jeff')
-                                            )
-                                          )
-                                        ->will($this->returnValue('¡Hello Jeff!'));
+        $this->_config['template_engine']->expects($this->at(1))
+                                         ->method('templateExists')
+                                         ->with($this->equalTo('layout.php'))
+                                         ->will($this->returnValue(true));
+        $this->_config['template_engine']->expects($this->at(2))
+                                         ->method('fetch')
+                                         ->with(
+                                             $this->equalTo('layout.php'),
+                                             $this->equalTo(
+                                                 array(
+                                                     'name'=>'Jeff',
+                                                     'breeze'=>$this->_application,
+                                                     'layout_contents'=>'Hello Jeff'
+                                                 )
+                                             )
+                                           )
+                                         ->will(
+                                             $this->returnValue('¡Hello Jeff!')
+                                           );
     }
 }
 
@@ -424,14 +447,15 @@ class Stub extends Driver {
      * specific engines.
      *
      * @param Breeze\Application $application A Breeze application
-     * @param string             $path        The path to the templates directory
+     * @param string             $path        The path to the templates
+     * directory
      * @param array              $options     Extra options for custom engines
      *
      * @return void
      */
     public function __construct(Application $application, $path = null,
-        array $options = array()
-    ) {
+        array $options = array())
+    {
     }
 
     /**

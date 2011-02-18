@@ -2,7 +2,8 @@
 /**
  * Breeze Framework - Flashhash test case
  *
- * This file contains the {@link Breeze\Plugins\Flashhash\Tests\FlashHashTest} class.
+ * This file contains the {@link Breeze\Plugins\Flashhash\Tests\FlashHashTest}
+ * class.
  *
  * LICENSE
  *
@@ -52,20 +53,20 @@ class FlashHashTest extends PluginTestCase
      *
      * @param  string
      */
-    static protected $plugin_path = 'Breeze/plugins/Flashhash.php';
+    static protected $_pluginPath = 'Breeze/plugins/Flashhash.php';
     /**
      * The name of the plugin
      *
      * @param string
      */
-    static protected $plugin_name = 'Flashhash';
+    static protected $_pluginName = 'Flashhash';
 
     /**
      * The flashhash object for testing.
      *
      * @param Breeze\Plugins\Flashhash
      */
-    protected $flashhash;
+    protected $_flashhash;
 
     /**
      * Sets up the test case for {@link Breeze\Plugins\Flashhash}.
@@ -74,7 +75,7 @@ class FlashHashTest extends PluginTestCase
      */
     public function setUp()
     {
-        $this->flashhash = new FlashHash();
+        $this->_flashhash = new FlashHash();
     }
 
     /**
@@ -83,8 +84,8 @@ class FlashHashTest extends PluginTestCase
      */
     public function testOffsetSet()
     {
-        $this->flashhash['key'] = 'value';
-        $this->assertSame('value', $this->flashhash['key']);
+        $this->_flashhash['key'] = 'value';
+        $this->assertSame('value', $this->_flashhash['key']);
     }
 
     /**
@@ -93,7 +94,7 @@ class FlashHashTest extends PluginTestCase
      */
     public function testOffsetExistsWhenNoOffsetExists()
     {
-        $this->assertFalse(isset($this->flashhash['key']));
+        $this->assertFalse(isset($this->_flashhash['key']));
     }
 
     /**
@@ -102,8 +103,8 @@ class FlashHashTest extends PluginTestCase
      */
     public function testOffsetExistsWhenOffsetExists()
     {
-        $this->flashhash['key'] = 'value';
-        $this->assertTrue(isset($this->flashhash['key']));
+        $this->_flashhash['key'] = 'value';
+        $this->assertTrue(isset($this->_flashhash['key']));
     }
 
     /**
@@ -112,10 +113,10 @@ class FlashHashTest extends PluginTestCase
      */
     public function testOffsetUnset()
     {
-        $this->flashhash['key'] = 'value';
-        unset($this->flashhash['key']);
+        $this->_flashhash['key'] = 'value';
+        unset($this->_flashhash['key']);
 
-        $this->assertFalse(isset($this->flashhash['key']));
+        $this->assertFalse(isset($this->_flashhash['key']));
     }
 
     /**
@@ -124,8 +125,11 @@ class FlashHashTest extends PluginTestCase
      */
     public function testAsArray()
     {
-        $this->flashhash['key'] = 'value';
-        $this->assertSame(array('key' => 'value'), $this->flashhash->asArray());
+        $this->_flashhash['key'] = 'value';
+        $this->assertSame(
+            array('key' => 'value'),
+            $this->_flashhash->asArray()
+        );
     }
 
     /**
@@ -138,8 +142,11 @@ class FlashHashTest extends PluginTestCase
             'key' => 'value'
         );
 
-        $this->flashhash = new FlashHash();
-        $this->assertSame(array('key' => 'value'), $this->flashhash->asArray());
+        $this->_flashhash = new FlashHash();
+        $this->assertSame(
+            array('key' => 'value'),
+            $this->_flashhash->asArray()
+        );
     }
 
     /**
@@ -151,8 +158,11 @@ class FlashHashTest extends PluginTestCase
             'key' => 'value'
         );
 
-        $this->flashhash = new FlashHash('test');
-        $this->assertSame(array('key' => 'value'), $this->flashhash->asArray());
+        $this->_flashhash = new FlashHash('test');
+        $this->assertSame(
+            array('key' => 'value'),
+            $this->_flashhash->asArray()
+        );
     }
 
     /**
@@ -161,12 +171,12 @@ class FlashHashTest extends PluginTestCase
      */
     public function testFlashNow()
     {
-        $this->setupMockedDependencies();
-        $this->mockPluginSystem();
-        $this->mockApplication();
+        $this->_setupMockedDependencies();
+        $this->_mockPluginSystem();
+        $this->_mockApplication();
 
-        $this->application->flashnow('key', 'value');
-        $this->assertSame('value', $this->application->flash('key'));
+        $this->_application->flashnow('key', 'value');
+        $this->assertSame('value', $this->_application->flash('key'));
     }
 
     /**
@@ -175,11 +185,11 @@ class FlashHashTest extends PluginTestCase
      */
     public function testFlashSet()
     {
-        $this->setupMockedDependencies();
-        $this->mockPluginSystem();
-        $this->mockApplication();
+        $this->_setupMockedDependencies();
+        $this->_mockPluginSystem();
+        $this->_mockApplication();
 
-        $this->application->flash('key', 'value');
+        $this->_application->flash('key', 'value');
         $this->assertSame('value', $_SESSION['flashhash']['key']);
     }
 }

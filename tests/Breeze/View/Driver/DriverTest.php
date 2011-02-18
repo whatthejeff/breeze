@@ -42,20 +42,23 @@ class DriverTest extends \PHPUnit_Framework_TestCase
      *
      * @param Breeze\View\Driver\Driver
      */
-    protected $driver;
+    protected $_driver;
     /**
      * The application stub for testing {@link Breeze\View\Driver\Driver}.
      *
      * @param Breeze\Application
      */
-    protected $application;
+    protected $_application;
     /**
      * Options to use for testing the setting of options with
      * {@link Breeze\View\Driver\Driver}.
      *
      * @param Breeze\Application
      */
-    protected static $options = array('option1'=>'value1', 'option2'=>'value2');
+    protected static $_options = array(
+        'option1'=>'value1',
+        'option2'=>'value2'
+    );
 
     /**
      * Sets up the test case for {@link Breeze\View\Driver\Driver}.
@@ -64,11 +67,11 @@ class DriverTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->application = $this->getMock(
+        $this->_application = $this->getMock(
             'Breeze\\Application', array(), array(), '', FALSE
         );
-        $this->driver = $this->getMockForAbstractClass(
-            'Breeze\\View\\Driver\\Driver', array($this->application)
+        $this->_driver = $this->getMockForAbstractClass(
+            'Breeze\\View\\Driver\\Driver', array($this->_application)
         );
     }
 
@@ -80,7 +83,7 @@ class DriverTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(
             '\\InvalidArgumentException', 'is not a valid template path.'
         );
-        $this->driver->setPath('DOES NOT EXIST');
+        $this->_driver->setPath('DOES NOT EXIST');
     }
 
     /**
@@ -88,65 +91,74 @@ class DriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetPathWithValidPath()
     {
-        $this->driver->setPath(\Breeze\Tests\FIXTURES_PATH);
-        $this->assertSame(\Breeze\Tests\FIXTURES_PATH, $this->driver->getPath());
+        $this->_driver->setPath(\Breeze\Tests\FIXTURES_PATH);
+        $this->assertSame(
+            \Breeze\Tests\FIXTURES_PATH,
+            $this->_driver->getPath()
+        );
     }
 
     /**
-     * Tests {@link Breeze\View\Driver\Driver::__construct()} with an invalid path.
+     * Tests {@link Breeze\View\Driver\Driver::__construct()} with an invalid
+     * path.
      */
     public function testSetPathWithInvalidPathWithConstructor()
     {
         $this->setExpectedException(
             '\\InvalidArgumentException', 'is not a valid template path.'
         );
-        $this->driver = $this->getMockForAbstractClass(
+        $this->_driver = $this->getMockForAbstractClass(
             'Breeze\\View\\Driver\\Driver',
-            array($this->application, 'DOES NOT EXIST')
+            array($this->_application, 'DOES NOT EXIST')
         );
     }
 
     /**
-     * Tests {@link Breeze\View\Driver\Driver::__construct()} with a valid path.
+     * Tests {@link Breeze\View\Driver\Driver::__construct()} with a valid
+     * path.
      */
     public function testSetPathWithValidPathWithConstructor()
     {
-        $this->driver = $this->getMockForAbstractClass(
+        $this->_driver = $this->getMockForAbstractClass(
             'Breeze\\View\\Driver\\Driver',
-            array($this->application, \Breeze\Tests\FIXTURES_PATH)
+            array($this->_application, \Breeze\Tests\FIXTURES_PATH)
         );
-        $this->assertSame(\Breeze\Tests\FIXTURES_PATH, $this->driver->getPath());
+        $this->assertSame(
+            \Breeze\Tests\FIXTURES_PATH,
+            $this->_driver->getPath()
+        );
     }
 
     /**
-     * Tests {@link Breeze\View\Driver\Driver::templateExists()} with an invalid
-     * path.
+     * Tests {@link Breeze\View\Driver\Driver::templateExists()} with an
+     * invalid path.
      */
     public function testTemplateExistsWithInvalidTemplate()
     {
-        $this->driver->setPath(\Breeze\Tests\FIXTURES_PATH);
-        $this->assertFalse($this->driver->templateExists('DOES NOT EXIST'));
+        $this->_driver->setPath(\Breeze\Tests\FIXTURES_PATH);
+        $this->assertFalse($this->_driver->templateExists('DOES NOT EXIST'));
     }
 
     /**
-     * Tests {@link Breeze\View\Driver\Driver::templateExists()} with a valid path.
+     * Tests {@link Breeze\View\Driver\Driver::templateExists()} with a valid
+     * path.
      */
     public function testTemplateExistsWithValidTemplate()
     {
-        $this->driver->setPath(\Breeze\Tests\FIXTURES_PATH);
-        $this->assertTrue($this->driver->templateExists('template.php'));
+        $this->_driver->setPath(\Breeze\Tests\FIXTURES_PATH);
+        $this->assertTrue($this->_driver->templateExists('template.php'));
     }
 
     /**
-     * Tests {@link Breeze\View\Driver\Driver::getTemplatePath()} to get the path
-     * to a template.
+     * Tests {@link Breeze\View\Driver\Driver::getTemplatePath()} to get the
+     * path to a template.
      */
     public function testGetTemplatePath()
     {
-        $this->driver->setPath(\Breeze\Tests\FIXTURES_PATH);
+        $this->_driver->setPath(\Breeze\Tests\FIXTURES_PATH);
         $this->assertSame(
             \Breeze\Tests\FIXTURES_PATH . "/template.php",
-            $this->driver->getTemplatePath('template.php')
+            $this->_driver->getTemplatePath('template.php')
         );
     }
 
@@ -156,60 +168,60 @@ class DriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetOptions()
     {
-        $this->driver->setOptions(self::$options);
+        $this->_driver->setOptions(self::$_options);
 
-        foreach (self::$options as $option => $value) {
-            $this->assertSame($value, $this->driver->getOption($option));
+        foreach (self::$_options as $option => $value) {
+            $this->assertSame($value, $this->_driver->getOption($option));
         }
     }
 
     /**
-     * Tests {@link Breeze\View\Driver\Driver::__construct()} to set options for
-     * the current driver.
+     * Tests {@link Breeze\View\Driver\Driver::__construct()} to set options
+     * for the current driver.
      */
     public function testSetOptionsWithConstructor()
     {
-        $this->driver = $this->getMockForAbstractClass(
+        $this->_driver = $this->getMockForAbstractClass(
             'Breeze\\View\\Driver\\Driver',
-            array($this->application, null, self::$options)
+            array($this->_application, null, self::$_options)
         );
 
-        foreach (self::$options as $option => $value) {
-            $this->assertSame($value, $this->driver->getOption($option));
+        foreach (self::$_options as $option => $value) {
+            $this->assertSame($value, $this->_driver->getOption($option));
         }
     }
 
     /**
-     * Tests {@link Breeze\View\Driver\Driver::getOption()} to get the specified
-     * default option for the current driver.
+     * Tests {@link Breeze\View\Driver\Driver::getOption()} to get the
+     * specified default option for the current driver.
      */
     public function testGetOptionWithDefault()
     {
         $this->assertSame(
-            'default', $this->driver->getOption('DOES NOT EXIST', 'default')
+            'default', $this->_driver->getOption('DOES NOT EXIST', 'default')
         );
     }
 
     /**
-     * Tests {@link Breeze\View\Driver\Driver::getOption()} to get an unset option
-     * with no default specified.
+     * Tests {@link Breeze\View\Driver\Driver::getOption()} to get an unset
+     * option with no default specified.
      */
     public function testGetUnsetOption()
     {
-        $this->assertNull($this->driver->getOption('DOES NOT EXIST'));
+        $this->assertNull($this->_driver->getOption('DOES NOT EXIST'));
     }
 
     /**
-     * Tests {@link Breeze\View\Driver\Driver::fetch()} with an invalid template
-     * path.
+     * Tests {@link Breeze\View\Driver\Driver::fetch()} with an invalid
+     * template path.
      */
     public function testFetchWithInvalidTemplate()
     {
         $this->setExpectedException(
             '\\InvalidArgumentException', 'is not a valid template.'
         );
-        $this->driver->setPath(\Breeze\Tests\FIXTURES_PATH);
-        $this->driver->fetch('DOES NOT EXIST');
+        $this->_driver->setPath(\Breeze\Tests\FIXTURES_PATH);
+        $this->_driver->fetch('DOES NOT EXIST');
     }
 
     /**
@@ -217,11 +229,11 @@ class DriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testFetchWithValidTemplate()
     {
-        $this->driver->expects($this->once())
-                     ->method('_fetchTemplate')
-                     ->will($this->returnValue('contents'));
-        $this->driver->setPath(\Breeze\Tests\FIXTURES_PATH);
-        $this->assertSame('contents', $this->driver->fetch('template.php'));
+        $this->_driver->expects($this->once())
+                      ->method('_fetchTemplate')
+                      ->will($this->returnValue('contents'));
+        $this->_driver->setPath(\Breeze\Tests\FIXTURES_PATH);
+        $this->assertSame('contents', $this->_driver->fetch('template.php'));
     }
 
     /**
@@ -230,49 +242,55 @@ class DriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructorCallsConfig()
     {
-        $this->driver->expects($this->once())
-                     ->method('_config');
-        $this->driver->__construct($this->application);
+        $this->_driver->expects($this->once())
+                      ->method('_config');
+        $this->_driver->__construct($this->_application);
     }
 
     /**
-     * Tests {@link Breeze\View\Driver\Driver::updateConfig()} with options that
-     * have changed will call {@link Breeze\View\Driver\Driver::_config()}.
+     * Tests {@link Breeze\View\Driver\Driver::updateConfig()} with options
+     * that have changed will call
+     * {@link Breeze\View\Driver\Driver::_config()}.
      */
     public function testConfigWithDirtyOptions()
     {
-        $this->application->expects($this->at(0))
-                          ->method('config')
-                          ->with($this->equalTo('template_directory'))
-                          ->will($this->returnValue(\Breeze\Tests\FIXTURES_PATH));
-        $this->application->expects($this->at(1))
-                          ->method('config')
-                          ->with($this->equalTo('template_options'))
-                          ->will($this->returnValue(array()));
+        $this->_application->expects($this->at(0))
+                           ->method('config')
+                           ->with($this->equalTo('template_directory'))
+                           ->will(
+                               $this->returnValue(\Breeze\Tests\FIXTURES_PATH)
+                             );
+        $this->_application->expects($this->at(1))
+                           ->method('config')
+                           ->with($this->equalTo('template_options'))
+                           ->will($this->returnValue(array()));
 
-        $this->driver->expects($this->once())
-                     ->method('_config');
-        $this->driver->updateConfig();
+        $this->_driver->expects($this->once())
+                      ->method('_config');
+        $this->_driver->updateConfig();
     }
 
     /**
-     * Tests {@link Breeze\View\Driver\Driver::updateConfig()} with options that
-     * have not changed will not call {@link Breeze\View\Driver\Driver::_config()}.
+     * Tests {@link Breeze\View\Driver\Driver::updateConfig()} with options
+     * that have not changed will not call
+     * {@link Breeze\View\Driver\Driver::_config()}.
      */
     public function testConfigWithCleanOptions()
     {
-        $this->application->expects($this->at(0))
-                          ->method('config')
-                          ->with($this->equalTo('template_directory'))
-                          ->will($this->returnValue(\Breeze\Tests\FIXTURES_PATH));
-        $this->application->expects($this->at(1))
-                          ->method('config')
-                          ->with($this->equalTo('template_options'))
-                          ->will($this->returnValue(array()));
+        $this->_application->expects($this->at(0))
+                           ->method('config')
+                           ->with($this->equalTo('template_directory'))
+                           ->will(
+                               $this->returnValue(\Breeze\Tests\FIXTURES_PATH)
+                             );
+        $this->_application->expects($this->at(1))
+                           ->method('config')
+                           ->with($this->equalTo('template_options'))
+                           ->will($this->returnValue(array()));
 
-        $this->driver->expects($this->never())
-                     ->method('_config');
-        $this->driver->setPath(\Breeze\Tests\FIXTURES_PATH);
-        $this->driver->updateConfig();
+        $this->_driver->expects($this->never())
+                      ->method('_config');
+        $this->_driver->setPath(\Breeze\Tests\FIXTURES_PATH);
+        $this->_driver->updateConfig();
     }
 }

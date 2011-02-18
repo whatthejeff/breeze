@@ -1716,9 +1716,9 @@ class Application
      * @var array
      */
     protected static $_coreHelpers = array(
-        'get','delete','put','post','any','before','after',
-        'config','template','display','fetch','pass','helper',
-        'run','error','condition','redirect','partial'
+        'get','delete','put','post','any','before','after','config','template',
+        'display','fetch','pass','helper','run','error','condition','redirect',
+        'partial'
     );
 
     /**

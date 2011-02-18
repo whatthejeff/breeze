@@ -42,14 +42,14 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param Breeze\ClosuresCollection
      */
-    protected $collection;
+    protected $_collection;
 
     /**
      * A sample closure to add to tests.
      *
      * @param Closure
      */
-    protected $closure;
+    protected $_closure;
 
     /**
      * The list of valid labels for adding to collections with the
@@ -57,7 +57,7 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param array
      */
-    protected $valid_labels = array(
+    protected static $_validLabels = array(
         'thisnameisvalid',
         'thisonehasnumber123',
         'thisonehas_under_scores'
@@ -69,7 +69,7 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param string
      */
-    protected $invalid_labels = array(
+    protected static $_invalidLabels = array(
         'has a space',
         '1startswithanumber',
         'contains*bad*characters'
@@ -81,7 +81,7 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      *
      * @param array
      */
-    protected $valid_names = array(
+    protected static $_validNames = array(
         'thisisvalid',
         'this is also valid',
         'this*is*also*valid'
@@ -94,8 +94,8 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->collection = new ClosuresCollection();
-        $this->closure = function(){};
+        $this->_collection = new ClosuresCollection();
+        $this->_closure = function(){};
     }
 
     /**
@@ -103,7 +103,7 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testHasWithUnsetKey()
     {
-        $this->assertFalse($this->collection->has('unset key'));
+        $this->assertFalse($this->_collection->has('unset key'));
     }
 
     /**
@@ -111,8 +111,8 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testHasWithSetKey()
     {
-        $this->collection->add('empty closure', $this->closure);
-        $this->assertTrue($this->collection->has('empty closure'));
+        $this->_collection->add('empty closure', $this->_closure);
+        $this->assertTrue($this->_collection->has('empty closure'));
     }
 
     /**
@@ -120,7 +120,7 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetWithUnsetKey()
     {
-        $this->assertNull($this->collection->get('unset key'));
+        $this->assertNull($this->_collection->get('unset key'));
     }
 
     /**
@@ -128,8 +128,10 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetWithSetKey()
     {
-        $this->collection->add('empty closure', $this->closure);
-        $this->assertSame($this->closure, $this->collection->get('empty closure'));
+        $this->_collection->add('empty closure', $this->_closure);
+        $this->assertSame(
+            $this->_closure, $this->_collection->get('empty closure')
+        );
     }
 
     /**
@@ -139,10 +141,10 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $closures = array(function(){ return 1; },  function(){ return 2; });
         foreach ($closures as $closure) {
-            $this->collection->add($closure);
+            $this->_collection->add($closure);
         }
 
-        $this->assertSame($closures, $this->collection->all());
+        $this->assertSame($closures, $this->_collection->all());
     }
 
     /**
@@ -152,22 +154,22 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
     {
         $closures = array('closure1'=>function(){}, 'closure2'=>function(){});
         foreach ($closures as $name => $closure) {
-            $this->collection->add($name, $closure);
+            $this->_collection->add($name, $closure);
         }
 
-        $this->assertSame($closures, $this->collection->all());
+        $this->assertSame($closures, $this->_collection->all());
     }
 
     /**
-     * Tests {@link Breeze\ClosuresCollection::add()} to add one closure to multiple
-     * names.
+     * Tests {@link Breeze\ClosuresCollection::add()} to add one closure to
+     * multiple names.
      */
     public function testAddOneClosureToMultipleNames()
     {
-        $this->collection->add($this->valid_names, $this->closure);
+        $this->_collection->add(self::$_validNames, $this->_closure);
         $this->assertSame(
-            array_fill_keys($this->valid_names, $this->closure),
-            $this->collection->all()
+            array_fill_keys(self::$_validNames, $this->_closure),
+            $this->_collection->all()
         );
     }
 
@@ -180,7 +182,7 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
             '\\InvalidArgumentException',
             'You must provide a callable PHP function.'
         );
-        $this->collection->add('invalid closure', 'INVALID CLOSURE');
+        $this->_collection->add('invalid closure', 'INVALID CLOSURE');
     }
 
     /**
@@ -192,8 +194,8 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(
             '\\InvalidArgumentException', 'You must provide a name.'
         );
-        $this->collection->add(
-            '', $this->closure, ClosuresCollection::VALIDATE_NAME
+        $this->_collection->add(
+            '', $this->_closure, ClosuresCollection::VALIDATE_NAME
         );
     }
 
@@ -206,8 +208,8 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(
             '\\InvalidArgumentException', 'You must provide a name.'
         );
-        $this->collection->add(
-            array(''), $this->closure, ClosuresCollection::VALIDATE_NAME
+        $this->_collection->add(
+            array(''), $this->_closure, ClosuresCollection::VALIDATE_NAME
         );
     }
 
@@ -217,13 +219,13 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddWithStringValidNameAndNameValidation()
     {
-        foreach ($this->valid_names as $name) {
-            $this->collection->add(
-                $name, $this->closure, ClosuresCollection::VALIDATE_NAME
+        foreach (self::$_validNames as $name) {
+            $this->_collection->add(
+                $name, $this->_closure, ClosuresCollection::VALIDATE_NAME
             );
         }
 
-        $this->checkClosuresAdded($this->valid_names, $this->closure);
+        $this->_checkClosuresAdded(self::$_validNames, $this->_closure);
     }
 
     /**
@@ -232,10 +234,12 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddWithArrayValidNameAndNameValidation()
     {
-        $this->collection->add(
-            $this->valid_names, $this->closure, ClosuresCollection::VALIDATE_NAME
+        $this->_collection->add(
+            self::$_validNames, 
+            $this->_closure, 
+            ClosuresCollection::VALIDATE_NAME
         );
-        $this->checkClosuresAdded($this->valid_names, $this->closure);
+        $this->_checkClosuresAdded(self::$_validNames, $this->_closure);
     }
 
     /**
@@ -247,8 +251,8 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(
             '\\InvalidArgumentException', 'You must provide a name.'
         );
-        $this->collection->add(
-            '', $this->closure, ClosuresCollection::VALIDATE_LABEL
+        $this->_collection->add(
+            '', $this->_closure, ClosuresCollection::VALIDATE_LABEL
         );
     }
 
@@ -261,8 +265,8 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(
             '\\InvalidArgumentException', 'You must provide a name.'
         );
-        $this->collection->add(
-            array(''), $this->closure, ClosuresCollection::VALIDATE_LABEL
+        $this->_collection->add(
+            array(''), $this->_closure, ClosuresCollection::VALIDATE_LABEL
         );
     }
 
@@ -272,15 +276,16 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddWithStringInvalidLabelAndLabelValidation()
     {
-        foreach ($this->invalid_labels as $label) {
+        foreach (self::$_invalidLabels as $label) {
             try {
-                $this->collection->add(
-                    $label, $this->closure, ClosuresCollection::VALIDATE_LABEL
+                $this->_collection->add(
+                    $label, $this->_closure, ClosuresCollection::VALIDATE_LABEL
                 );
                 $this->fail("Expected exception \\InvalidArgumentException");
             } catch (\InvalidArgumentException $exception) {
                 $this->assertStringEndsWith(
-                    'is not a valid PHP function name.', $exception->getMessage()
+                    'is not a valid PHP function name.', 
+                    $exception->getMessage()
                 );
             }
         }
@@ -295,9 +300,9 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(
             '\\InvalidArgumentException', 'is not a valid PHP function name.'
         );
-        $this->collection->add(
-            $this->invalid_labels,
-            $this->closure,
+        $this->_collection->add(
+            self::$_invalidLabels,
+            $this->_closure,
             ClosuresCollection::VALIDATE_LABEL
         );
     }
@@ -308,12 +313,12 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddWithStringValidLabelAndLabelValidation()
     {
-        foreach ($this->valid_labels as $label) {
-            $this->collection->add(
-                $label, $this->closure, ClosuresCollection::VALIDATE_LABEL
+        foreach (self::$_validLabels as $label) {
+            $this->_collection->add(
+                $label, $this->_closure, ClosuresCollection::VALIDATE_LABEL
             );
         }
-        $this->checkClosuresAdded($this->valid_labels, $this->closure);
+        $this->_checkClosuresAdded(self::$_validLabels, $this->_closure);
     }
 
     /**
@@ -322,22 +327,24 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddWithArrayValidLabelAndLabelValidation()
     {
-        $this->collection->add(
-            $this->valid_labels, $this->closure, ClosuresCollection::VALIDATE_LABEL
+        $this->_collection->add(
+            self::$_validLabels, 
+            $this->_closure, 
+            ClosuresCollection::VALIDATE_LABEL
         );
-        $this->checkClosuresAdded($this->valid_labels, $this->closure);
+        $this->_checkClosuresAdded(self::$_validLabels, $this->_closure);
     }
 
     /**
      * Tests that closures were added to
-     * {@link Breeze\Tests\ClosuresCollectionTest::$collection}.
+     * {@link Breeze\Tests\ClosuresCollectionTest::$_collection}.
      *
      * @param mixed $keys     The keys that should've been added.
      * @param mixed $closures The closures that should've been added.
      *
      * @return void
      */
-    protected function checkClosuresAdded($keys, $closures)
+    protected function _checkClosuresAdded($keys, $closures)
     {
         $keys = (array)$keys;
 
@@ -346,7 +353,10 @@ class ClosuresCollectionTest extends \PHPUnit_Framework_TestCase
         }
 
         foreach ($keys as $index => $key) {
-            $this->assertSame($closures[$index], $this->collection->get($key));
+            $this->assertSame(
+                $closures[$index], 
+                $this->_collection->get($key)
+            );
         }
     }
 }

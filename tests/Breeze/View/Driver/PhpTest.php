@@ -42,13 +42,13 @@ class PhpTest extends \PHPUnit_Framework_TestCase
      *
      * @param Breeze\Application
      */
-    protected $application;
+    protected $_application;
     /**
      * The driver object for testing.
      *
      * @param Breeze\View\Driver\Php
      */
-    protected $driver;
+    protected $_driver;
 
     /**
      * Sets up the test case for {@link Breeze\View\Driver\Php}.
@@ -57,10 +57,13 @@ class PhpTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->application = $this->getMock(
+        $this->_application = $this->getMock(
             'Breeze\\Application', array(), array(), '', FALSE
         );
-        $this->driver = new Php($this->application, \Breeze\Tests\FIXTURES_PATH);
+
+        $this->_driver = new Php(
+            $this->_application, \Breeze\Tests\FIXTURES_PATH
+        );
     }
 
     /**
@@ -71,7 +74,7 @@ class PhpTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(
             '\\InvalidArgumentException', 'is not a valid template.'
         );
-        $this->driver->fetch('DOES NOT EXIST');
+        $this->_driver->fetch('DOES NOT EXIST');
     }
 
     /**
@@ -79,7 +82,9 @@ class PhpTest extends \PHPUnit_Framework_TestCase
      */
     public function testFetchWithNoVariables()
     {
-        $this->assertSame('Hello World', $this->driver->fetch('template.php'));
+        $this->assertSame(
+            'Hello World', $this->_driver->fetch('template.php')
+        );
     }
 
     /**
@@ -87,8 +92,11 @@ class PhpTest extends \PHPUnit_Framework_TestCase
      */
     public function testFetchWithVariables()
     {
-        $this->assertSame('Hello Jeff', $this->driver->fetch(
-            'template.php', array('name'=>'Jeff')
-        ));
+        $this->assertSame(
+            'Hello Jeff',
+            $this->_driver->fetch(
+                'template.php', array('name'=>'Jeff')
+            )
+        );
     }
 }

@@ -42,53 +42,53 @@ class ApplicationTestCase extends \PHPUnit_Extensions_OutputTestCase
      *
      * @param Breeze\Application
      */
-    protected $application;
+    protected $_application;
     /**
      * The application configurations for
-     * {@link Breeze\Tests\ApplicationTest::$application} that will hold the mocked
-     * dependencies.
+     * {@link Breeze\Tests\ApplicationTest::$_application} that will hold the
+     * mocked dependencies.
      *
      * @param Breeze\Configurations
      */
-    protected $configurations;
+    protected $_configurations;
     /**
      * The mocked dependencies for
-     * {@link Breeze\Tests\ApplicationTest::$application}.
+     * {@link Breeze\Tests\ApplicationTest::$_application}.
      *
      * @param array
      */
-    protected $mocks = array();
+    protected $_mocks = array();
 
     /**
      * Sets up mocks for testing Breeze\Application.
      *
      * @return void
      */
-    protected function setupMockedDependencies()
+    protected function _setupMockedDependencies()
     {
-        $this->mocks['view_object'] = $this->getMock(
+        $this->_mocks['view_object'] = $this->getMock(
             'Breeze\\View\\View', array(), array(), '', FALSE
         );
-        $this->mocks['errors_object'] = $this->getMock(
+        $this->_mocks['errors_object'] = $this->getMock(
             'Breeze\\Errors\\Errors', array(), array(), '', FALSE
         );
-        $this->mocks['dispatcher_object'] = $this->getMock(
+        $this->_mocks['dispatcher_object'] = $this->getMock(
             'Breeze\\Dispatcher\\Dispatcher', array(), array(), '', FALSE
         );
-        $this->mocks['conditions_object'] = $this->getMock(
+        $this->_mocks['conditions_object'] = $this->getMock(
             'Breeze\\Dispatcher\\Conditions', array(), array(), '', FALSE
         );
-        $this->mocks['helpers_object'] = $this->getMock(
+        $this->_mocks['helpers_object'] = $this->getMock(
             'Breeze\\ClosuresCollection', array(), array(), '', FALSE
         );
-        $this->mocks['before_filters_object'] = $this->getMock(
+        $this->_mocks['before_filters_object'] = $this->getMock(
             'Breeze\\ClosuresCollection', array(), array(), '', FALSE
         );
-        $this->mocks['after_filters_object'] = $this->getMock(
+        $this->_mocks['after_filters_object'] = $this->getMock(
             'Breeze\\ClosuresCollection', array(), array(), '', FALSE
         );
 
-        $this->configurations = $this->getMock(
+        $this->_configurations = $this->getMock(
             'Breeze\\Configurations', array(), array(), '', FALSE
         );
     }
@@ -98,14 +98,14 @@ class ApplicationTestCase extends \PHPUnit_Extensions_OutputTestCase
      *
      * @return void
      */
-    protected function mockApplication()
+    protected function _mockApplication()
     {
         $i = 0;
-        foreach ($this->mocks as $mock) {
-            $this->configurations->expects($this->at($i++))
-                                 ->method('get')
-                                 ->will($this->returnValue($mock));
+        foreach ($this->_mocks as $mock) {
+            $this->_configurations->expects($this->at($i++))
+                                  ->method('get')
+                                  ->will($this->returnValue($mock));
         }
-        $this->application = new Application($this->configurations);
+        $this->_application = new Application($this->_configurations);
     }
 }

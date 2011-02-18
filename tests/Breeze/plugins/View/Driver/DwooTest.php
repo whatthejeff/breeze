@@ -52,20 +52,20 @@ class DwooTest extends PluginTestCase
      *
      * @param string
      */
-    static protected $plugin_path = 'Breeze/plugins/Dwoo.php';
+    static protected $_pluginPath = 'Breeze/plugins/Dwoo.php';
     /**
      * The name of the plugin
      *
      * @param string
      */
-    static protected $plugin_name = 'Dwoo';
+    static protected $_pluginName = 'Dwoo';
 
     /**
      * The driver object for testing.
      *
      * @param Breeze\View\Driver\Dwoo
      */
-    protected $driver;
+    protected $_driver;
 
     /**
      * Sets up the test case for {@link Breeze\View\Driver\Dwoo}.
@@ -78,11 +78,11 @@ class DwooTest extends PluginTestCase
             $this->markTestSkipped('Dwoo is not available for testing');
         }
 
-        $this->application = $this->getMock(
+        $this->_application = $this->getMock(
             'Breeze\\Application', array(), array(), '', FALSE
         );
-        $this->driver = new Dwoo(
-            $this->application, \Breeze\Tests\FIXTURES_PATH . '/Dwoo'
+        $this->_driver = new Dwoo(
+            $this->_application, \Breeze\Tests\FIXTURES_PATH . '/Dwoo'
         );
     }
 
@@ -94,7 +94,7 @@ class DwooTest extends PluginTestCase
         $this->setExpectedException(
             '\\InvalidArgumentException', 'is not a valid template.'
         );
-        $this->driver->fetch('DOES NOT EXIST');
+        $this->_driver->fetch('DOES NOT EXIST');
     }
 
     /**
@@ -102,7 +102,9 @@ class DwooTest extends PluginTestCase
      */
     public function testFetchWithNoVariables()
     {
-        $this->assertSame('Hello World', $this->driver->fetch('template.tpl'));
+        $this->assertSame(
+            'Hello World', $this->_driver->fetch('template.tpl')
+        );
     }
 
     /**
@@ -110,9 +112,12 @@ class DwooTest extends PluginTestCase
      */
     public function testFetchWithVariables()
     {
-        $this->assertSame('Hello Jeff', $this->driver->fetch(
-            'template.tpl', array('name'=>'Jeff')
-        ));
+        $this->assertSame(
+            'Hello Jeff',
+            $this->_driver->fetch(
+                'template.tpl', array('name'=>'Jeff')
+            )
+        );
     }
 
     /**
@@ -128,10 +133,10 @@ class DwooTest extends PluginTestCase
                 'cache_dir'   => 'cache')
         );
 
-        $this->setupMockedDependencies();
-        $this->configurations->expects($this->once())
-                             ->method('set')
-                             ->with($this->equalTo($config));
-        $this->mockApplication();
+        $this->_setupMockedDependencies();
+        $this->_configurations->expects($this->once())
+                              ->method('set')
+                              ->with($this->equalTo($config));
+        $this->_mockApplication();
     }
 }

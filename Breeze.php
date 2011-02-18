@@ -26,29 +26,36 @@
 require_once 'Breeze/Application.php';
 $breeze = new Breeze\Application();
 
-foreach ($breeze->getHelpers() as $application_helper) {
-    if ($application_helper == 'helper') {
-        function helper($name, $extension) {
+foreach ($breeze->getHelpers() as $applicationHelper) {
+    if ($applicationHelper == 'helper') {
+        function helper($name, $extension)
+        {
             global $breeze;
             $return = call_user_func_array(
                 array($breeze, 'helper'), func_get_args()
             );
 
-            eval("function $name() {
-                global \$breeze;
-                return call_user_func_array(
-                    array(\$breeze, '$name'), func_get_args()
-                );
-            }");
+            eval(
+                "function $name()
+                 {
+                     global \$breeze;
+                     return call_user_func_array(
+                         array(\$breeze, '$name'), func_get_args()
+                     );
+                 }"
+            );
 
             return $return;
         }
     } else {
-        eval("function $application_helper() {
-            global \$breeze;
-            return call_user_func_array(
-                array(\$breeze, '$application_helper'), func_get_args()
-            );
-        }");
+        eval(
+            "function $applicationHelper()
+             {
+                 global \$breeze;
+                 return call_user_func_array(
+                     array(\$breeze, '$applicationHelper'), func_get_args()
+                 );
+             }"
+        );
     }
 }
