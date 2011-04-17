@@ -4,6 +4,7 @@ Breeze
 Breeze is a simple and intuitive micro-framework for PHP 5.3+.  The most basic example of a Breeze application is:
 
     require_once 'Breeze.php';
+
     get('/', function(){
         echo 'Hello World!';
     });
