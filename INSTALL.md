@@ -10,7 +10,7 @@ If you get a permissions error, you will need to use `su`, `sudo`, or contact yo
 
 ### Manual installation
 
-To install the Breeze Framework without PEAR, simply add the Breeze directory to your PHP `include_path`.  You can find information about the PHP `include_path` configuration directive here:
+To install the Breeze Framework without PEAR, simply add the `lib` directory to your PHP `include_path`.  You can find information about the PHP `include_path` configuration directive here:
 
 <http://www.php.net/manual/en/ini.core.php#ini.include-path>
 

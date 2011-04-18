@@ -100,7 +100,7 @@ else
 fi
 
 # Path to the chosen skeleton
-declare -rx TEMPLATE_TYPE_PATH="$TEMPLATE_PATH/skeletons/$APPLICATION_TYPE"
+declare -rx TEMPLATE_TYPE_PATH="$TEMPLATE_PATH/skeleton/$APPLICATION_TYPE"
 
 # Make sure the template directory is valid
 if [ ! -d "$TEMPLATE_TYPE_PATH" ]

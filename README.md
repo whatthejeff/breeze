@@ -705,7 +705,7 @@ The global scope
 Let's be honest, if you're using PHP, your global scope is already a bit compromised.  With the introduction of namespaces though, PHP has finally given us some tools to help combat this problem.  And while having functions like `get()` and `display()` in your global scope may save you some keystrokes, it isn't exactly the ideal situation, especially for larger applications.  Fortunately, Breeze allows you to turn off these shortcut functions and use a slightly more verbose syntax to protect your scope.
 
     // Controller.php
-    namespace Breeze\Demos\Scope;
+    namespace Breeze\Examples\Scope;
 
     use Breeze\Application;
     require_once 'Breeze/Application.php';
@@ -725,11 +725,11 @@ Once you've disabled the Breeze shortcuts, you will need to use the `$breeze` ap
     <h1>Hi there!</h1>
     <p>I am using the <?php echo $breeze->config('template_engine'); ?> template engine.</p>
 
-### Demo
+### Examples
 
-Be sure to checkout the `namespaces` demos for a more complete treatment on protecting the global scope.
+Be sure to checkout the `namespaces` examples for a more complete treatment on protecting the global scope.
 
 That's all folks
 ----------------
 
-If you read this entire tutorial, you should be well on your way to creating Breeze applications.  Be sure to check out the included demos and plugins for more examples of Breeze in action.
+If you read this entire tutorial, you should be well on your way to creating Breeze applications.  Be sure to check out the included examples and plugins for more examples of Breeze in action.
