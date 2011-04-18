@@ -49,7 +49,7 @@
                 <dir name="complex">
                     <file name="bootstrap.php" role="data" />
                     <dir name="controllers">
-                        <file name="index.php" role="data" />
+                        <file name="Index.php" role="data" />
                     </dir>
                     <dir name="public">
                         <file name="index.php" role="data" />
