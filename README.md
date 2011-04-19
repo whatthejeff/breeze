@@ -3,13 +3,17 @@ Breeze
 
 Breeze is a simple and intuitive micro-framework for PHP 5.3+.  The most basic example of a Breeze application is:
 
-    require_once 'Breeze.php';
+``` php
+<?php
 
-    get('/', function(){
-        echo 'Hello World!';
-    });
+require_once 'Breeze.php';
 
-    run();
+get('/', function(){
+    echo 'Hello World!';
+});
+
+run();
+```
 
 Getting Started
 ---------------
@@ -20,13 +24,17 @@ For help installing and configuring the Breeze framework, see the INSTALL.md fil
 
 All the instructions in this tutorial will assume that you already have a basic application running.  This means that most of the examples will leave off the following required elements.
 
-    // plugins go here
+``` php
+<?php
 
-    require_once 'Breeze.php';
+// plugins go here
 
-    // example code goes here
+require_once 'Breeze.php';
 
-    run();
+// example code goes here
+
+run();
+```
 
 The `require_once` statement is needed to include the framework libraries and `run()` is needed to start the routing process.  Without these elements, most examples will not run.
 
@@ -35,122 +43,162 @@ Routes
 
 The routing API involves associating HTTP requests with PHP functions.  For example, the following code would print `hello world` if a GET request were made for `/`.
 
-    get('/', function(){
-        echo 'Hello World!';
-    });
+``` php
+<?php
+
+get('/', function(){
+    echo 'Hello World!';
+});
+```
 
 The routing system works with the 4 main HTTP request methods: GET, POST, PUT, DELETE.
 
-    get('/', function(){
-        echo 'you made a GET request';
-    });
+``` php
+<?php
 
-    post('/', function(){
-        echo 'you made a POST request';
-    });
+get('/', function(){
+    echo 'you made a GET request';
+});
 
-    put('/', function(){
-        echo 'you made a PUT request';
-    });
+post('/', function(){
+    echo 'you made a POST request';
+});
 
-    delete('/', function(){
-        echo 'you made a DELETE request';
-    });
+put('/', function(){
+    echo 'you made a PUT request';
+});
+
+delete('/', function(){
+    echo 'you made a DELETE request';
+});
+```
 
 Routes are matched in the order they are declared and once a route is matched no other routes will be matched.  This means you have to be careful when organizing your routes.  For example:
 
-    get('/', function(){
-        echo 'Made it here.';
-    });
+``` php
+<?php
 
-    get('/', function(){
-        echo 'This will never get echoed.';
-    });
+get('/', function(){
+    echo 'Made it here.';
+});
+
+get('/', function(){
+    echo 'This will never get echoed.';
+});
+```
 
 ### Pattern matching
 
 Routes can be matched using a basic string or a regular expression.  The one caveat is that regular expressions can not be delimited by `/` as they are indistinguishable from basic strings.  For example, `/my/path/is` could be a basic string or a regular expression.  The Breeze convention is to use the semicolon `;` to delimit regular expressions, but any valid delimiter will due.
 
-    get('/basic/string/match', function(){
-        echo "welcome to http://www.mysite.com/basic/string/match";
-    });
+``` php
+<?php
 
-    get(';^/basic/string/\w+$;', function(){
-        echo "Wow, regexp matching!";
-    });
+get('/basic/string/match', function(){
+    echo "welcome to http://www.mysite.com/basic/string/match";
+});
+
+get(';^/basic/string/\w+$;', function(){
+    echo "Wow, regexp matching!";
+});
+```
 
 Of course, matching regular expressions isn't too useful unless you can capture groups.  Accordingly, Breeze passes any matches from your route as the second argument to your function.
 
-    # numeric matches
-    get(';^/hello/(\w+)$;', function($app, $params){
-        echo 'Hello ' . $params[1];
-    });
+``` php
+<?php
 
-    # named matches
-    get(';^/hello/(?<name>\w+)$;', function($app, $params){
-        echo 'Hello ' . $params['name'];
-    });
+# numeric matches
+get(';^/hello/(\w+)$;', function($app, $params){
+    echo 'Hello ' . $params[1];
+});
+
+# named matches
+get(';^/hello/(?<name>\w+)$;', function($app, $params){
+    echo 'Hello ' . $params['name'];
+});
+```
 
 ### Matching multiple methods
 
 In some cases, it may be helpful to associate one PHP function with multiple request methods.  We will describe a number of uses for this after some more advanced techniques have been introduced, but a simple example is detailed below.
 
-    any(array('POST','PUT'), '/', function()){
-        echo 'HTML 4 and XHTML 1 forms don\'t really support the PUT method. ' .
-             'This is one way to handle it.';
-    });
+``` php
+<?php
 
-    any('/', function(){
-        echo 'This matches all request methods.';
-    })
+any(array('POST','PUT'), '/', function()){
+    echo 'HTML 4 and XHTML 1 forms don\'t really support the PUT method. ' .
+         'This is one way to handle it.';
+});
+
+any('/', function(){
+    echo 'This matches all request methods.';
+})
+```
 
 ### Making PUT and DELETE work
 
 The solution described above works, but it's certainly not the most graceful or preferred solution to this problem.  A standard exists in several other frameworks where you can use a hidden form field to indicate the request method you wish to use.  This allows you to keep your controller code concise while addressing the shortcomings of HTML in the HTML.
 
-    // template.php
-    <form method="post" action="/process_my_form">
-    <input type="hidden" name="_method" value="PUT" />
-    ...
-    </form>
+**Template.php:**
 
-    // controller.php
-    put('/process_my_form', function(){
-        echo 'This will be echoed when the form is submitted.';
-    });
+``` html
+<form method="post" action="/process_my_form">
+<input type="hidden" name="_method" value="PUT" />
+...
+</form>
+```
+
+**Controller.php:**
+
+``` php
+<?php
+
+put('/process_my_form', function(){
+    echo 'This will be echoed when the form is submitted.';
+});
+```
 
 Pass
 ----
 
 Earlier we said once a route is matched no other routes are matched.  This isn't entirely true.  A mechanism exists which allows escaping from an action to continue routing.  This is helpful in a variety of situation.  One common example is to do some pre-processing for a certain set of routes.  Consider the following code:
 
-    // Show a post
-    get(';^/posts/(?<id>\d+)$;', function() {
-        // load a post and display it
-    });
+``` php
+<?php
 
-    // Edit a post
-    get(';^/posts/(?<id>\d+)/edit$;', function() {
-        // load a post and display an edit form
-    });
-    put(';^/posts/(?<id>\d+)$;', function() {
-        // load a post and update it
-    });
+// Show a post
+get(';^/posts/(?<id>\d+)$;', function() {
+    // load a post and display it
+});
 
-    // Delete a post
-    get(';^/posts/(?<id>\d+)/delete$;', function() {
-        // load a post and display a delete form
-    });
-    delete(';^/posts/(?<id>\d+)$;', function() {
-        // load a post and delete it
-    });
+// Edit a post
+get(';^/posts/(?<id>\d+)/edit$;', function() {
+    // load a post and display an edit form
+});
+put(';^/posts/(?<id>\d+)$;', function() {
+    // load a post and update it
+});
+
+// Delete a post
+get(';^/posts/(?<id>\d+)/delete$;', function() {
+    // load a post and display a delete form
+});
+delete(';^/posts/(?<id>\d+)$;', function() {
+    // load a post and delete it
+});
+```
 
 If you've been paying attention, you probably noticed every method that starts with `/posts/$id` is loading a post.  What sense does it make to repeat this logic 5 times?  Instead, you can do the following:
 
-    any(';^/posts/(?<id>\d+);', function()) {
-        // load a post
-        pass();
-    }
+``` php
+<?php
+
+any(';^/posts/(?<id>\d+);', function()) {
+    // load a post
+    pass();
+}
+```
 
 Now all methods that start with `/post/$id` will match this route and load a post.  The `pass()` function tells the framework to exit out of the current action and continue routing.  This shortcut saves us a lot of keystrokes and removes duplication and complexity from our code which is always helpful.
 
@@ -158,244 +206,353 @@ Now all methods that start with `/post/$id` will match this route and load a pos
 
 Don't use the `pass()` function when you really want to send somebody to another URL.  To do this, you can use the `redirect()` function.
 
-    get('/', function(){
-        // sends a 302 response code
-        redirect('http://www.mysite.com/some_other_page');
-    });
+``` php
+<?php
+
+get('/', function(){
+    // sends a 302 response code
+    redirect('http://www.mysite.com/some_other_page');
+});
+```
 
 You can also specify a different response code for redirects.
 
-    get('/', function(){
-        // sends a 301 response code
-        redirect('http://www.mysite.com/some_other_page', 301);
-    });
+``` php
+<?php
+
+get('/', function(){
+    // sends a 301 response code
+    redirect('http://www.mysite.com/some_other_page', 301);
+});
+```
 
 Filters
 -------
 
 Sometimes you want an action to be executed no matter what.  Your first instinct might be to use the `pass()` function for this.
 
-    any(';.*;', function(){
-        echo 'This should always be executed';
-        pass();
-    });
+``` php
+<?php
+
+any(';.*;', function(){
+    echo 'This should always be executed';
+    pass();
+});
+```
 
 While this works, it's not ideal.  For one, using a route means you must be cognizant of ordering.  This route will only execute if it's included at the very top of your script.  Also, what happens if you want something to execute after every action?  Putting a route like this at the bottom of a script won't work as expected.  This is where filters come in.  Filters allow us to define functions that always get executed.
 
-    before(function(){
-        echo 'This will be executed first';
-    });
+``` php
+<?php
 
-    before(function(){
-        echo 'This will be executed second';
-    });
+before(function(){
+    echo 'This will be executed first';
+});
 
-    after(function(){
-        echo 'This will be executed next to last';
-    });
+before(function(){
+    echo 'This will be executed second';
+});
 
-    after(function(){
-        echo 'This will be executed last';
-    });
+after(function(){
+    echo 'This will be executed next to last';
+});
+
+after(function(){
+    echo 'This will be executed last';
+});
+```
 
 Filters are always executed in the order they are defined but you can define them anytime before you call the `run()` function.  This means that the following works as expected.
 
-    get('/', function(){
-        echo " World";
-    });
+``` php
+<?php
 
-    before(function(){
-        echo "Hello";
-    });
+get('/', function(){
+    echo " World";
+});
+
+before(function(){
+    echo "Hello";
+});
+```
 
 Conditions
 ----------
 
 Another common use of the `pass()` function is to filter through routes if they don't meet a certain condition.  Imagine you want to do something special on your homepage for iphone users.  One way to do this is:
 
-    get('/', function(){
-        if (stristr($_SERVER['HTTP_USER_AGENT'], 'iphone') === FALSE) {
-            pass();
-        }
-        // do something special for iphones
-    });
+``` php
+<?php
 
-    get('/', function(){
-        // everyone else will see this
-    });
+get('/', function(){
+    if (stristr($_SERVER['HTTP_USER_AGENT'], 'iphone') === FALSE) {
+        pass();
+    }
+    // do something special for iphones
+});
+
+get('/', function(){
+    // everyone else will see this
+});
+```
 
 This works but it's a little bulky.  The conditions API provides a cleaner interface for replicating this functionality.
 
-    condition('user_agent_contains', function($agent){
-        return stristr($_SERVER['HTTP_USER_AGENT'], $agent) !== false;
-    });
+``` php
+<?php
 
-    get('/', function(){
-        condition('user_agent_contains', 'iphone');
-        // do something special for iphones
-    });
+condition('user_agent_contains', function($agent){
+    return stristr($_SERVER['HTTP_USER_AGENT'], $agent) !== false;
+});
 
-    get('/', function(){
-        // everyone else will see this
-    });
+get('/', function(){
+    condition('user_agent_contains', 'iphone');
+    // do something special for iphones
+});
+
+get('/', function(){
+    // everyone else will see this
+});
+```
 
 And since checking a user agent against a known pattern is such a common task, we've predefined a condition in the framework that does just that.  It's called `user_agent_matches`.
 
-    get('/', function(){
-        condition('user_agent_matches', '/iphone/i');
-        // do something special for iphones
-    });
+``` php
+<?php
 
-    get('/', function(){
-        // everyone else will see this
-    });
+get('/', function(){
+    condition('user_agent_matches', '/iphone/i');
+    // do something special for iphones
+});
+
+get('/', function(){
+    // everyone else will see this
+});
+```
 
 Another predefined condition is called `host_name_is`.  You may use it in the following way:
 
-    get('/', function(){
-        condition('host_name_is', 'www.mysite.com');
-        // do something special for www.mysite.com
-    });
+``` php
+<?php
 
-    get('/', function(){
-        // everyone else will see this
-    });
+get('/', function(){
+    condition('host_name_is', 'www.mysite.com');
+    // do something special for www.mysite.com
+});
+
+get('/', function(){
+    // everyone else will see this
+});
+```
 
 Templates
 ---------
 
 Eventually you'll need a clean way to delineate your views from your controllers.  To address this need, Breeze provides a very simple engine for processing templates.
 
-    get('/', function(){
-        display('index');
-    });
+``` php
+<?php
 
-    // index.php
-    <h1>Hi from the template</h1>
+get('/', function(){
+    display('index');
+});
+```
+
+**index.php**:
+
+``` html
+<h1>Hi from the template</h1>
+```
 
 ### Variables
 
 You'll find that you also need a way to pass variables from your controllers to your templates.  For this, Breeze has a `template()` function that can be used to assign and read template variables.
 
-    get('/jeff', function(){
-        template('message', 'Jeff is cool');
-        echo template('message'); // prints 'Jeff is cool'
+``` php
+<?php
 
-        display('index');
-    });
+get('/jeff', function(){
+    template('message', 'Jeff is cool');
+    echo template('message'); // prints 'Jeff is cool'
 
-    // index.php
-    <h1><?php echo $message; ?></h1>
+    display('index');
+});
+```
+
+**index.php**:
+
+``` html
+<h1><?php echo $message; ?></h1>
+```
 
 You can also make multiple assignments with a single `template()` call.
 
-    get('/jeff', function(){
-        template(array('title'=>'This is a title', 'message'=>'This is a message'));
-        display('index');
-    });
+``` php
+<?php
 
-    // index.php
-    <h1><?php echo $title; ?></h1>
-    <p><?php echo $message; ?></p>
+get('/jeff', function(){
+    template(array('title'=>'This is a title', 'message'=>'This is a message'));
+    display('index');
+});
+```
+
+**index.php**:
+
+``` html
+<h1><?php echo $title; ?></h1>
+<p><?php echo $message; ?></p>
+```
 
 For your convenience, Breeze allows you to display a template and assign the template variables in a single statement.
 
-    get('/breeze', function(){
-        display('index', array('message'=>'Breeze is very cool'));
-    });
+``` php
+<?php
 
-    // index.php
-    <h1><?php echo $message; ?></h1>
+get('/breeze', function(){
+    display('index', array('message'=>'Breeze is very cool'));
+});
+```
+
+**index.php**:
+
+``` html
+<h1><?php echo $message; ?></h1>
+```
 
 Breeze actually has one more way to define template variables.  This method exists for the plugin architecture which we'll discuss in more detail later, but it can be helpful when working with multiple template variables at once.
 
-    get('/special', function($app){
-        $app->message = 'This is another way of defining template variables. ' .
-                        'This mostly exists for working with the plugin architecture ' .
-                        'but can be useful when working with actions that declare a ' .
-                        'large number of template variables.';
-        display('index');
-    })
+``` php
+<?php
 
-    // index.php
-    <h1><?php echo $message; ?></h1>
+get('/special', function($app){
+    $app->message = 'This is another way of defining template variables. ' .
+                    'This mostly exists for working with the plugin architecture ' .
+                    'but can be useful when working with actions that declare a ' .
+                    'large number of template variables.';
+    display('index');
+});
+```
+
+**index.php**:
+
+``` html
+<h1><?php echo $message; ?></h1>
+```
 
 And of course, though it's not encouraged, you can use these three different methods interchangeably.
 
-    get('/mixed', function($app){
-        template('message', 'Jeff is cool');
-        $app->message = 'Now the message has changed';
+``` php
+<?php
 
-        display('index', array('message'=>'Now the message has changed again'));
-    });
+get('/mixed', function($app){
+    template('message', 'Jeff is cool');
+    $app->message = 'Now the message has changed';
 
-    // index.php
-    <h1><?php echo $message; ?></h1>
+    display('index', array('message'=>'Now the message has changed again'));
+});
+```
+
+**index.php**:
+
+``` html
+<h1><?php echo $message; ?></h1>
+```
 
 ### Layouts
 
 Most websites have a common header and footer.  Breeze introduces what is known as a "layout file" which allows for defining a header and footer in a single file.  The default location for this is a file called `layout` in the root of your views directory.  If this file doesn't exist, Breeze will simply render your pages without a layout.
 
-    get('/', function(){
-        display('index');
-    });
+``` php
+<?php
 
-    // layout.php
-    <html>
-        <head><title>Layout Example</title></head>
-        <body>
-            <?php echo $layout_contents; ?>
-        </body>
-    </html>
+get('/', function(){
+    display('index');
+});
+```
 
-    // index.php
-    <h1>Hello from the index</h1>
+**layout.php:**
+
+``` html
+<html>
+    <head><title>Layout Example</title></head>
+    <body>
+        <?php echo $layout_contents; ?>
+    </body>
+</html>
+```
+
+**index.php:**
+
+``` html
+<h1>Hello from the index</h1>
+```
 
 As applications get larger they necessitate more than one layout.  To change the layout from within an action, you can use the `layout()` function.
 
-    get('/', function(){
-        layout('secondary_layout');
-    });
+``` php
+<?php
+
+get('/', function(){
+    layout('secondary_layout');
+});
+```
 
 Having to call the `layout()` function in every action isn't very concise.  A possible improvement is to use the `before()` filter or the `pass()` shortcuts we discussed earlier.
 
-    // All urls that start with /posts/ will use the posts/layout file
-    any(';^/posts/;', function()) {
-        layout('posts/layout');
-        pass();
-    });
+``` php
+<?php
+
+// All urls that start with /posts/ will use the posts/layout file
+any(';^/posts/;', function()) {
+    layout('posts/layout');
+    pass();
+});
+```
 
 ### fetch() and partial()
 
 Sometimes you don't want to display a template immediately.  To render the contents of a template without displaying it, you can use one of the following functions.
 
-    get('/', function(){
-        template('title', 'This is a title')
+``` php
+<?php
 
-        $with_layout    = fetch('index', array('message'=>'This returns the template with the layout'));
-        $without_layout = partial('index', array('message'=>'This returns the template without the layout'));
-    });
+get('/', function(){
+    template('title', 'This is a title')
 
-    // index.php
-    <h1><?php echo $title; ?></h1>
-    <p><?php echo $message; ?></p>
+    $with_layout    = fetch('index', array('message'=>'This returns the template with the layout'));
+    $without_layout = partial('index', array('message'=>'This returns the template without the layout'));
+});
+```
+
+**index.php:**
+
+``` html
+<h1><?php echo $title; ?></h1>
+<p><?php echo $message; ?></p>
+```
 
 Since `partial()` returns templates without the layout, it is ideal for using inside templates.
 
-    // index.php
-    <h1>My Posts</h1>
-    <div id="posts">
-    <?
-        foreach($posts as $post):
-            echo partial('show_post', array('post'=>$post));
-        endforeach;
-    ?>
-    </div>
+**index.php:**
 
-    // show_post.php
-    <h2><?php echo $post['title']; ?></h2>
-    <p><?php echo $post['body']; ?></p>
-    <hr />
+``` html
+<h1>My Posts</h1>
+<div id="posts">
+<?
+    foreach($posts as $post):
+        echo partial('show_post', array('post'=>$post));
+    endforeach;
+?>
+</div>
+```
+
+**show_post.php:**
+
+``` html
+<h2><?php echo $post['title']; ?></h2>
+<p><?php echo $post['body']; ?></p>
+<hr />
+```
 
 ### Using other template engines
 
@@ -403,66 +560,105 @@ With Breeze, you are free to use any template engine you choose.  The default di
 
 To use an alternate template engine, simply require the plugin file before requiring the `Breeze.php` file.
 
-    // controller.php
-    require_once 'Breeze/plugins/Smarty.php';
-    require_once 'Breeze.php';
 
-    get('/', function(){
-        template('message', 'Hello from Smarty!');
-        display('index');
-    });
+**controller.php:**
 
-    // index.tpl
-    <h1>{$message}</h1>
+``` php
+<?php
+
+require_once 'Breeze/plugins/Smarty.php';
+require_once 'Breeze.php';
+
+get('/', function(){
+    template('message', 'Hello from Smarty!');
+    display('index');
+});
+```
+
+**index.php:**
+
+``` html
+<h1>{$message}</h1>
+```
 
 ### The application variable
 
 One downside of some 3rd-party template engines is they have their own way of defining functions.  This means that some of our functions aren't available.  Consider the following example:
 
-    // index.php
-    <h1>Hello</h1>
-    <?
-        echo partial('message');
-    ?>
+**index.php:**
 
-    // message.php
-    <p>World</p>
+``` html
+<h1>Hello</h1>
+<?
+    echo partial('message');
+?>
+```
+
+**message.php:**
+
+``` html
+<p>World</p>
+```
 
 Try to do this same thing in Smarty and you'll get a syntax error:
 
-    // index.tpl
-    <h1>Hello</h1>
-    {partial('show_post')}
+**index.tpl:**
 
-    // message.tpl
-    <p>World</p>
+``` html
+<h1>Hello</h1>
+{partial('message')}
+```
+
+**message.tpl:**
+
+``` html
+<p>World</p>
+```
 
 To solve this problem, every template receives an instance of the current app.  This variable is called `$breeze` by default, but you can configure the name using methods described in the next section.  Using this information, we can fix the syntax error we received in the last example.
 
-    // index.tpl
-    <h1>Hello</h1>
-    {$breeze->partial('show_post')}
+**index.tpl:**
 
-    // message.tpl
-    <p>World</p>
+``` html
+<h1>Hello</h1>
+{$breeze->partial('message')}
+```
+
+**message.tpl:**
+
+``` html
+<p>World</p>
+```
 
 Unfortunately, Smarty has another shortcoming.  Unlike Dwoo, Smarty has no easy way to create an array inline.  For example, the following will give you another syntax error:
 
-    // index.tpl
-    <h1>Hello</h1>
-    {$breeze->partial('show_post', array('message'=>'World'))}
+**index.tpl:**
 
-    // message.tpl
-    <p>{$message}</p>
+``` html
+<h1>Hello</h1>
+{$breeze->partial('message', array('message'=>'World'))}
+```
+
+**message.tpl:**
+
+``` html
+<p>{$message}</p>
+```
 
 To address this problem, we've created a custom plugin for the Smarty engine called `partial`.  You can use it in the following way:
 
-    // index.tpl
-    <h1>Hello</h1>
-    {partial file='show_post' message='World'}
+**index.tpl:**
 
-    // message.tpl
-    <p>{$message}</p>
+``` html
+<h1>Hello</h1>
+{partial file='message' message='World'}
+```
+
+**message.tpl:**
+
+``` html
+<p>{$message}</p>
+```
 
 For more information on how the `$breeze` variable works, be sure to read the plugins section.
 
@@ -471,20 +667,32 @@ Configurations
 
 The Breeze template API works well out of the box, but you may find yourself wanting to change the default template location or the default template extension.  To do this, you will need to use the `config()` function.
 
-    config('template_directory', '/path/to/my/views');
-    config('template_extension', '.tpl');
-    echo config('template_extension'); // echoes '.tpl'
+``` php
+<?php
+
+config('template_directory', '/path/to/my/views');
+config('template_extension', '.tpl');
+echo config('template_extension'); // echoes '.tpl'
+```
 
 It is also possible to assign multiple configurations in a single statement.
 
-    config(array(
-        'template_directory' => '/path/to/my/views',
-        'template_extension' => '.tpl'
-    ));
-    echo config('template_extension'); // echoes '.tpl'
+``` php
+<?php
+
+config(array(
+    'template_directory' => '/path/to/my/views',
+    'template_extension' => '.tpl'
+));
+echo config('template_extension'); // echoes '.tpl'
+```
 
 The default configuration values are:
 
+``` php
+<?php
+
+array(
     'template_engine'       => 'PHP',      /* The template engine */
     'template_options'      => array(),    /* The extra options for the template engine */
     'template_directory'    => '../views', /* The base directory for all templates */
@@ -492,6 +700,8 @@ The default configuration values are:
     'template_layout'       => 'layout',   /* The default path to the layout file */
     'application_variable'  => 'breeze',   /* The template variable that holds the current application object */
     'errors_backtrace'      => true        /* If error templates should include backtraces */
+);
+```
 
 Errors
 ------
@@ -504,33 +714,49 @@ Without configurations, Breeze will trap any uncaught exceptions that bubble up 
 
 The simplest way to test the default behavior of the Breeze errors framework is to dispatch some errors and see what happens.  We said earlier that the Breeze Framework will trap any uncaught exceptions that bubble up.  Let's test this out.
 
-    get('/', function(){
-       throw new Exception('Oh no, what happened?');
-    });
+``` php
+<?php
+
+get('/', function(){
+   throw new Exception('Oh no, what happened?');
+});
+```
 
 Using the default configurations, you should see your error message (wrapped in your layout if you have one defined) and a stack backtrace to help you find out where the error occurred.  Stack backtraces can be useful when developing, but you almost certainly want to disable them in your production environment.  To do this, you can use the following code:
 
-    config('errors_backtrace', false);
+``` php
+<?php
+
+config('errors_backtrace', false);
+```
 
 Sometimes you want exceptions to be interpreted as specific HTTP errors.  By specifying an exception code that coincides with an HTTP error code, the appropriate header will be sent automatically.
 
-    get('/', function(){
-       throw new Exception("Oops, I think I misplaced that page.", 404); // 404 header is sent
-    });
+``` php
+<?php
+
+get('/', function(){
+   throw new Exception("Oops, I think I misplaced that page.", 404); // 404 header is sent
+});
+```
 
 And since throwing exceptions can be a bit verbose at times, we've defined a more concise syntax for dispatching errors.
 
-    get('/', function(){
-       error(404);
-    });
+``` php
+<?php
 
-    get('/another/url', function(){
-       error('This is a message');
-    });
+get('/', function(){
+   error(404);
+});
 
-    get('/even/another/url', function(){
-       error(404, 'This is a message');
-    });
+get('/another/url', function(){
+   error('This is a message');
+});
+
+get('/even/another/url', function(){
+   error(404, 'This is a message');
+});
+```
 
 The `error()` function, when used in this way, is essentially just a shortcut for throwing a generic exception. This is however the preferred method, so we recommended you use it in your controllers unless you have a compelling reason not to.
 
@@ -538,43 +764,59 @@ The `error()` function, when used in this way, is essentially just a shortcut fo
 
 Dispatching errors is only half the story.  The default error handling, while helpful during development, is not exactly appropriate for a production environment.  You'll want to define error handlers to take the appropriate actions in your production environments.  By design, error handlers work almost identically to the routing system.
 
-    // Handle 404's
-    error(404, function(){
-        template('title', 'Page Not Found');
-        display('404');
-    });
+``` php
+<?php
 
-    // Handle all codes 400-505
-    error(range(400,505), function(){
-        display('generic', array('title'=>'Oh no, something bad happened'));
-    });
+// Handle 404's
+error(404, function(){
+    template('title', 'Page Not Found');
+    display('404');
+});
+
+// Handle all codes 400-505
+error(range(400,505), function(){
+    display('generic', array('title'=>'Oh no, something bad happened'));
+});
+```
 
 You can also define a catchall error handler that will catch any errors that have no associated handlers.
 
-    // If no other handlers catch your error, this will
-    error(function(){
-        display('error', array('title'=>'Oh no, something bad happened'));
-    });
+``` php
+<?php
+
+// If no other handlers catch your error, this will
+error(function(){
+    display('error', array('title'=>'Oh no, something bad happened'));
+});
+```
 
 Additionally, you can define error handlers based on specific exception types.
 
-    error('MyException', function(){
-        display('myexception', array('title'=>'Why does this exception have such a generic name?'));
-    });
+``` php
+<?php
 
-    error(array('MyException','MyOtherException), function(){
-        display('exceptions', array('title'=>'Even more exceptions, yay!'));
-    });
+error('MyException', function(){
+    display('myexception', array('title'=>'Why does this exception have such a generic name?'));
+});
+
+error(array('MyException','MyOtherException), function(){
+    display('exceptions', array('title'=>'Even more exceptions, yay!'));
+});
+```
 
 Just like the routing system, handlers receive and instance of the current app as their first argument.  More importantly, the second argument is an instance of the exception that was thrown that ultimately triggered the error.
 
-    error(function($app, $exception){
-        echo $exception->getMessage(); // Prints 'Page Not Found'
-    });
+``` php
+<?php
 
-    get('/', function(){
-        error(404, 'Page Not Found');
-    });
+error(function($app, $exception){
+    echo $exception->getMessage(); // Prints 'Page Not Found'
+});
+
+get('/', function(){
+    error(404, 'Page Not Found');
+});
+```
 
 Plugins
 -------
@@ -585,17 +827,22 @@ The best way to learn the plugin system is through example.  For starters, you m
 
 The most basic example of a plugin would be:
 
-    // Helloworld.php
-    namespace Breeze\Plugins\HelloWorld;
+**Helloworld.php:**
 
-    use Breeze\Application;
-    require_once 'Breeze/Application.php';
+``` php
+<?php
 
-    Application::register('HelloWorld', function($app){
-        $app->get('/', function(){
-            echo 'Hello World';
-        });
+namespace Breeze\Plugins\HelloWorld;
+
+use Breeze\Application;
+require_once 'Breeze/Application.php';
+
+Application::register('HelloWorld', function($app){
+    $app->get('/', function(){
+        echo 'Hello World';
     });
+});
+```
 
 Now what's going on here?  It's actually rather simple, but it requires a little bit of insight into how the Breeze framework actually works.
 
@@ -609,38 +856,51 @@ With that knowledge in hand, we can start to decipher this plugin code.  `Breeze
 
 The first argument for the `Breeze\Application::register()` function is the name you want to give your plugin.  This is helpful as it gives us a way to remove this plugin if we decide we no longer want it later on.  You can remove a plugin using the following syntax:
 
-    Breeze\Application::unregister('hello');
+``` php
+<?php
+
+Breeze\Application::unregister('hello');
+```
 
 The second argument is a function that will be called when a new instance of `Breeze\Application` is created.  This is what enables you to define routes, configurations, templates, etc.  When this function is called, we get an instance of the current application which we can use to call all of our familiar functions.
 
 **NOTE**: You must use the `$app->method()` syntax instead of the `method()` shortcuts when defining plugins.
 
-    // Helloworld.php
-    namespace Breeze\Plugins\HelloWorld;
+**Helloworld.php:**
 
-    use Breeze\Application;
-    require_once 'Breeze/Application.php';
+``` php
+<?php
 
-    Application::register('HelloWorld', function($app /* <-- this is an instance of Breeze\Application, ie your current app */){
-        // This is the same as calling get() after your application has started
-        $app->get('/', function(){
-            echo 'Hello World';
-        });
+namespace Breeze\Plugins\HelloWorld;
 
-        // This is the same as calling config() after your application has started
-        $app->config('this', 'is cool');
+use Breeze\Application;
+require_once 'Breeze/Application.php';
 
-        // Shorthand for assigning a template variable.
-        $app->something = 'cool';
-
-        // The longhand versions also work
-        $app->template('something', 'cool');
+Application::register('HelloWorld', function($app /* <-- this is an instance of Breeze\Application, ie your current app */){
+    // This is the same as calling get() after your application has started
+    $app->get('/', function(){
+        echo 'Hello World';
     });
 
+    // This is the same as calling config() after your application has started
+    $app->config('this', 'is cool');
 
-    // Controller.php
-    require_once 'Breeze/plugins/Helloworld.php'; // This sets up the plugin
-    require_once 'Breeze.php'; // This creates an instance of Breeze\Application, and runs your plugin code
+    // Shorthand for assigning a template variable.
+    $app->something = 'cool';
+
+    // The longhand versions also work
+    $app->template('something', 'cool');
+});
+```
+
+**Controller.php:**
+
+``` php
+<?php
+
+require_once 'Breeze/plugins/Helloworld.php'; // This sets up the plugin
+require_once 'Breeze.php'; // This creates an instance of Breeze\Application, and runs your plugin code
+```
 
 ### Namespaces
 
@@ -656,74 +916,99 @@ As we mentioned earlier, it's possible to create plugins that include templates.
 
 So far we've only showed you how to use existing framework components to bundle bits of functionality together that you can share with other apps.  What if you want to create your own framework elements?  To do this, you can use the `helper()` function.
 
-    helper('add_numbers', function($num1, $num2) {
-        return $num1 + $num2;
-    });
+``` php
+<?php
 
-    get('/', function()) {
-        echo add_numbers($_GET['num1'], $_GET['num2']);
-    }
+helper('add_numbers', function($num1, $num2) {
+    return $num1 + $num2;
+});
+
+get('/', function()) {
+    echo add_numbers($_GET['num1'], $_GET['num2']);
+}
+```
 
 Okay, this isn't exactly useful.  You could've have just created a normal function right?
 
-    function add_numbers($num1, $num2) {
-        return $num1 + $num2;
-    }
+``` php
+<?php
 
-    get('/', function(){
-        echo add_numbers($_GET['num1'], $_GET['num2']);
-    });
+function add_numbers($num1, $num2) {
+    return $num1 + $num2;
+}
+
+get('/', function(){
+    echo add_numbers($_GET['num1'], $_GET['num2']);
+});
+```
 
 These two examples may look similar, but there's actually a very subtle difference.  The first example creates a function that is actually attached to the `Breeze\Application` class we described earlier.  We are just using the same trick to make it seem like a normal function.  This means that this function doesn't pollute the global scope if a user turns off shortcuts.  And since this method protects the global scope, it's safe to use when defining plugins.
 
-    // Auth.php
-    namespace Breeze\Plugins\Auth;
+**Auth.php:**
 
-    use Breeze\Application;
-    require_once 'Breeze/Application.php';
+``` php
+<?php
 
-    Application::register('Auth', function($app){
-        $app->helper('auth', function($user, $redirect_url) use ($app){
-            if($user->name != 'admin') {
-                $app->redirect($redirect_url);
-            }
-        });
+namespace Breeze\Plugins\Auth;
+
+use Breeze\Application;
+require_once 'Breeze/Application.php';
+
+Application::register('Auth', function($app){
+    $app->helper('auth', function($user, $redirect_url) use ($app){
+        if($user->name != 'admin') {
+            $app->redirect($redirect_url);
+        }
     });
+});
+```
 
+**Controller.php:**
 
-    // Controller.php
-    require_once 'Breeze/plugins/Auth.php';
-    require_once 'Breeze.php';
+``` php
+<?php
 
-    get('/', function(){
-        auth($_SESSION['user'], '/login');
-    });
+require_once 'Breeze/plugins/Auth.php';
+require_once 'Breeze.php';
+
+get('/', function(){
+    auth($_SESSION['user'], '/login');
+});
+```
 
 The global scope
 ----------------
 
 Let's be honest, if you're using PHP, your global scope is already a bit compromised.  With the introduction of namespaces though, PHP has finally given us some tools to help combat this problem.  And while having functions like `get()` and `display()` in your global scope may save you some keystrokes, it isn't exactly the ideal situation, especially for larger applications.  Fortunately, Breeze allows you to turn off these shortcut functions and use a slightly more verbose syntax to protect your scope.
 
-    // Controller.php
-    namespace Breeze\Examples\Scope;
+**Controller.php:**
 
-    use Breeze\Application;
-    require_once 'Breeze/Application.php';
+``` php
+<?php
 
-    $app = new Application();
-    $app->get('/', function($app){
-        $app->display('index');
-    });
+namespace Breeze\Examples\Scope;
 
-    $app->run();
+use Breeze\Application;
+require_once 'Breeze/Application.php';
+
+$app = new Application();
+$app->get('/', function($app){
+    $app->display('index');
+});
+
+$app->run();
+```
 
 ### Templates
 
 Once you've disabled the Breeze shortcuts, you will need to use the `$breeze` application variable discussed in the templates section when calling Breeze functions.
 
-    // index.php
-    <h1>Hi there!</h1>
-    <p>I am using the <?php echo $breeze->config('template_engine'); ?> template engine.</p>
+**index.php:**
+
+``` html
+<h1>Hi there!</h1>
+<p>I am using the <?php echo $breeze->config('template_engine'); ?> template engine.</p>
+```
 
 ### Examples
 

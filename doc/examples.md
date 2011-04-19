@@ -8,13 +8,16 @@ blog
 
 The blog example is a basic blogging application that utilizes [Doctrine](http://www.doctrine-project.org/) for database access.  Run the following commands in the databases directory to generate the blog databases:
 
-    touch blog.db
-    php generate.php
+``` sh
+touch blog.db
+php generate.php
+```
 
-You will also need to make sure that your web server user has write access to your database file and directory.  For a development environment,
-the following commands should be sufficient.
+You will also need to make sure that your web server user has write access to your database file and directory.  For a development environment, the following commands should be sufficient.
 
-    chmod a+w . blog.db
+``` sh
+chmod a+w . blog.db
+```
 
 For more information on generating databases from schema files, read the following guide: http://www.doctrine-project.org/documentation/manual/1_2/en/introduction-to-models:generating-models:schema-files
 
