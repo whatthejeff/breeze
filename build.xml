@@ -107,24 +107,16 @@
   <replace file="${basedir}/build/pear/package.xml" token="@date@" value="${BUILD_DATE}"/>
 
   <!-- Build pear package -->
-  <exec executable="pear">
-   <arg line="package ${basedir}/build/pear/package.xml" />
+  <exec executable="pear" dir="${basedir}/build/pear">
+   <arg line="package package.xml" />
   </exec>
 
-  <!-- Cleanup -->
+  <!-- Clean up -->
   <delete includeemptydirs="true">
-   <fileset dir="${basedir}/build/pear">
-    <include name="**/*" />
-   </fileset>
-  </delete>
-
-  <!-- Move pear package to build directory -->
-  <move todir="${basedir}/build/pear">
-    <fileset dir="${basedir}">
-      <include name="Breeze*.tgz" />
+    <fileset dir="${basedir}/build/pear">
+      <exclude name="Breeze*.tgz" />
     </fileset>
-  </move>
-
+  </delete>
  </target>
 
  <!-- Build All -->
