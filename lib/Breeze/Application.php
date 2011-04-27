@@ -1704,6 +1704,15 @@ class Application
     const AFTER = 'after';
 
     /**
+     * Collection of instances.
+     *
+     * IMPORTANT: Currently this is only used to facilitate the shorthand
+     * notation and should not be used for any other purpose.
+     *
+     * @var array
+     */
+    protected static $_instances = array();
+    /**
      * Collection of plugins that are attached to the Base application
      * class at runtime.
      *
@@ -1772,7 +1781,7 @@ class Application
      * Initializes defined plugins and allows for overriding of default
      * application configurations.
      *
-     * @param Breeze\Configurations $configurations Override default
+     * @param Breeze\Configurations $configurations Overrides default
      * application configurations.
      *
      * @return void
@@ -1811,6 +1820,43 @@ class Application
         foreach (self::$_plugins as $plugin) {
             $plugin($this);
         }
+    }
+
+    /**
+     * Gets an instance of the {@link Breeze\Application} object by name.
+     *
+     * IMPORTANT: Currently this is only used to facilitate the shorthand
+     * notation and should not be used for any other purpose.
+     *
+     * @param string $name                          The name the object is
+     * stored under.
+     * @param Breeze\Configurations $configurations Overrides default
+     * application configurations.
+     *
+     * @return Breeze\Application
+     */
+    public function getInstance($name, Configurations $configurations = null)
+    {
+        if (!isset(self::$_instances[$name])) {
+            self::$_instances[$name] = new self($configurations);
+        }
+
+        return self::$_instances[$name];
+    }
+
+    /**
+     * Removes an instance of the {@link Breeze\Application} object by name.
+     *
+     * IMPORTANT: Currently this is only used to facilitate the shorthand
+     * notation and should not be used for any other purpose.
+     *
+     * @param string $name The name the object is stored under.
+     *
+     * @return Breeze\Application
+     */
+    public function removeInstance($name)
+    {
+        unset(self::$_instances[$name]);
     }
 
     /**
@@ -2134,9 +2180,7 @@ class Application
      */
     public static function unregister($name)
     {
-        if (isset(self::$_plugins[$name])) {
-            unset(self::$_plugins[$name]);
-        }
+        unset(self::$_plugins[$name]);
     }
 
     /**
@@ -2161,9 +2205,17 @@ class Application
      */
     public function getHelpers()
     {
-        return array_merge(
-            array_keys($this->_userHelpers->all()), self::$_coreHelpers
-        );
+        return array_merge($this->getUserHelpers(), self::$_coreHelpers);
+    }
+
+    /**
+     * Gets a list of all user-defined helpers.
+     *
+     * @return array All user-defined helpers.
+     */
+    public function getUserHelpers()
+    {
+        return array_keys($this->_userHelpers->all());
     }
 
     /**

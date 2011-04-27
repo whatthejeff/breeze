@@ -94,11 +94,12 @@ class ApplicationTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get an instance of Breeze\Application with mocked dependencies injected.
+     * Get an instance of Breeze\Configurations with all configuration
+     * dependencies mocked out.
      *
      * @return void
      */
-    protected function _mockApplication()
+    protected function _mockConfigurations()
     {
         $i = 0;
         foreach ($this->_mocks as $mock) {
@@ -106,6 +107,16 @@ class ApplicationTestCase extends \PHPUnit_Framework_TestCase
                                   ->method('get')
                                   ->will($this->returnValue($mock));
         }
-        $this->_application = new Application($this->_configurations);
+        return $this->_configurations;
+    }
+
+    /**
+     * Get an instance of Breeze\Application with mocked dependencies injected.
+     *
+     * @return void
+     */
+    protected function _mockApplication()
+    {
+        $this->_application = new Application($this->_mockConfigurations());
     }
 }

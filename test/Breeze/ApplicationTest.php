@@ -645,6 +645,42 @@ class ApplicationTest extends ApplicationTestCase
     }
 
     /**
+     * Tests {@link Breeze\Application::getUserHelpers()} to get a list of
+     * user-defined helpers.
+     */
+    public function testGetUserHelpers()
+    {
+        $this->_mocks['helpers_object']->expects($this->once())
+                                       ->method('all')
+                                       ->will($this->returnValue(array(
+                                           'test1'=>function(){},
+                                           'test2'=>function(){}
+                                         )));
+        $this->assertSame(
+            array('test1','test2'),
+            $this->_application->getUserHelpers()
+        );
+    }
+
+    /**
+     * Tests {@link Breeze\Application::getInstance()} can maintain multiple
+     * instances.
+     */
+    public function testGetInstance()
+    {
+        $app = Application::getInstance('test', $this->_mockConfigurations());
+        $this->assertSame($app, Application::getInstance('test'));
+
+        $app2 = Application::getInstance('test2', $this->_mockConfigurations());
+        $this->assertSame($app2, Application::getInstance('test2'));
+
+        $this->assertNotSame($app, Application::getInstance('test2'));
+
+        Application::removeInstance('test');
+        Application::removeInstance('test2');
+    }
+
+    /**
      * Tests {@link Breeze\Application::before()} to add a before filter.
      */
     public function testAddBeforeFilter()
