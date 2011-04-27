@@ -57,7 +57,8 @@ $breeze->get('/admin/posts/new', function($breeze){
     $breeze->display('admin/posts/new');
 });
 $breeze->post('/admin/posts', function($breeze){
-    if ($breeze->save(new \Post())) {
+    $post = new \Post();
+    if ($breeze->save($post)) {
         $breeze->flash('notice', POST_CREATED_MESSAGE);
         $breeze->redirect($breeze->p($post['id']));
     }

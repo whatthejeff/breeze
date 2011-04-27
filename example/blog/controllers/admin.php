@@ -55,7 +55,8 @@ get('/admin/posts/new', function(){
     display('admin/posts/new');
 });
 post('/admin/posts', function(){
-    if (save(new Post())) {
+    $post = new Post();
+    if (save($post)) {
         flash('notice', POST_CREATED_MESSAGE);
         redirect(p($post['id']));
     }
