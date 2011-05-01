@@ -581,6 +581,38 @@ __Example:__
 run('GET', '/posts/2');
 ```
 
+status()
+-----
+
+### - string status( void )
+
+__Synopsis:__
+
+Gets the current HTTP status.
+
+__Example:__
+
+``` php
+<?php
+
+status() // HTTP/1.1 200 OK
+```
+
+### - string status( integer $statusCode [, string $httpVersion] )
+
+__Synopsis:__
+
+Sets the current HTTP status.
+
+__Example:__
+
+``` php
+<?php
+
+status(204); // header('HTTP/1.1 204 Not Content');
+status(204, '1.0'); // header('HTTP/1.0 204 Not Content');
+```
+
 template()
 ----------
 

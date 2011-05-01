@@ -78,6 +78,9 @@ class ApplicationTestCase extends \PHPUnit_Framework_TestCase
         $this->_mocks['conditions_object'] = $this->getMock(
             'Breeze\\Dispatcher\\Conditions', array(), array(), '', FALSE
         );
+        $this->_mocks['status_object'] = $this->getMock(
+            'Breeze\\Dispatcher\\Status', array(), array(), '', FALSE
+        );
         $this->_mocks['helpers_object'] = $this->getMock(
             'Breeze\\ClosuresCollection', array(), array(), '', FALSE
         );

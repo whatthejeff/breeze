@@ -786,38 +786,16 @@ class Exception extends \Exception
 class Errors extends ClosuresCollection
 {
     /**
-     * The standard HTTP error responses.
-     */
-    const HTTP_400 = 'Bad Request';
-    const HTTP_401 = 'Unauthorized';
-    const HTTP_402 = 'Payment Required';
-    const HTTP_403 = 'Forbidden';
-    const HTTP_404 = 'Not Found';
-    const HTTP_405 = 'Method Not Allowed';
-    const HTTP_406 = 'Not Acceptable';
-    const HTTP_407 = 'Proxy Authentication Required';
-    const HTTP_408 = 'Request Timeout';
-    const HTTP_409 = 'Conflict';
-    const HTTP_410 = 'Gone';
-    const HTTP_411 = 'Length Required';
-    const HTTP_412 = 'Precondition Failed';
-    const HTTP_413 = 'Request Entity Too Large';
-    const HTTP_414 = 'Request-URI Too Long';
-    const HTTP_415 = 'Unsupported Media Type';
-    const HTTP_416 = 'Requested Range Not Satisfiable';
-    const HTTP_417 = 'Expectation Failed';
-    const HTTP_500 = 'Internal Server Error';
-    const HTTP_501 = 'Not Implemented';
-    const HTTP_502 = 'Bad Gateway';
-    const HTTP_503 = 'Service Unavailable';
-    const HTTP_504 = 'Gateway Timeout';
-    const HTTP_505 = 'HTTP Version Not Supported';
-
-    /**
      * Error provided if a user tries to dispatch an error that is
      * not a string or an Exception.
      */
     const INVALID_ERROR = 'Errors must be a string or a valid Exception';
+
+    /**
+     * A generic error message used if a user doesn't provide a code
+     * or message.
+     */
+    const GENERIC_ERROR = 'An Error Occurred';
 
     /**
      * The default closure to use for all errors with no defined handler.
@@ -860,24 +838,11 @@ class Errors extends ClosuresCollection
                 echo $application->fetchLayout($body);
             } else {
                 echo '<!DOCTYPE html><html><head>' .
-                     '<title>An error occurred</title>' .
-                     "</head><body>{$body}</body></html>";
+                     '<title>' . Errors::GENERIC_ERROR . '</title>' .
+                     '</head><body>' . $body . '</body></html>';
             }
 
         };
-    }
-
-    /**
-     * Gets the HTTP error string that corresponds to an HTTP status code.
-     *
-     * @param integer $code The code to get the error for
-     *
-     * @return string The error code.
-     */
-    public function getErrorForCode($code)
-    {
-        return defined("self::HTTP_$code") ?
-            constant("self::HTTP_$code") : null;
     }
 
     /**
@@ -918,33 +883,65 @@ class Errors extends ClosuresCollection
      *
      * @return void
      */
-    public function dispatchError($exception, $code = null)
+    public function dispatchError($exception = null, $code = null)
     {
-        if (is_string($exception)) {
-            $exception = new \Exception($exception, $code);
-        } elseif (!(is_object($exception)
-            && $exception instanceof \Exception)) {
-            throw new \InvalidArgumentException(self::INVALID_ERROR);
+        if (is_object($exception)) {
+            if (!$exception instanceof \Exception) {
+                throw new \InvalidArgumentException(self::INVALID_ERROR);
+            }
+
+            $this->_setStatus($exception->getCode());
+        } else {
+            $status = $this->_setStatus($code);
+            $exception = $this->_getException($exception, $code, $status);
         }
 
-        $number = $exception->getCode();
-        $httpMessage = $this->getErrorForCode($number);
-
-        if (!($function = $this->get($number))
+        if (!($function = $this->get($exception->getCode()))
             && !($function = $this->get(get_class($exception)))
         ) {
             $function = $this->_defaultError;
         }
 
-        if (!headers_sent() && $httpMessage
-            && isset($_SERVER['SERVER_PROTOCOL'])
-        ) {
-            header("{$_SERVER['SERVER_PROTOCOL']} $number $httpMessage");
+        $function($this->_application, $exception);
+        throw new EndRequestException();
+    }
+
+    /**
+     * Sets the HTTP status code if the error code corresponds with an HTTP
+     * error status code.
+     *
+     * @param mixed $code The error code.
+     *
+     * @return string|null The status message if available.
+     */
+    protected function _setStatus($code)
+    {
+        if ($code >= 400 && $code <= 417 || $code >= 500 && $code <= 505) {
+            return preg_replace(
+                '/^.+? (\d+) (.+)$/',
+                '$1 - $2',
+                $this->_application->status($code)
+            );
+        }
+    }
+
+    /**
+     * Gets an Exception given a message and a code.
+     *
+     * @param string  $message  The exception message
+     * @param integer $code     The exception code
+     * @param mixed   $fallback A fallback message if $message is not
+     * available.
+     *
+     * @return Exception
+     */
+    protected function _getException($message, $code, $fallback)
+    {
+        if (!$message) {
+            $message = $fallback ?: self::GENERIC_ERROR;
         }
 
-        $function($this->_application, $exception);
-
-        throw new EndRequestException();
+        return new \Exception($message, $code);
     }
 }
 
@@ -1110,6 +1107,155 @@ class Conditions extends ClosuresCollection
         )) {
             throw new PassException();
         }
+    }
+}
+
+/**
+ * HTTP status wrapper for building and dispatching the HTTP status header.
+ *
+ * @code
+ *     // header('HTTP/1.1 404 Not Found');
+ *     $status = new Breeze\Dispatcher\Dispatcher(404);
+ *     $status->send();
+ *
+ *     // header('HTTP/1.0 200 OK');
+ *     $status = new Breeze\Dispatcher\Dispatcher(200, '1.0');
+ *     $status->send();
+ * @endcode
+ *
+ * @package    Breeze
+ * @subpackage Dispatcher
+ * @author     Jeff Welch <whatthejeff@gmail.com>
+ * @copyright  2010-2011 Jeff Welch <whatthejeff@gmail.com>
+ * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
+ * @link       http://breezephp.com/
+ */
+class Status
+{
+    /**
+     * Standard HTTP response codes
+     */
+    const HTTP_100 = 'Continue';
+    const HTTP_101 = 'Switching Protocols';
+    const HTTP_200 = 'OK';
+    const HTTP_201 = 'Created';
+    const HTTP_202 = 'Accepted';
+    const HTTP_203 = 'Non-Authoritative Information';
+    const HTTP_204 = 'No Content';
+    const HTTP_205 = 'Reset Content';
+    const HTTP_206 = 'Partial Content';
+    const HTTP_300 = 'Multiple Choices';
+    const HTTP_301 = 'Moved Permanently';
+    const HTTP_302 = 'Found';
+    const HTTP_303 = 'See Other';
+    const HTTP_304 = 'Not Modified';
+    const HTTP_305 = 'Use Proxy';
+    const HTTP_307 = 'Temporary Redirect';
+    const HTTP_400 = 'Bad Request';
+    const HTTP_401 = 'Unauthorized';
+    const HTTP_402 = 'Payment Required';
+    const HTTP_403 = 'Forbidden';
+    const HTTP_404 = 'Not Found';
+    const HTTP_405 = 'Method Not Allowed';
+    const HTTP_406 = 'Not Acceptable';
+    const HTTP_407 = 'Proxy Authentication Required';
+    const HTTP_408 = 'Request Timeout';
+    const HTTP_409 = 'Conflict';
+    const HTTP_410 = 'Gone';
+    const HTTP_411 = 'Length Required';
+    const HTTP_412 = 'Precondition Failed';
+    const HTTP_413 = 'Request Entity Too Large';
+    const HTTP_414 = 'Request-URI Too Long';
+    const HTTP_415 = 'Unsupported Media Type';
+    const HTTP_416 = 'Requested Range Not Satisfiable';
+    const HTTP_417 = 'Expectation Failed';
+    const HTTP_500 = 'Internal Server Error';
+    const HTTP_501 = 'Not Implemented';
+    const HTTP_502 = 'Bad Gateway';
+    const HTTP_503 = 'Service Unavailable';
+    const HTTP_504 = 'Gateway Timeout';
+    const HTTP_505 = 'HTTP Version Not Supported';
+
+    /**
+     * The status code for the HTTP response.
+     *
+     * @var integer
+     */
+    protected $_statusCode = 200;
+    /**
+     * The status message for the HTTP response.
+     *
+     * @var string
+     */
+    protected $_statusMessage = 'OK';
+    /**
+     * The protocol version for the HTTP response.
+     *
+     * @var string
+     */
+    protected $_httpVersion = '1.1';
+
+    /**
+     * Creates a new HTTP Status.
+     *
+     * @param integer $statusCode  The status code for the HTTP response.
+     * @param string  $httpVersion The protocol version for the HTTP response.
+     *
+     * @return void
+     */
+    public function __construct($statusCode = null, $httpVersion = null)
+    {
+        if ($statusCode) {
+            $this->set($statusCode, $httpVersion);
+        }
+    }
+
+    /**
+     * Sets a new HTTP status.
+     *
+     * @param integer $statusCode  The status code for the HTTP response.
+     * @param string  $httpVersion The protocol version for the HTTP response.
+     *
+     * @return void
+     */
+    public function set($statusCode, $httpVersion = null)
+    {
+        if ($httpVersion) {
+            $this->_httpVersion = $httpVersion;
+        }
+
+        $constant = 'self::HTTP_' . $statusCode;
+        if (defined($constant)) {
+            $this->_statusCode = $statusCode;
+            $this->_statusMessage = constant($constant);
+        }
+    }
+
+    /**
+     * Sends an HTTP Status header.
+     *
+     * @return void
+     */
+    public function send()
+    {
+        if (!headers_sent()) {
+            header($this);
+        }
+    }
+
+    /**
+     * Gets the string representation of the current status.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf(
+            'HTTP/%s %s %s',
+            $this->_httpVersion,
+            $this->_statusCode,
+            $this->_statusMessage
+        );
     }
 }
 
@@ -1683,16 +1829,6 @@ class Application
      * does not follow the proper protocol.
      */
     const INVALID_DEPENDENCY_ERROR = '%s is not an instance of %s.';
-    /**
-     * A generic error message used if a user doesn't provide a code
-     * or message to {@link Breeze\Application::error()}.
-     */
-    const GENERIC_ERROR = 'An Error Occurred.';
-    /**
-     * Message format for associating a code with an error message.
-     * Example: 404 - Not Found
-     */
-    const ERROR_CODE_MESSAGE = '%s - %s';
 
     /**
      * Key for before filters.
@@ -1727,7 +1863,7 @@ class Application
     protected static $_coreHelpers = array(
         'get','delete','put','post','any','before','after','config','template',
         'display','fetch','pass','helper','run','error','condition','redirect',
-        'partial'
+        'partial','status'
     );
 
     /**
@@ -1763,6 +1899,13 @@ class Application
      * @var Breeze\Errors\Errors
      */
     protected $_errorHandler;
+    /**
+     * HTTP status wrapper for managing the HTTP status header for the current
+     * request.
+     *
+     * @var Breeze\Dispatcher\Status
+     */
+    protected $_status;
 
     /**
      * User-defined helpers.
@@ -1803,6 +1946,9 @@ class Application
         );
         $this->_conditions = $this->_getDependency(
             'conditions_object', 'Breeze\\Dispatcher\\Conditions'
+        );
+        $this->_status = $this->_getDependency(
+            'status_object', 'Breeze\\Dispatcher\\Status'
         );
 
         $this->_userHelpers = $this->_getDependency(
@@ -1913,6 +2059,24 @@ class Application
     }
 
     /**
+     * Shortcut for getting and setting HTTP statuses.
+     *
+     * @param integer $statusCode  The status code for the HTTP response.
+     * @param string  $httpVersion The protocol version for the HTTP response.
+     *
+     * @return string the current status message
+     */
+    public function status($statusCode = null, $httpVersion = null)
+    {
+        if ($statusCode) {
+            $this->_status->set($statusCode, $httpVersion);
+            $this->_status->send();
+        }
+
+        return (string) $this->_status;
+    }
+
+    /**
      * Shortcut for making a redirect.
      *
      * @param string  $url  The url to redirect to.
@@ -1923,6 +2087,8 @@ class Application
     public function redirect($url, $code = 302)
     {
         header("Location: $url", true, $code);
+        $this->_status->set($code);
+
         throw new EndRequestException();
     }
 
@@ -2037,16 +2203,7 @@ class Application
         }
 
         if (!is_numeric($code)) {
-            $message = $code;
-            $code = 0;
-        }
-
-        if (!$message) {
-            if ($message = $this->_errorHandler->getErrorForCode($code)) {
-                $message = sprintf(self::ERROR_CODE_MESSAGE, $code, $message);
-            } else {
-                $message = self::GENERIC_ERROR;
-            }
+            list($message, $code) = array($code, (int) $message);
         }
 
         return $this->_errorHandler->dispatchError($message, $code);

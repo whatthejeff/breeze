@@ -492,6 +492,32 @@ function run()
 }
 
 /**
+ * Sets or gets an HTTP status.
+ *
+ * @code
+ *     // header('HTTP/1.1 404 Not Found');
+ *     status(404)
+ *
+ *     // header('HTTP/1.0 404 Not Found');
+ *     status(404, '1.0');
+ *
+ *     // Gets the current status header
+ *     echo status(); // HTTP/1.0 404 Not Found
+ * @endcode
+ *
+ * @param integer $statusCode  The status code for the HTTP response.
+ * @param string  $httpVersion The protocol version for the HTTP response.
+ *
+ * @return string
+ */
+function status()
+{
+    return call_user_func_array(
+        array(Application::getInstance('breeze'), 'status'), func_get_args()
+    );
+}
+
+/**
  * Sets or gets a template variable.
  *
  * @code

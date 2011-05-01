@@ -38,34 +38,6 @@ use Breeze\Errors\Errors;
 class ErrorsTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * The standard HTTP error responses.
-     */
-    const HTTP_400 = 'Bad Request';
-    const HTTP_401 = 'Unauthorized';
-    const HTTP_402 = 'Payment Required';
-    const HTTP_403 = 'Forbidden';
-    const HTTP_404 = 'Not Found';
-    const HTTP_405 = 'Method Not Allowed';
-    const HTTP_406 = 'Not Acceptable';
-    const HTTP_407 = 'Proxy Authentication Required';
-    const HTTP_408 = 'Request Timeout';
-    const HTTP_409 = 'Conflict';
-    const HTTP_410 = 'Gone';
-    const HTTP_411 = 'Length Required';
-    const HTTP_412 = 'Precondition Failed';
-    const HTTP_413 = 'Request Entity Too Large';
-    const HTTP_414 = 'Request-URI Too Long';
-    const HTTP_415 = 'Unsupported Media Type';
-    const HTTP_416 = 'Requested Range Not Satisfiable';
-    const HTTP_417 = 'Expectation Failed';
-    const HTTP_500 = 'Internal Server Error';
-    const HTTP_501 = 'Not Implemented';
-    const HTTP_502 = 'Bad Gateway';
-    const HTTP_503 = 'Service Unavailable';
-    const HTTP_504 = 'Gateway Timeout';
-    const HTTP_505 = 'HTTP Version Not Supported';
-
-    /**
      * The errors object for testing.
      *
      * @param Breeze\Errors\Errors
@@ -98,8 +70,6 @@ class ErrorsTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.0';
-
         $this->_application = $this->getMock(
             'Breeze\\Application', array(), array(), '', FALSE
         );
@@ -110,19 +80,6 @@ class ErrorsTest extends \PHPUnit_Framework_TestCase
         };
 
         $this->_errors = new Errors($this->_application);
-    }
-
-    /**
-     * Tests default error codes with
-     * {@link Breeze\Errors\Errors::getErrorForCode()}.
-     */
-    public function testDefinedErrorCodes()
-    {
-        foreach (self::getCodes() as $code => $message) {
-            $this->assertSame(
-                $this->_errors->getErrorForCode(substr($code, 5)), $message
-            );
-        }
     }
 
     /**
@@ -227,13 +184,53 @@ class ErrorsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests {@link Breeze\Errors\Errors::dispatchError()} to dispatch an
+     * error without a string and a code that corresponds to an HTTP error
+     * status code.
+     */
+    public function testDispatchWithoutStringAndHttpStatusCode()
+    {
+        $this->setExpectedException('Breeze\\Dispatcher\\EndRequestException');
+        $this->expectOutputString('403 - Forbidden');
+        $this->_application->expects($this->once())
+                           ->method('status')
+                           ->with($this->equalTo(403))
+                           ->will($this->returnValue(
+                               'HTTP/1.1 403 Forbidden'
+                             ));
+
+        $this->_errors->add(function($app, $exception){
+            echo $exception->getMessage();
+        });
+        $this->_errors->dispatchError('', 403);
+    }
+
+    /**
+     * Tests {@link Breeze\Errors\Errors::dispatchError()} to dispatch an
+     * error without a string and a code that does not correspond to an HTTP
+     * error status code.
+     */
+    public function testDispatchWithoutStringAndNonHttpStatusCode()
+    {
+        $this->setExpectedException('Breeze\\Dispatcher\\EndRequestException');
+        $this->expectOutputString('An Error Occurred');
+        $this->_application->expects($this->never())
+                           ->method('status');
+
+        $this->_errors->add(function($app, $exception){
+            echo $exception->getMessage();
+        });
+        $this->_errors->dispatchError('', 800);
+    }
+
+    /**
      * Tests {@link Breeze\Errors\Errors::dispatchError()} to dispatch a
      * default handler with no layout and no backtrace.
      */
     public function testDefaultHandlerWithNoLayoutAndNoBacktrace()
     {
         $this->_checkErrorOutput(
-            '<!DOCTYPE html><html><head><title>An error occurred</title>' .
+            '<!DOCTYPE html><html><head><title>An Error Occurred</title>' .
             '</head><body><h1>test</h1></body></html>'
         );
     }
@@ -248,7 +245,7 @@ class ErrorsTest extends \PHPUnit_Framework_TestCase
                            ->method('config')
                            ->will($this->returnValue(true));
         $this->_checkErrorOutput(sprintf(
-            '<!DOCTYPE html><html><head><title>An error occurred</title>' .
+            '<!DOCTYPE html><html><head><title>An Error Occurred</title>' .
             '</head><body><h1>test</h1><pre><code>%s</code></pre></body>' .
             '</html>',
             $this->_exception->getTraceAsString()
@@ -261,11 +258,11 @@ class ErrorsTest extends \PHPUnit_Framework_TestCase
      */
     public function testDefaultHandlerWithLayoutAndNoBacktrace()
     {
-        $this->_application->expects($this->at(1))
+        $this->_application->expects($this->at(2))
                            ->method('__call')
                            ->with($this->equalTo('layoutExists'))
                            ->will($this->returnValue(true));
-        $this->_application->expects($this->at(2))
+        $this->_application->expects($this->at(3))
                            ->method('__call')
                            ->with(
                                $this->equalTo('fetchLayout'),
@@ -291,11 +288,11 @@ class ErrorsTest extends \PHPUnit_Framework_TestCase
         $this->_application->expects($this->once())
                            ->method('config')
                            ->will($this->returnValue(true));
-        $this->_application->expects($this->at(1))
+        $this->_application->expects($this->at(2))
                            ->method('__call')
                            ->with($this->equalTo('layoutExists'))
                            ->will($this->returnValue(true));
-        $this->_application->expects($this->at(2))
+        $this->_application->expects($this->at(3))
                            ->method('__call')
                            ->with(
                                $this->equalTo('fetchLayout'),
@@ -311,33 +308,30 @@ class ErrorsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests errors issue the correct status headers.
+     * Tests dispatching an error with a code that corresponds to an HTTP error
+     * status code sends the corresponding HTTP status header.
      */
-    public function testErrorsIssueCorrectStatusHeader()
+    public function testErrorCodeCorrespondingToHttpStatusCode()
     {
-        $this->markTestSkipped(
-          "At the moment it's not possible to test HTTP status codes.  " .
-          "Xdebug offers xdebug_get_headers, but it doesn't check status " .
-          "codes.  See: http://bugs.xdebug.org/view.php?id=601"
-        );
+        $this->setExpectedException('Breeze\\Dispatcher\\EndRequestException');
+
+        $this->_application->expects($this->once())
+                           ->method('status')
+                           ->with($this->equalTo(403));
+        $this->_errors->dispatchError($this->_exception);
     }
 
     /**
-     * Gets an array of the defined HTTP error constants.
-     *
-     * @return array
+     * Tests dispatching an error with a code that does not correspond to an
+     * HTTP error status code does not send an HTTP status header.
      */
-    protected static function getCodes() {
-        $codes = array();
+    public function testNotErrorCodeCorrespondingToHttpStatusCode()
+    {
+        $this->setExpectedException('Breeze\\Dispatcher\\EndRequestException');
 
-        $class = new \ReflectionClass(get_class());
-        foreach ($class->getConstants() as $name => $constant) {
-            if (substr($name, 0, 4) == 'HTTP') {
-                $codes[$name] = $constant;
-            }
-        }
-
-        return $codes;
+        $this->_exception = new \Exception('test', 800);
+        $this->_application->expects($this->never())->method('status');
+        $this->_errors->dispatchError($this->_exception);
     }
 
     /**

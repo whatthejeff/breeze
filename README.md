@@ -818,6 +818,35 @@ get('/', function(){
 });
 ```
 
+Status
+------
+
+One of the more useful features of Breeze errors is that they provide a nice shorthand syntax for dispatching HTTP error statuses:
+
+``` php
+<?php
+
+error(404); // header('HTTP/1.1 404 Not Found');
+```
+
+Breeze provides a `status()` function for accomplishing the same functionality for other HTTP statuses:
+
+``` php
+<?php
+
+status(204); // header('HTTP/1.1 204 Not Content');
+status(204, '1.0'); // header('HTTP/1.0 204 Not Content');
+```
+
+You can also use `status()` to inspect the status message that is going to be sent for the current request:
+
+``` php
+<?php
+
+status(204); // header('HTTP/1.1 204 Not Content');
+echo status(); // HTTP/1.1 204 Not Content
+```
+
 Plugins
 -------
 

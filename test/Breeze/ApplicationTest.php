@@ -64,23 +64,85 @@ class ApplicationTest extends ApplicationTestCase
     public function testRedirect()
     {
         $this->setExpectedException('Breeze\\Dispatcher\\EndRequestException');
-        $this->_application->redirect('http://www.breezephp.com/', null);
+        $this->_mocks['status_object']->expects($this->at(0))
+                                      ->method('set')
+                                      ->with(
+                                          $this->equalTo(302)
+                                        );
+
+        $this->_application->redirect('http://www.breezephp.com/');
         $this->assertSame(
             xdebug_get_headers(), array('Location: http://www.breezephp.com/')
         );
     }
 
     /**
-     * Tests {@link Breeze\Application::redirect()} with a custom status code.
+     * Tests {@link Breeze\Application::redirect()} throws a location header.
      */
-    public function testRedirectWithDifferentCode()
+    public function testRedirectWithCustomStatus()
     {
-        $this->markTestSkipped(
-          "At the moment it's not possible to test HTTP status codes.  " .
-          "Xdebug offers xdebug_get_headers, but it doesn't check status " .
-          "codes.  See: http://bugs.xdebug.org/view.php?id=601"
+        $this->setExpectedException('Breeze\\Dispatcher\\EndRequestException');
+        $this->_mocks['status_object']->expects($this->at(0))
+                                      ->method('set')
+                                      ->with(
+                                          $this->equalTo(301)
+                                        );
+
+        $this->_application->redirect('http://www.breezephp.com/', 301);
+        $this->assertSame(
+            xdebug_get_headers(), array('Location: http://www.breezephp.com/')
         );
     }
+
+    /**
+     * Tests {@link Breeze\Application::status()} to set and send the current
+     * status code.
+     */
+    public function testStatusSet()
+    {
+        $this->_mocks['status_object']->expects($this->at(0))
+                                      ->method('set')
+                                      ->with(
+                                          $this->equalTo(404)
+                                        );
+        $this->_mocks['status_object']->expects($this->at(1))
+                                      ->method('send');
+
+        $this->_application->status(404);
+    }
+
+    /**
+     * Tests {@link Breeze\Application::status()} to set and send the current
+     * status code and protocol version.
+     */
+    public function testSetStatusWithProtocolVersion()
+    {
+        $this->_mocks['status_object']->expects($this->at(0))
+                                      ->method('set')
+                                      ->with(
+                                          $this->equalTo(403),
+                                          $this->equalTo('1.1')
+                                        );
+        $this->_mocks['status_object']->expects($this->at(1))
+                                      ->method('send');
+
+        $this->_application->status(403, '1.1');
+    }
+
+    /**
+     * Tests {@link Breeze\Application::status()} to get the current status.
+     */
+    public function testGetStatus()
+    {
+        $this->_mocks['status_object']->expects($this->any())
+                                      ->method('__toString')
+                                      ->will(
+                                          $this->returnValue('403 Forbidden')
+                                        );
+
+        $this->assertSame('403 Forbidden', $this->_application->status());
+    }
+
 
     /**
      * Tests {@link Breeze\Application::config()} to set a single value.
@@ -218,17 +280,9 @@ class ApplicationTest extends ApplicationTestCase
     public function testErrorDispatchDefaultHttpErrorCode()
     {
         $this->_mocks['errors_object']->expects($this->once())
-                                      ->method('getErrorForCode')
-                                      ->with($this->equalTo(404))
-                                      ->will(
-                                          $this->returnValue('Page Not Found')
-                                        );
-        $this->_mocks['errors_object']->expects($this->once())
                                       ->method('dispatchError')
                                       ->with(
-                                          $this->equalTo(
-                                              '404 - Page Not Found'
-                                          ),
+                                          $this->equalTo(''),
                                           $this->equalTo('404')
                                         );
         $this->_application->error(404);
@@ -241,13 +295,9 @@ class ApplicationTest extends ApplicationTestCase
     public function testErrorDispatchGenericMessageWithNonHttpErrorCode()
     {
         $this->_mocks['errors_object']->expects($this->once())
-                                      ->method('getErrorForCode')
-                                      ->with($this->equalTo(600))
-                                      ->will($this->returnValue(null));
-        $this->_mocks['errors_object']->expects($this->once())
                                       ->method('dispatchError')
                                       ->with(
-                                          $this->equalTo('An Error Occurred.'),
+                                          $this->equalTo(''),
                                           $this->equalTo('600')
                                         );
         $this->_application->error(600);
@@ -266,6 +316,20 @@ class ApplicationTest extends ApplicationTestCase
                                           $this->equalTo('0')
                                         );
         $this->_application->error("this is a message");
+    }
+
+    /**
+     * Tests {@link Breeze\Application::error()} with disordered arguments.
+     */
+    public function testErrorDispatchWithDisorderedArguments()
+    {
+        $this->_mocks['errors_object']->expects($this->once())
+                                      ->method('dispatchError')
+                                      ->with(
+                                          $this->equalTo('this is a message'),
+                                          $this->equalTo('403')
+                                        );
+        $this->_application->error("this is a message", 403);
     }
 
     /**
@@ -633,7 +697,7 @@ class ApplicationTest extends ApplicationTestCase
         $helpers = array(
             'test1','test2','get','delete','put','post','any','before','after',
             'config','template','display','fetch','pass','helper','run',
-            'error','condition','redirect','partial'
+            'error','condition','redirect','partial','status'
         );
         $this->_mocks['helpers_object']->expects($this->once())
                                        ->method('all')
