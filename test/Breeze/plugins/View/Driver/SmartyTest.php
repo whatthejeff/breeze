@@ -128,7 +128,7 @@ class SmartyTest extends PluginTestCase
     public function testPartialWithoutFile()
     {
         $this->setExpectedException(
-            '\\PHPUnit_Framework_Error',
+            '\\BadMethodCallException',
             'Smarty error: [partial] missing parameter \'file\''
         );
         $this->_driver->partial(array(), $this->getMock('Smarty'));

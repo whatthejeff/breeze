@@ -141,9 +141,8 @@ class Smarty extends Driver
     public function partial($params)
     {
         if (!array_key_exists('file', $params)) {
-            trigger_error(
-                "Smarty error: [partial] missing parameter 'file'",
-                E_USER_ERROR
+            throw new \BadMethodCallException(
+                "Smarty error: [partial] missing parameter 'file'"
             );
         }
 

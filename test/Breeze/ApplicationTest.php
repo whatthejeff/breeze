@@ -397,7 +397,7 @@ class ApplicationTest extends ApplicationTestCase
     public function testCallUnkownMethod()
     {
         $this->setExpectedException(
-            '\\PHPUnit_Framework_Error', 'Call to undefined function:'
+            '\\BadMethodCallException', 'Call to undefined function:'
         );
         $this->_application->this_will_fail();
     }

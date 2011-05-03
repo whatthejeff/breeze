@@ -1443,11 +1443,8 @@ class Dispatcher
             return call_user_func_array(array($this, '_addRoute'), $arguments);
         }
 
-        trigger_error(
-            sprintf(
-                \Breeze\Errors\UNDEFINED_FUNCTION, get_class($this), $name
-            ),
-            E_USER_ERROR
+        throw new \BadMethodCallException(
+            sprintf(\Breeze\Errors\UNDEFINED_FUNCTION, get_class($this), $name)
         );
     }
 
@@ -2384,11 +2381,8 @@ class Application
             );
         }
 
-        trigger_error(
-            sprintf(
-                \Breeze\Errors\UNDEFINED_FUNCTION, get_class($this), $name
-            ),
-            E_USER_ERROR
+        throw new \BadMethodCallException(
+            sprintf(\Breeze\Errors\UNDEFINED_FUNCTION, get_class($this), $name)
         );
     }
 

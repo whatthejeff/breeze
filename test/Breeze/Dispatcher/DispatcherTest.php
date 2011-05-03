@@ -142,7 +142,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     public function testInvalidRequestMethod()
     {
         $this->setExpectedException(
-            'PHPUnit_Framework_Error', 'Call to undefined function:'
+            'BadMethodCallException', 'Call to undefined function:'
         );
         $this->_dispatcher->invalid('/something', function(){});
     }
