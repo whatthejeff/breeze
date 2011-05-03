@@ -834,8 +834,8 @@ Breeze provides a `status()` function for accomplishing the same functionality f
 ``` php
 <?php
 
-status(204); // header('HTTP/1.1 204 Not Content');
-status(204, '1.0'); // header('HTTP/1.0 204 Not Content');
+status(204); // header('HTTP/1.1 204 No Content');
+status(204, '1.0'); // header('HTTP/1.0 204 No Content');
 ```
 
 You can also use `status()` to inspect the status message that is going to be sent for the current request:
@@ -843,8 +843,8 @@ You can also use `status()` to inspect the status message that is going to be se
 ``` php
 <?php
 
-status(204); // header('HTTP/1.1 204 Not Content');
-echo status(); // HTTP/1.1 204 Not Content
+status(204); // header('HTTP/1.1 204 No Content');
+echo status(); // HTTP/1.1 204 No Content
 ```
 
 Plugins

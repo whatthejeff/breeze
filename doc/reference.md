@@ -609,8 +609,8 @@ __Example:__
 ``` php
 <?php
 
-status(204); // header('HTTP/1.1 204 Not Content');
-status(204, '1.0'); // header('HTTP/1.0 204 Not Content');
+status(204); // header('HTTP/1.1 204 No Content');
+status(204, '1.0'); // header('HTTP/1.0 204 No Content');
 ```
 
 template()
