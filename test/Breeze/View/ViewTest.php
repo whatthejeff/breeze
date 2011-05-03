@@ -73,7 +73,7 @@ class ViewTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->_application = $this->getMock(
-            'Breeze\\Application', array(), array(), '', FALSE
+            'Breeze\\Application', array(), array(), '', FALSE, FALSE
         );
         $this->_application->expects($this->any())
                            ->method('config')
@@ -89,6 +89,30 @@ class ViewTest extends \PHPUnit_Framework_TestCase
             FALSE
         );
         $this->_view = new View($this->_application);
+    }
+
+    /**
+     * Tests {@link Breeze\View\View::__clone()} is deep.
+     */
+    public function testCloneIsDeep()
+    {
+        $engine = $this->_view->getEngine();
+        $new_view = clone $this->_view;
+
+        $this->assertNotSame($engine, $new_view->getCurrentEngine());
+    }
+
+    /**
+     * Tests {@link Breeze\View\View::setApplication()} also sets the
+     * application for the corresponding engine.
+     */
+    public function testSetApplicationAlsoSetsEngineApplication()
+    {
+        $this->_view->getEngine();
+
+        $this->_config['template_engine']->expects($this->once())
+                                         ->method('setApplication');
+        $this->_view->setApplication($this->_application);
     }
 
     /**

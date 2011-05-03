@@ -203,7 +203,7 @@ abstract class Driver implements DriverInterface
     public function __construct(Application $application, $path = null,
         array $options = array())
     {
-        $this->_application = $application;
+        $this->setApplication($application);
 
         if (!empty($options)) {
             $this->setOptions($options);
@@ -214,6 +214,18 @@ abstract class Driver implements DriverInterface
         }
 
         $this->_config();
+    }
+
+    /**
+     * Sets the Breeze application.
+     *
+     * @param Breeze\Application $application A Breeze Application
+     *
+     * @return void
+     */
+    public function setApplication(Application $application)
+    {
+        $this->_application = $application;
     }
 
     /**
@@ -462,7 +474,35 @@ class View
      */
     public function __construct(Application $application)
     {
+        $this->setApplication($application);
+    }
+
+    /**
+     * Sets the Breeze application.
+     *
+     * @param Breeze\Application $application A Breeze Application
+     *
+     * @return void
+     */
+    public function setApplication(Application $application)
+    {
         $this->_application = $application;
+
+        if ($this->_engine) {
+            $this->_engine->setApplication($application);
+        }
+    }
+
+    /**
+     * Clones the current view, making a deep copy of the current engine.
+     *
+     * @return void
+     */
+    public function __clone()
+    {
+        if ($this->_engine) {
+            $this->_engine = clone $this->_engine;
+        }
     }
 
     /**
@@ -680,6 +720,17 @@ class View
     }
 
     /**
+     * Retrieves the current instance of the specified template engine.
+     *
+     * @return Breeze\View\Driver\DriverInterface The template engine.
+     * @throws UnexpectedValueException
+     */
+    public function getCurrentEngine()
+    {
+        return $this->_engine;
+    }
+
+    /**
      * Sets the current template engine with an engine object.
      *
      * @param Breeze\View\Driver\DriverInterface $engine The template engine to
@@ -821,9 +872,9 @@ class Errors extends ClosuresCollection
      */
     public function __construct(Application $application)
     {
-        $this->_application = $application;
+        $this->setApplication($application);
         $this->_defaultError = function(Application $application,
-            \Exception $exception) use ($application)
+            \Exception $exception)
         {
 
             $body = sprintf("<h1>%s</h1>", $exception->getMessage());
@@ -843,6 +894,18 @@ class Errors extends ClosuresCollection
             }
 
         };
+    }
+
+    /**
+     * Sets the Breeze application.
+     *
+     * @param Breeze\Application $application A Breeze Application
+     *
+     * @return void
+     */
+    public function setApplication(Application $application)
+    {
+        $this->_application = $application;
     }
 
     /**
@@ -1332,11 +1395,23 @@ class Dispatcher
      */
     public function __construct(Application $application)
     {
-        $this->_application = $application;
+        $this->setApplication($application);
 
         foreach (self::$_supportedMethods as $method) {
             $this->_routes[$method] = array();
         }
+    }
+
+    /**
+     * Sets the Breeze application.
+     *
+     * @param Breeze\Application $application A Breeze Application
+     *
+     * @return void
+     */
+    public function setApplication(Application $application)
+    {
+        $this->_application = $application;
     }
 
     /**
@@ -1974,7 +2049,7 @@ class Application
      * IMPORTANT: Currently this is only used to facilitate the shorthand
      * notation and should not be used for any other purpose.
      *
-     * @param string $name                          The name the object is
+     * @param string                $name           The name the object is
      * stored under.
      * @param Breeze\Configurations $configurations Overrides default
      * application configurations.
@@ -1991,10 +2066,70 @@ class Application
     }
 
     /**
+     * Sets an instance of the {@link Breeze\Application} object by name.
+     *
+     * IMPORTANT: Currently this is only used to facilitate testing and should
+     * not be used for any other purpose.
+     *
+     * @param string             $name        The name the object is stored
+     * under.
+     * @param Breeze\Application $application The Breeze application.
+     *
+     * @return Breeze\Application
+     */
+    public function setInstance($name, Application $application)
+    {
+        self::$_instances[$name] = $application;
+    }
+
+    /**
+     * Clones the Breeze application, making deep copies of all object
+     * properties.
+     *
+     * @return void
+     */
+    public function __clone()
+    {
+        $this->_configurations = clone $this->_configurations;
+        $this->_view = clone $this->_view;
+        $this->_errorHandler = clone $this->_errorHandler;
+        $this->_dispatcher = clone $this->_dispatcher;
+        $this->_conditions = clone $this->_conditions;
+        $this->_status = clone $this->_status;
+        $this->_userHelpers = clone $this->_userHelpers;
+
+        $this->_filters[self::BEFORE] = clone $this->_filters[self::BEFORE];
+        $this->_filters[self::AFTER] = clone $this->_filters[self::AFTER];
+    }
+
+    /**
+     * Wrapper for cloning an application object.
+     *
+     * NOTE: This was created to get around some well-known limitations with
+     * the PHPUnit mocking interface.  I will probably fix the issue in PHPUnit
+     * sometime soon, so this method's availability is not to be relied upon.
+     *
+     * @see https://github.com/sebastianbergmann/phpunit-mock-objects/pull/25
+     * @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/47
+     *
+     * @return Breeze\Application
+     */
+    public function cloneApplication()
+    {
+        $clone = clone $this;
+
+        $clone->_errorHandler->setApplication($clone);
+        $clone->_dispatcher->setApplication($clone);
+        $clone->_view->setApplication($clone);
+
+        return $clone;
+    }
+
+    /**
      * Removes an instance of the {@link Breeze\Application} object by name.
      *
-     * IMPORTANT: Currently this is only used to facilitate the shorthand
-     * notation and should not be used for any other purpose.
+     * IMPORTANT: Currently this is only used to facilitate testing and should
+     * not be used for any other purpose.
      *
      * @param string $name The name the object is stored under.
      *

@@ -745,6 +745,21 @@ class ApplicationTest extends ApplicationTestCase
     }
 
     /**
+     * Tests {@link Breeze\Application::setInstance()} to set an instance in
+     * the application multiton.
+     */
+    public function testSetInstance()
+    {
+        $app = Application::getInstance('test', $this->_mockConfigurations());
+        Application::setInstance('test2', $app);
+
+        $this->assertSame($app, Application::getInstance('test2'));
+
+        Application::removeInstance('test');
+        Application::removeInstance('test2');
+    }
+
+    /**
      * Tests {@link Breeze\Application::before()} to add a before filter.
      */
     public function testAddBeforeFilter()
@@ -954,5 +969,45 @@ class ApplicationTest extends ApplicationTestCase
         $this->_mockApplication();
 
         Application::unregister('test_plugin');
+    }
+
+    /**
+     * Tests {@link Breeze\Application::__clone()} is deep.
+     */
+    public function testCloneIsDeep()
+    {
+        $clone = $this->_application->cloneApplication();
+
+        $this->_mocks['view_object']->expects($this->never())
+                                    ->method('__set');
+        $clone->template('jeff', 'is cool');
+
+        $this->_mocks['errors_object']->expects($this->never())
+                                    ->method('dispatchError');
+        $clone->error(404);
+
+        $this->_mocks['conditions_object']->expects($this->never())
+                                          ->method('dispatchCondition');
+        $clone->condition('jeff', 'is cool');
+
+        $this->_mocks['status_object']->expects($this->never())
+                                      ->method('set');
+        $clone->status(302);
+
+        $this->_mocks['helpers_object']->expects($this->never())
+                                       ->method('add');
+        $clone->helper('jeff', function(){});
+
+        $this->_mocks['before_filters_object']->expects($this->never())
+                                              ->method('add');
+        $clone->before(function(){});
+
+        $this->_mocks['after_filters_object']->expects($this->never())
+                                             ->method('add');
+        $clone->after(function(){});
+
+        $this->_configurations->expects($this->never())
+                              ->method('set');
+        $clone->config('jeff', 'is cool');
     }
 }
