@@ -194,7 +194,7 @@ If you've been paying attention, you probably noticed every method that starts w
 ``` php
 <?php
 
-any(';^/posts/(?<id>\d+);', function()) {
+any(';^/posts/(?<id>\d+);', function() {
     // load a post
     pass();
 }
