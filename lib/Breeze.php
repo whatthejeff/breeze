@@ -540,6 +540,25 @@ function template()
     );
 }
 
+/**
+ * Sets the layout to use.
+ *
+ * @code
+ *     // Path resolves to views/path/to/layout.php
+ *     layout('path/to/layout');
+ * @endcode
+ *
+ * @param string $path The path to the layout file
+ *
+ * @return void
+ */
+function layout()
+{
+    return call_user_func_array(
+        array(Application::getInstance('breeze'), 'layout'), func_get_args()
+    );
+}
+
 // Moves all user-defined helpers to the global scope
 foreach (Application::getInstance('breeze')->getUserHelpers() as $helper) {
     eval(
