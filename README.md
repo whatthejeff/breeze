@@ -162,7 +162,7 @@ put('/process_my_form', function(){
 Pass
 ----
 
-Earlier we said once a route is matched no other routes are matched.  This isn't entirely true.  A mechanism exists which allows escaping from an action to continue routing.  This is helpful in a variety of situation.  One common example is to do some pre-processing for a certain set of routes.  Consider the following code:
+Earlier we said once a route is matched no other routes are matched.  This isn't entirely true.  A mechanism exists which allows escaping from an action to continue routing.  This is helpful in a variety of situations.  One common example is to do some pre-processing for a certain set of routes.  Consider the following code:
 
 ``` php
 <?php
