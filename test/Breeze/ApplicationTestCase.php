@@ -35,7 +35,7 @@ use Breeze\Application;
  * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
  * @link       http://breezephp.com/
  */
-class ApplicationTestCase extends \PHPUnit_Framework_TestCase
+class ApplicationTestCase extends \PHPUnit_Extensions_OutputTestCase
 {
     /**
      * The application object for testing.

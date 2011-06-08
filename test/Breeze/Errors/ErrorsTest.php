@@ -35,7 +35,7 @@ use Breeze\Errors\Errors;
  * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
  * @link       http://breezephp.com/
  */
-class ErrorsTest extends \PHPUnit_Framework_TestCase
+class ErrorsTest extends \PHPUnit_Extensions_OutputTestCase
 {
     /**
      * The errors object for testing.

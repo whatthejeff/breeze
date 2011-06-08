@@ -35,7 +35,7 @@ use Breeze\View\View;
  * @license    https://github.com/whatthejeff/breeze/blob/master/LICENSE New BSD License
  * @link       http://breezephp.com/
  */
-class ViewTest extends \PHPUnit_Framework_TestCase
+class ViewTest extends \PHPUnit_Extensions_OutputTestCase
 {
     /**
      * The application stub for testing {@link Breeze\Application}.
