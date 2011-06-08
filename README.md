@@ -159,6 +159,28 @@ put('/process_my_form', function(){
 });
 ```
 
+### Route Filters
+
+In some cases, routes patterns require a global modification, such as prepending a base path when the application is running in a subdirectory of the document root and web server-level URL rewrites are not an available or desirable option.  Route filters are callbacks that are executed on each route pattern before it's evaluated against the current request.
+
+**bootstrap.php:**
+
+``` php
+config('base_dir', '/subdir');
+route(function(&$pattern) {
+    $pattern = config('base_dir') . $pattern;
+});
+```
+
+**Controller.php:**
+
+``` php
+// This route will actually resolve to /subdir/foo
+$app->get('/foo', function() {
+    // ...
+});
+```
+
 Pass
 ----
 

@@ -116,6 +116,32 @@ function before()
 }
 
 /**
+ * Defines a new route filter.
+ *
+ * Closure `$filter` will be invoked on each route pattern before it's
+ * evaluated against the current request.
+ *
+ * NOTE: If you call `route()` multiple times, each callback will be invoked
+ * in the order it was defined.
+ *
+ * @code
+ *     route(function(&$pattern){
+ *         $pattern = '/subdir' . $pattern;
+ *     });
+ * @endcode
+ *
+ * @param Closure $filter The filter to add.
+ *
+ * @return void
+ */
+function route()
+{
+    return call_user_func_array(
+        array(Application::getInstance('breeze'), 'route'), func_get_args()
+    );
+}
+
+/**
  * Defines or dispatches a condition.
  *
  * @code

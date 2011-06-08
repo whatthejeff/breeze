@@ -90,6 +90,9 @@ class ApplicationTestCase extends \PHPUnit_Extensions_OutputTestCase
         $this->_mocks['after_filters_object'] = $this->getMock(
             'Breeze\\ClosuresCollection', array(), array(), '', FALSE
         );
+        $this->_mocks['route_filters_object'] = $this->getMock(
+            'Breeze\\ClosuresCollection', array(), array(), '', FALSE
+        );
 
         $this->_configurations = $this->getMock(
             'Breeze\\Configurations', array(), array(), '', FALSE

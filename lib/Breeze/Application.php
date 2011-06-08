@@ -1497,16 +1497,21 @@ class Dispatcher
         $this->setRequestMethod($requestMethod);
 
         if (isset($this->_routes[$this->_requestMethod])) {
+            $filters = $this->_application->getRouteFilters();
             foreach ($this->_routes[$this->_requestMethod] as $route) {
+                $pattern = $route['pattern'];
+                foreach ($filters as $filter) {
+                    $filter($pattern);
+                }
                 try {
-                    if ($route['pattern']{0} != '/') {
+                    if ($pattern{0} != '/') {
                         $this->_processRegexpRoute(
-                            $route['pattern'],
+                            $pattern,
                             $route['handler']
                         );
                     } else {
                         $this->_processRoute(
-                            $route['pattern'], $route['handler']
+                            $pattern, $route['handler']
                         );
                     }
                 } catch (PassException $exception) {
@@ -1991,6 +1996,12 @@ class Application
      * @var Breeze\ClosuresCollection
      */
     protected $_filters = array();
+    /**
+     * User-defined route filters.
+     *
+     * @var Breeze\ClosuresCollection
+     */
+    protected $_routeFilters;
 
     /**
      * Initializes defined plugins and allows for overriding of default
@@ -2033,6 +2044,9 @@ class Application
             self::AFTER=>$this->_getDependency(
                 'after_filters_object', 'Breeze\\ClosuresCollection'
             )
+        );
+        $this->_routeFilters = $this->_getDependency(
+            'route_filters_object', 'Breeze\\ClosuresCollection'
         );
 
         foreach (self::$_plugins as $plugin) {
@@ -2094,6 +2108,7 @@ class Application
         $this->_conditions = clone $this->_conditions;
         $this->_status = clone $this->_status;
         $this->_userHelpers = clone $this->_userHelpers;
+        $this->_routeFilters = clone $this->_routeFilters;
 
         $this->_filters[self::BEFORE] = clone $this->_filters[self::BEFORE];
         $this->_filters[self::AFTER] = clone $this->_filters[self::AFTER];
@@ -2505,6 +2520,16 @@ class Application
     }
 
     /**
+     * Gets a list of all user-defined route filters.
+     *
+     * @return array All user-defined route filters.
+     */
+    public function getRouteFilters()
+    {
+        return $this->_routeFilters->all();
+    }
+
+    /**
      * Adds a filter to be executed before the request is routed.
      *
      * @param Closure $filter The filter to add.
@@ -2514,6 +2539,19 @@ class Application
     public function before($filter)
     {
         $this->_filters[self::BEFORE]->add($filter);
+    }
+
+    /**
+     * Adds a filter to be executed on each route before evaluating it
+     * against the current request.
+     *
+     * @param Closure $filter The filter to add.
+     *
+     * @return void
+     */
+    public function route($filter)
+    {
+        $this->_routeFilters->add($filter);
     }
 
     /**

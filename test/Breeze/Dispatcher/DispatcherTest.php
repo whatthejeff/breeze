@@ -130,10 +130,24 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->_application = $this->getMock(
-            'Breeze\\Application', array(), array(), '', FALSE
-        );
+        $this->_mockApplication();
         $this->_dispatcher = new Dispatcher($this->_application);
+    }
+
+    /**
+     * Configures a mock application instance.
+     *
+     * @param array $routeFilterCallbacks Optional list of router filter
+     *        callbacks to add
+     */
+    protected function _mockApplication(array $routeFilterCallbacks = array())
+    {
+        $this->_application = $this->getMock(
+            'Breeze\\Application', array('getRouteFilters'), array(), '', FALSE
+        );
+        $this->_application->expects($this->any())
+                        ->method('getRouteFilters')
+                        ->will($this->returnValue($routeFilterCallbacks));
     }
 
     /**
@@ -233,6 +247,24 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $this->_checkSetRequestUri(function($uri) use ($dispatcher){
             $dispatcher->setRequestUri($uri['original']);
         });
+    }
+
+    /**
+     * Tests {@link Breeze\Dispatcher\Dispatcher::dispatch()} with route
+     * filters added.
+     */
+    public function testDispatchWithRouteFilters()
+    {
+        $bar = function(&$pattern) { $pattern .= '/bar'; };
+        $baz = function(&$pattern) { $pattern .= '/baz'; };
+        $this->_mockApplication(array($bar, $baz));
+        $this->_dispatcher = new Dispatcher($this->_application);
+        $success = false;
+        $this->_dispatcher->get('/foo', function() use (&$success) {
+            $success = true;
+        });
+        $this->_dispatcher->dispatch('GET', '/foo/bar/baz');
+        $this->assertTrue($success);
     }
 
     /**
