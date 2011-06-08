@@ -207,7 +207,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      * Tests {@link Breeze\Dispatcher\Dispatcher::dispatch()} to
      * set the request method.
      */
-    public function testSetRequesMethodFromDispatch()
+    public function testSetRequestMethodFromDispatch()
     {
         foreach (self::$_supportedMethods as $method) {
             try {
