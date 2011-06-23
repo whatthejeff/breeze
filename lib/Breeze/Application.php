@@ -1501,7 +1501,7 @@ class Dispatcher
             foreach ($this->_routes[$this->_requestMethod] as $route) {
                 $pattern = $route['pattern'];
                 foreach ($filters as $filter) {
-                    $filter($pattern);
+                    $pattern = $filter($pattern);
                 }
                 try {
                     if ($pattern{0} != '/') {

@@ -125,8 +125,8 @@ function before()
  * in the order it was defined.
  *
  * @code
- *     route(function(&$pattern){
- *         $pattern = '/subdir' . $pattern;
+ *     route(function($pattern){
+ *         return '/subdir' . $pattern;
  *     });
  * @endcode
  *

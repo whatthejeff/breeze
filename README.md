@@ -167,8 +167,8 @@ In some cases, routes patterns require a global modification, such as prepending
 
 ``` php
 config('base_dir', '/subdir');
-route(function(&$pattern) {
-    $pattern = config('base_dir') . $pattern;
+route(function($pattern) {
+    return config('base_dir') . $pattern;
 });
 ```
 

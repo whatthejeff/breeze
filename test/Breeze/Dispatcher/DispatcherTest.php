@@ -255,8 +255,8 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testDispatchWithRouteFilters()
     {
-        $bar = function(&$pattern) { $pattern .= '/bar'; };
-        $baz = function(&$pattern) { $pattern .= '/baz'; };
+        $bar = function($pattern) { return $pattern . '/bar'; };
+        $baz = function($pattern) { return $pattern . '/baz'; };
         $this->_mockApplication(array($bar, $baz));
         $this->_dispatcher = new Dispatcher($this->_application);
         $success = false;
