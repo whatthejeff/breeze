@@ -784,6 +784,18 @@ class ApplicationTest extends ApplicationTestCase
     }
 
     /**
+     * Tests {@link Breeze\Application::route()} to add a route filter.
+     */
+    public function testAddRouteFilter()
+    {
+        $closure = function(){};
+        $this->_mocks['route_filters_object']->expects($this->once())
+                                             ->method('add')
+                                             ->with($this->equalTo($closure));
+        $this->_application->route($closure);
+    }
+
+    /**
      * Tests {@link Breeze\Application::filter()} with a bad filter type throws
      * an InvalidArgumentException.
      */
@@ -1005,6 +1017,10 @@ class ApplicationTest extends ApplicationTestCase
         $this->_mocks['after_filters_object']->expects($this->never())
                                              ->method('add');
         $clone->after(function(){});
+
+        $this->_mocks['route_filters_object']->expects($this->never())
+                                             ->method('add');
+        $clone->route(function(){});
 
         $this->_configurations->expects($this->never())
                               ->method('set');
