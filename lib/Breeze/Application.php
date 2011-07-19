@@ -2053,7 +2053,7 @@ class Application
      *
      * @return Breeze\Application
      */
-    public function getInstance($name, Configurations $configurations = null)
+    public static function getInstance($name, Configurations $configurations = null)
     {
         if (!isset(self::$_instances[$name])) {
             self::$_instances[$name] = new self($configurations);
